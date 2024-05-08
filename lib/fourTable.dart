@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FourTable extends StatefulWidget {
+  const FourTable({super.key});
+
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -53,7 +55,7 @@ class _BookingScreenState extends State<FourTable> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text('4-Seat Table', style: Theme.of(context).textTheme.headline6),
+            Text('4-Seat Table', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 8), // Add some spacing
             // Image widget here
             Center(
@@ -99,7 +101,6 @@ class _BookingScreenState extends State<FourTable> {
                             ),
                           );
                         }
-                        ;
                       },
                     );
                   },
@@ -134,16 +135,15 @@ class _BookingScreenState extends State<FourTable> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              child: const Text('Confirm Booking'),
               onPressed: () {
                 // Handle booking confirmation logic
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white, backgroundColor: Colors.green,
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 textStyle: const TextStyle(fontSize: 18.0),
               ),
+              child: const Text('Confirm Booking'),
             ),
           ],
         ),

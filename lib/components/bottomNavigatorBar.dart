@@ -137,7 +137,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
               _selectedIndex = index;
             });
           },
-          indicatorColor: Color(0xFF00B288),
+          indicatorColor: const Color(0xFF00B288),
           tabs: List.generate(5, (index) {
             return Tab(
               icon: ImageIcon(

@@ -22,23 +22,24 @@ class AddFriendsScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   Positioned(
-  top: 48,
-  left: 270,
-  child: GestureDetector(
-    onTap: () {
-      // Navigate to PartyScreen when cross is tapped
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PartyScreen()),
-      );
-    },
-    child: Image.asset(
-      'assets/images/cross.png',
-      width: 40,
-      height: 40,
-    ),
-  ),
-),
+                    top: 48,
+                    left: 270,
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to PartyScreen when cross is tapped
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PartyScreen()),
+                        );
+                      },
+                      child: Image.asset(
+                        'assets/images/Cross.png',
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                  ),
                   const Positioned(
                     top: 100,
                     left: 70,

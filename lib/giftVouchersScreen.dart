@@ -38,8 +38,8 @@ class GiftVoucherScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 103.0, // width in logical pixels
-                    height: 116.0, // height in logical pixels
+                    width: 100.0, // width in logical pixels
+                    height: 100.0, // height in logical pixels
                     padding:
                         const EdgeInsets.all(10), // padding for inner space
                     decoration: BoxDecoration(
@@ -58,6 +58,7 @@ class GiftVoucherScreen extends StatelessWidget {
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         // Replace this with your image asset
                         Image.asset(
@@ -68,11 +69,21 @@ class GiftVoucherScreen extends StatelessWidget {
                               .black54, // If you want to apply a color filter to the image
                         ),
                         const SizedBox(
-                            height: 8), // Space between image and text
-                        const Text(
-                          'Gift Vouchers',
+                            height: 20), // Space between image and text
+                        Text(
+                          'Gift',
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.0, // Font size for the text
+                          ),
+                        ),
+                        // const SizedBox(
+                        //     height: 8), // Space between image and text
+                        Text(
+                          'Vouchers',
+                          style: TextStyle(
+                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 14.0, // Font size for the text
                           ),
@@ -124,8 +135,7 @@ class GiftVoucherScreen extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   // Replace with your exact color codes and dimensions
-                  foregroundColor: Colors.white,
-                  primary: Colors.teal, // Text color
+                  foregroundColor: Colors.white, backgroundColor: Colors.teal, // Text color
                   shadowColor: Colors.transparent, // No shadow
                   // The shape and border side can be adjusted to match your design
                   shape: RoundedRectangleBorder(

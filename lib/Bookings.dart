@@ -87,8 +87,7 @@ class Booking extends StatelessWidget {
                               44, // Logical pixels, not actual device pixels.
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.white, // Background color
-                              onPrimary: Colors.teal,
+                              foregroundColor: Colors.teal, backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 // Define the button's shape
                                 borderRadius: BorderRadius.circular(
@@ -198,9 +197,7 @@ class Booking extends StatelessWidget {
                               44, // Logical pixels, not actual device pixels.
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.teal, // Background color
-                              onPrimary:
-                                  Colors.white, // Text Color (Foreground color)
+                              foregroundColor: Colors.white, backgroundColor: Colors.teal, // Text Color (Foreground color)
                               shape: RoundedRectangleBorder(
                                 // Define the button's shape
                                 borderRadius: BorderRadius.circular(
@@ -295,8 +292,7 @@ class Booking extends StatelessWidget {
                               44, // Logical pixels, not actual device pixels.
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.teal, // Background color
-                              onPrimary: Colors.white,
+                              foregroundColor: Colors.white, backgroundColor: Colors.teal,
                               shape: RoundedRectangleBorder(
                                 // Define the button's shape
                                 borderRadius: BorderRadius.circular(
@@ -391,8 +387,7 @@ class Booking extends StatelessWidget {
                               44, // Logical pixels, not actual device pixels.
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.teal, // Background color
-                              onPrimary: Colors.white,
+                              foregroundColor: Colors.white, backgroundColor: Colors.teal,
                               shape: RoundedRectangleBorder(
                                 // Define the button's shape
                                 borderRadius: BorderRadius.circular(
@@ -487,8 +482,7 @@ class Booking extends StatelessWidget {
                               44, // Logical pixels, not actual device pixels.
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.teal, // Background color
-                              onPrimary: Colors.white,
+                              foregroundColor: Colors.white, backgroundColor: Colors.teal,
                               shape: RoundedRectangleBorder(
                                 // Define the button's shape
                                 borderRadius: BorderRadius.circular(
@@ -583,8 +577,7 @@ class Booking extends StatelessWidget {
                               44, // Logical pixels, not actual device pixels.
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.teal, // Background color
-                              onPrimary: Colors.white,
+                              foregroundColor: Colors.white, backgroundColor: Colors.teal,
                               shape: RoundedRectangleBorder(
                                 // Define the button's shape
                                 borderRadius: BorderRadius.circular(

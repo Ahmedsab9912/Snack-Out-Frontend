@@ -35,7 +35,7 @@ class Bookings extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                        const TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
               );
             },
             child: 
@@ -99,7 +99,7 @@ class Bookings extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        FourTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                        const FourTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
               );
             },
             child: 
@@ -180,7 +180,7 @@ class Bookings extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        SixTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                        const SixTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
               );
             },
             child: 
@@ -244,7 +244,7 @@ class Bookings extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        EightTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                        const EightTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
               );
             },
             child: 
@@ -313,7 +313,7 @@ class Bookings extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                        const TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
               );
             },
             child: 
@@ -377,7 +377,7 @@ class Bookings extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                        const TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
               );
             },
             child: 

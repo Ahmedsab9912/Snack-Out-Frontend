@@ -126,45 +126,48 @@ class YourPartyScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-  top: 320,
-  left: 22,
-  child: SizedBox(
-    width: 335,
-    height: 104,
-    child: SizedBox(
-      width: double.infinity, // Set a width larger than the blue frame
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: List.generate(memberData.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundImage: AssetImage(memberData[index]['image']!),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    memberData[index]['name']!,
-                    style: const TextStyle(
-                      color:Color(0xFF222222),
-                      fontFamily: 'Lato',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      height: 1.67, // Equivalent to line-height: 20px
+              top: 320,
+              left: 22,
+              child: SizedBox(
+                width: 335,
+                height: 104,
+                child: SizedBox(
+                  width:
+                      double.infinity, // Set a width larger than the blue frame
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(memberData.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 32,
+                                backgroundImage:
+                                    AssetImage(memberData[index]['image']!),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                memberData[index]['name']!,
+                                style: const TextStyle(
+                                  color: Color(0xFF222222),
+                                  fontFamily: 'Lato',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  height:
+                                      1.67, // Equivalent to line-height: 20px
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
                     ),
                   ),
-                ],
+                ),
               ),
-            );
-          }),
-        ),
-      ),
-    ),
-  ),
-),
+            ),
             Positioned(
               bottom: 280,
               left: 25,
@@ -189,7 +192,20 @@ class YourPartyScreen extends StatelessWidget {
                 child: Row(
                   children: List.generate(14, (index) {
                     List<double> leftPositions = [
-                      16.0, 39.93, 63.86, 87.78, 111.71, 135.34, 159.57, 183.49, 207.42, 231.35, 255.28, 279.21, 303.13, 327.06
+                      16.0,
+                      39.93,
+                      63.86,
+                      87.78,
+                      111.71,
+                      135.34,
+                      159.57,
+                      183.49,
+                      207.42,
+                      231.35,
+                      255.28,
+                      279.21,
+                      303.13,
+                      327.06
                     ];
 
                     return Positioned(
@@ -247,11 +263,11 @@ class YourPartyScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Image.asset(
-                            'assets/images/vuesax.png',
-                            width: 30,
-                            height: 30,
-                          ),
+                          // Image.asset(
+                          //   'assets/images/confetty.png',
+                          //   width: 100,
+                          //   height: 180,
+                          // ),
                         ],
                       ),
                     ],

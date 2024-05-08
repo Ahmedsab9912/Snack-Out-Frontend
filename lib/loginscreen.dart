@@ -28,6 +28,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          // THIS IS THE BACKGROUND OF THE LOGIN SCREEN
           Container(
             width: 432,
             height: 932,
@@ -36,9 +37,10 @@ class LoginScreen extends StatelessWidget {
                 image: AssetImage('assets/images/backgroundimage.png'),
                 fit: BoxFit.cover,
               ),
-              color: Colors.black.withOpacity(0.6),
+              color: Colors.black.withOpacity(0.9),
             ),
           ),
+          // THIS IS THE LINEAR GRADIENT SHADOW
           Container(
             width: 432,
             height: 932,
@@ -53,6 +55,7 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
             width: 340,
             height: 701,
+            // THIS IS THE MAIN STACK WIDGET
             child: Stack(
               children: [
                 Positioned(
@@ -63,6 +66,7 @@ class LoginScreen extends StatelessWidget {
                     height: 17,
                     child: Stack(
                       children: [
+                        //LETTER OR WITH 2 LINES ALONG IT
                         Positioned(
                           left: 0,
                           top: 10.08,
@@ -109,7 +113,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Positioned(
+                        Positioned(
                           left: 117.11,
                           top: 2,
                           child: Text(
@@ -129,6 +133,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                // THIS IS THE SIGNUP LINE AT THE BOTTOM OF THE SCREEN WITH INKWELL INCLUDED
                 Positioned(
                   left: 34,
                   top: 682,
@@ -168,6 +173,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                // EATALY LOGO AT THE TOP OF THE SCREEN
                 Positioned(
                   top: 56,
                   left: (340 - 140) / 2,
@@ -180,7 +186,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Positioned(
+                // INSTANT TABLE RESERVATIONS AFTER THE EATALY LOGO
+                Positioned(
                   left: 47,
                   top: 170,
                   child: SizedBox(
@@ -198,6 +205,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                // LOGIN BUTTON TEXT
                 Positioned(
                   left: 7,
                   top: 250,
@@ -225,6 +233,7 @@ class LoginScreen extends StatelessWidget {
                           height: 99,
                           child: Stack(
                             children: [
+                              // THIS IS THE PHONE-NUMBER TEXTEDITCONTROLLOR
                               Positioned(
                                 left: 22.5,
                                 top: 35,
@@ -259,30 +268,32 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const Positioned(
-  left: 30,
-  top: 58,
-  child: SizedBox(
-    width: 173,
-    height: 16,
-    child: TextField(
-      decoration: InputDecoration(
-        hintText: 'Enter Your Phone Number',
-        hintStyle: TextStyle(
-          color: Color(0xFFD3D3D3),
-          fontSize: 14,
-          fontFamily: 'Lato',
-          fontWeight: FontWeight.w400,
-        ),
-        border: InputBorder.none, // Remove underline
-      ),
-      style: TextStyle(
-        color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
-      ),
-    ),
-  ),
-),
-
+                               Positioned(
+                                left: 30,
+                                top: 57,
+                                child: SizedBox(
+                                  width: 173,
+                                  height: 16,
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.phone,
+                                    maxLength: 11,
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter Your Phone Number',
+                                      hintStyle: TextStyle(
+                                        color: Color(0xFFD3D3D3),
+                                        fontSize: 14,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      border: InputBorder.none, // Remove underline
+                                      counterText: '', // Hide the default counter text
+                                    ),
+                                    style: TextStyle(
+                                      color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
+                                    ),
+                                  )
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -327,28 +338,30 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                               const Positioned(
-  left: 30,
-  top: 58,
-  child: SizedBox(
-    width: 173,
-    height: 16,
-    child: TextField(
-      decoration: InputDecoration(
-        hintText: 'Enter Your Password',
-        hintStyle: TextStyle(
-          color: Color(0xFFD3D3D3),
-          fontSize: 14,
-          fontFamily: 'Lato',
-          fontWeight: FontWeight.w400,
-        ),
-        border: InputBorder.none, // Remove underline
-      ),
-      style: TextStyle(
-        color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
-      ),
-    ),
-  ),
-),
+                                left: 30,
+                                top: 58,
+                                child: SizedBox(
+                                  width: 173,
+                                  height: 16,
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter Your Password',
+                                      hintStyle: TextStyle(
+                                        color: Color(0xFFD3D3D3),
+                                        fontSize: 14,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      border:
+                                          InputBorder.none, // Remove underline
+                                    ),
+                                    style: TextStyle(
+                                      color: Color(
+                                          0xFFD3D3D3), // Set text color to be visible when user enters text
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -376,32 +389,30 @@ class LoginScreen extends StatelessWidget {
                               Container(
                                 width: 59,
                                 height: 59,
-                                decoration: const ShapeDecoration(
-                                  color: Color(0xFFECECEC),
-                                  shape: CircleBorder(
-                                    side: BorderSide(
-                                        width: 0.50, color: Color(0xFF00B287)),
-                                  ),
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Color(0x3F000000),
-                                      blurRadius: 4,
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Container(
-                                    width: 32,
-                                    height: 32,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/facebook.png"),
-                                        fit: BoxFit.fill,
-                                      ),
+                                // decoration: const ShapeDecoration(
+                                //   color: Color(0xFFECECEC),
+                                //   // shape: CircleBorder(
+                                //   //   side: BorderSide(
+                                //   //       width: 0.50, color: Color(0xFF00B287)),
+                                //   // ),
+                                //   shadows: [
+                                //     BoxShadow(
+                                //       color: Color(0x3F000000),
+                                //       blurRadius: 4,
+                                //       offset: Offset(0, 0),
+                                //       spreadRadius: 0,
+                                //     ),
+                                //   ],
+                                // ),
+                                child: Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/facebook1.png"),
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 ),
@@ -420,30 +431,30 @@ class LoginScreen extends StatelessWidget {
                               Container(
                                 width: 59,
                                 height: 59,
-                                decoration: const ShapeDecoration(
-                                  color: Color(0xFFECECEC),
-                                  shape: CircleBorder(
-                                    side: BorderSide(
-                                        width: 0.50, color: Color(0xFF00B287)),
-                                  ),
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Color(0x3F000000),
-                                      blurRadius: 4,
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
-                                ),
+                                // decoration: const ShapeDecoration(
+                                //   color: Color(0xFFECECEC),
+                                //   shape: CircleBorder(
+                                //     side: BorderSide(
+                                //         width: 0.50, color: Color(0xFF00B287)),
+                                //   ),
+                                //   shadows: [
+                                //     BoxShadow(
+                                //       color: Color(0x3F000000),
+                                //       blurRadius: 4,
+                                //       offset: Offset(0, 0),
+                                //       spreadRadius: 0,
+                                //     ),
+                                //   ],
+                                // ),
                                 child: Center(
                                   child: Container(
-                                    width: 24,
-                                    height: 24,
+                                    width: 62,
+                                    height: 62,
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                         image: AssetImage(
-                                            "assets/images/google.png"),
+                                            "assets/images/google1.png"),
                                         fit: BoxFit.fill,
                                       ),
                                     ),

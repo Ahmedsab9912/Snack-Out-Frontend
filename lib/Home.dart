@@ -56,28 +56,29 @@ class Home extends StatelessWidget {
               );
             },
             child: Container(
+                height: 50,
               margin: const EdgeInsets.only(
-                  left: 24, right: 24, top: 24, bottom: 24),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+                  left: 24, right: 24, top: 34, bottom: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: const Color(0xFFD0D5DD),
                   width: 1,
                 ),
               ),
               child: Row(
-                children: const [
+                children:  [
                   Icon(Icons.search), // Icon widget
                   SizedBox(width: 8), // Spacing between the icon and the text
-                  Text('Search'), // Text widget
+                  Text('Search',style: TextStyle(fontSize: 19),), // Text widget
                 ],
               ),
             ),
           ),
           SizedBox(
-            height: 144, // Set a height for the horizontal scroll area
+            height: 144,  // Set a height for the horizontal scroll area
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

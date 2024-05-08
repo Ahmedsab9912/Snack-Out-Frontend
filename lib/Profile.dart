@@ -117,6 +117,7 @@ class Profile extends StatelessWidget {
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               // Replace this with your image asset
                               Image.asset(
@@ -127,11 +128,21 @@ class Profile extends StatelessWidget {
                                     .black54, // If you want to apply a color filter to the image
                               ),
                               const SizedBox(
-                                  height: 8), // Space between image and text
-                              const Text(
-                                'Gift Vouchers',
+                                  height: 24), // Space between image and text
+                              Text(
+                                'Gift',
                                 style: TextStyle(
-                                  color: Colors.black54,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.0, // Font size for the text
+                                ),
+                              ),
+                              // const SizedBox(
+                              //     height: 8), // Space between image and text
+                              Text(
+                                'Vouchers',
+                                style: TextStyle(
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14.0, // Font size for the text
                                 ),
@@ -154,8 +165,8 @@ class Profile extends StatelessWidget {
                           padding: const EdgeInsets.all(
                               10), // padding for inner space
                           decoration: BoxDecoration(
-                             color: const Color(
-                          0xFFF8BBD0), // Light pink color from the Material color palette
+                            color: const Color(
+                                0xFFF8BBD0), // Light pink color from the Material color palette
                             borderRadius:
                                 BorderRadius.circular(8), // Rounded corners
                             boxShadow: [
@@ -169,8 +180,9 @@ class Profile extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: Column(
+                          child:  Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               // Replace this with your image asset
                               Image.asset(
@@ -181,11 +193,21 @@ class Profile extends StatelessWidget {
                                     .black54, // If you want to apply a color filter to the image
                               ),
                               const SizedBox(
-                                  height: 8), // Space between image and text
-                              const Text(
-                                'Loyalty Rewards',
+                                  height: 24), // Space between image and text
+                              Text(
+                                'Loyalty',
                                 style: TextStyle(
-                                  color: Colors.black54,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.0, // Font size for the text
+                                ),
+                              ),
+                              // const SizedBox(
+                              //     height: 8), // Space between image and text
+                              Text(
+                                'Rewards',
+                                style: TextStyle(
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14.0, // Font size for the text
                                 ),
@@ -225,6 +247,7 @@ class Profile extends StatelessWidget {
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               // Replace this with your image asset
                               Image.asset(
@@ -235,7 +258,7 @@ class Profile extends StatelessWidget {
                                     .black54, // If you want to apply a color filter to the image
                               ),
                               const SizedBox(
-                                  height: 8), // Space between image and text
+                                  height: 24), // Space between image and text
                               const Text(
                                 'Booking Rewards',
                                 style: TextStyle(
@@ -325,9 +348,9 @@ class Profile extends StatelessWidget {
                         height: 44, // Logical pixels, not actual device pixels.
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.teal, // Background color
-                            onPrimary:
-                                Colors.white, // Text Color (Foreground color)
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.teal, // Text Color (Foreground color)
                             shape: RoundedRectangleBorder(
                               // Define the button's shape
                               borderRadius: BorderRadius.circular(
@@ -419,9 +442,9 @@ class Profile extends StatelessWidget {
                         height: 44, // Logical pixels, not actual device pixels.
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.teal, // Background color
-                            onPrimary:
-                                Colors.white, // Text Color (Foreground color)
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.teal, // Text Color (Foreground color)
                             shape: RoundedRectangleBorder(
                               // Define the button's shape
                               borderRadius: BorderRadius.circular(
@@ -513,9 +536,9 @@ class Profile extends StatelessWidget {
                         height: 44, // Logical pixels, not actual device pixels.
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.teal, // Background color
-                            onPrimary:
-                                Colors.white, // Text Color (Foreground color)
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.teal, // Text Color (Foreground color)
                             shape: RoundedRectangleBorder(
                               // Define the button's shape
                               borderRadius: BorderRadius.circular(
@@ -607,9 +630,9 @@ class Profile extends StatelessWidget {
                         height: 44, // Logical pixels, not actual device pixels.
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.teal, // Background color
-                            onPrimary:
-                                Colors.white, // Text Color (Foreground color)
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.teal, // Text Color (Foreground color)
                             shape: RoundedRectangleBorder(
                               // Define the button's shape
                               borderRadius: BorderRadius.circular(
@@ -701,9 +724,9 @@ class Profile extends StatelessWidget {
                         height: 44, // Logical pixels, not actual device pixels.
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.teal, // Background color
-                            onPrimary:
-                                Colors.white, // Text Color (Foreground color)
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.teal, // Text Color (Foreground color)
                             shape: RoundedRectangleBorder(
                               // Define the button's shape
                               borderRadius: BorderRadius.circular(
