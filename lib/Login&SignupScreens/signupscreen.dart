@@ -115,7 +115,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                   Positioned(
+                  Positioned(
                     left: 35,
                     top: 58,
                     child: SizedBox(
@@ -136,7 +136,8 @@ class SignupScreen extends StatelessWidget {
                           counterText: '', // Hide the default counter text
                         ),
                         style: TextStyle(
-                          color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
+                          color: Color(
+                              0xFFD3D3D3), // Set text color to be visible when user enters text
                         ),
                       ),
                     ),
@@ -185,13 +186,13 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                   Positioned(
+                  Positioned(
                     left: 35,
                     top: 58,
                     child: SizedBox(
                       width: 173,
                       height: 16,
-                      child:  TextFormField(
+                      child: TextFormField(
                         keyboardType: TextInputType.phone,
                         maxLength: 11,
                         decoration: InputDecoration(
@@ -206,7 +207,8 @@ class SignupScreen extends StatelessWidget {
                           counterText: '', // Hide the default counter text
                         ),
                         style: TextStyle(
-                          color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
+                          color: Color(
+                              0xFFD3D3D3), // Set text color to be visible when user enters text
                         ),
                       ),
                     ),
@@ -255,7 +257,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                   Positioned(
+                  Positioned(
                     left: 35,
                     top: 58,
                     child: SizedBox(
@@ -274,7 +276,8 @@ class SignupScreen extends StatelessWidget {
                           border: InputBorder.none, // Remove underline
                         ),
                         style: TextStyle(
-                          color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
+                          color: Color(
+                              0xFFD3D3D3), // Set text color to be visible when user enters text
                         ),
                       ),
                     ),
@@ -323,13 +326,13 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                   Positioned(
+                  Positioned(
                     left: 35,
                     top: 58,
                     child: SizedBox(
                       width: 173,
                       height: 16,
-                      child:TextFormField(
+                      child: TextFormField(
                         keyboardType: TextInputType.visiblePassword,
                         decoration: InputDecoration(
                           hintText: 'Re-enter Your Password',
@@ -342,7 +345,8 @@ class SignupScreen extends StatelessWidget {
                           border: InputBorder.none, // Remove underline
                         ),
                         style: TextStyle(
-                          color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
+                          color: Color(
+                              0xFFD3D3D3), // Set text color to be visible when user enters text
                         ),
                       ),
                     ),

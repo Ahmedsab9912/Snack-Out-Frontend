@@ -6,7 +6,8 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<TextEditingController> controllers = List.generate(4, (_) => TextEditingController());
+    List<TextEditingController> controllers =
+        List.generate(4, (_) => TextEditingController());
 
     void clearOtherTextFields(int index) {
       for (int i = 0; i < controllers.length; i++) {
@@ -146,7 +147,8 @@ class OtpScreen extends StatelessWidget {
                                       color: Colors.white,
                                       shape: RoundedRectangleBorder(
                                         side: const BorderSide(
-                                            width: 0, color: Colors.transparent),
+                                            width: 0,
+                                            color: Colors.transparent),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),

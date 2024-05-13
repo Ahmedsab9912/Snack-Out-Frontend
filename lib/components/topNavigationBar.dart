@@ -11,34 +11,34 @@ class TopNavigationBarManu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
+        length: 40,
         child: Scaffold(
           appBar: AppBar(),
           body: Column(
             children: [
               Expanded(
-                flex: 0, // Adjust flex as needed to control the size
+                flex:0, // Adjust flex as needed to control the size
                 child: SizedBox(
-                  width: 342,
-                  height: 145,
+                  width: 340,
+                  height: 125,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Column(
                             mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
                                 mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
@@ -149,7 +149,7 @@ class TopNavigationBarManu extends StatelessWidget {
                                       ..translate(0.0, 0.0)
                                       ..rotateZ(1.57),
                                     child: Container(
-                                      width: 16,
+                                      width: 10,
                                       decoration: const ShapeDecoration(
                                         shape: RoundedRectangleBorder(
                                           side: BorderSide(
@@ -179,7 +179,7 @@ class TopNavigationBarManu extends StatelessWidget {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     '4.5',
@@ -320,13 +320,13 @@ class TopNavigationBarManu extends StatelessWidget {
                   ),
                 ),
               ),
-              const TabBar(
-              isScrollable: true,
+               TabBar(
+              isScrollable: false,
               labelColor: Color(0xFF00B288), // Selected tab text color
               unselectedLabelColor: Colors.grey, // Unselected tab text color
               indicatorColor:
                   Color(0xFF00B288), // Underline color for selected tab
-                tabs: [
+                tabs: const [
                   Tab(text: 'Bookings'),
                   Tab(text: 'Reviews'),
                   Tab(text: 'Photos'),

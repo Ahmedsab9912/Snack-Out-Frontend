@@ -1,29 +1,83 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'partydemoscreen.dart';
-import 'partyscreen.dart';
+import 'PartyScreens/partyscreen.dart';
 
 // ignore: use_key_in_widget_constructors
 class AddFriendsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.95,
-              height: 740,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
+      body: Stack(
+        children: [
+          Container(
+            width: 432,
+            height: 932,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/images/Profilebck.png'),
+                fit: BoxFit.cover,
               ),
-              padding: const EdgeInsets.all(16),
-              child: Stack(
+              color: Colors.black.withOpacity(0.9),
+            ),
+          ),
+          // THIS IS THE LINEAR GRADIENT SHADOW
+          Container(
+            width: 432,
+            height: 932,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: const Alignment(0.01, 1.00),
+                end: const Alignment(-0.01, -1),
+                colors: [
+                  Color.fromARGB(255, 255, 255, 255),
+                  Colors.black.withOpacity(0.1)
+                ],
+              ),
+            ),
+          ),
+          // Background Image
+          // Positioned.fill(
+          //   child: ClipRect(
+          //     child: BackdropFilter(
+          //       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          //       child: Container(
+          //         color: Colors.black
+          //             .withOpacity(0.9), // Optionally adjust the darkness
+          //         child: Image.asset(
+          //           'assets/images/Profilebck.png',
+          //           fit: BoxFit.cover,
+          //           colorBlendMode: BlendMode
+          //               .darken, // Optionally darken the image to make text more readable
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Center(
+            child: Container(
+              height: 400,
+              width: 330,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes the position of the shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Positioned(
-                    top: 48,
-                    left: 270,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 220),
                     child: GestureDetector(
                       onTap: () {
                         // Navigate to PartyScreen when cross is tapped
@@ -35,178 +89,69 @@ class AddFriendsScreen extends StatelessWidget {
                       },
                       child: Image.asset(
                         'assets/images/Cross.png',
-                        width: 40,
-                        height: 40,
+                        width: 45,
+                        height: 45,
                       ),
                     ),
                   ),
-                  const Positioned(
-                    top: 100,
-                    left: 70,
-                    child: SizedBox(
-                      width: 250,
-                      height: 24,
-                      child: Text(
-                        'Friends & Family Link',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  SizedBox(
+                    width: 280,
+                    height: 39,
+                    child: Text(
+                      'Send this link to your Friends and \nFamily to Add them in the Party.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: 280,
+                    height: 80,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(8, 7, 8, 7),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: const Color(0xFF00B288),
+                          width: 1.5,
                         ),
+                        color: Color.fromARGB(255, 221, 240, 236),
                       ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 145,
-                    left: 125,
-                    child: SizedBox(
-                      width: 250,
-                      height: 32,
-                      child: Text(
-                        'Eataly',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 220,
-                    left: 25,
-                    child: SizedBox(
-                      width: 250,
-                      height: 24,
-                      child: Text(
-                        'Hey,',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 245,
-                    left: 25,
-                    child: SizedBox(
-                      width: 270,
-                      height: 62,
-                      child: Text(
-                        'Send this link to your Friends and Family to Add them and share Rewards and Special Discounts Everyday.',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 315,
-                    left: 25,
-                    child: SizedBox(
-                      width: 280,
-                      height: 80,
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(8, 7, 8, 7),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: const Color(0xFF00B288),
-                            width: 1,
+                      child: const Center(
+                        child: Text(
+                          'http://eataly.com/party/invite123456789abcdefghijk123456789abcdefghijk12345678',
+                          style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            height: 1,
+                            letterSpacing: 0.0,
+                            color: Color(0xFF00B288),
                           ),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFFFFFFFF),
-                              Color(0xFFFFFFFF),
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'http://eataly.com/party/invite123456789abcdefghijk123456789abcdefghijk12345678',
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              height: 1,
-                              letterSpacing: 0.0,
-                              color: Color(0xFF00B288),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ),
-                  const Positioned(
-                    top: 400,
-                    left: 25,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      // // Navigate to PartyDemoScreen when Copy Link is pressed
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const PartyDemoScreen(),
+                      //   ),
+                      // );
+                    },
                     child: SizedBox(
-                      width: 270,
-                      height: 62,
-                      child: Text(
-                        'Anyone can Follow this Link to Add You as Friend. Only share it with People you trust.',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 160,
-                    left: 25,
-                    right: 0,
-                    child: InkWell(
-                      onTap: () {
-                        // Navigate to PartyDemoScreen when Copy Link is pressed
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PartyDemoScreen(),
-                          ),
-                        );
-                      },
-                      child: SizedBox(
-                        width: 326,
-                        height: 48,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: const Color(0xFF00B288),
-                          ),
-                          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Copy Link',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Image.asset(
-                                'assets/images/copylink.png',
-                                width: 30,
-                                height: 30,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 100,
-                    left: 25,
-                    right: 140,
-                    child: SizedBox(
-                      width: 163,
+                      width: 306,
                       height: 48,
                       child: Container(
                         decoration: BoxDecoration(
@@ -217,8 +162,8 @@ class AddFriendsScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Share Link',
+                            Text(
+                              'Copy Link',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -227,7 +172,7 @@ class AddFriendsScreen extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             Image.asset(
-                              'assets/images/sharelink.png',
+                              'assets/images/copylink.png',
                               width: 30,
                               height: 30,
                             ),
@@ -236,49 +181,58 @@ class AddFriendsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 100,
-                    left: 175,
-                    right: 0,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      // // Navigate to PartyDemoScreen when Copy Link is pressed
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const PartyDemoScreen(),
+                      //   ),
+                      // );
+                    },
                     child: SizedBox(
-                      width: 163,
+                      width: 306,
                       height: 48,
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: const Color(0xFF00B288),
-                            width: 1,
-                          ),
+                          color: const Color(0xFF00B288),
                         ),
                         padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'QR Code',
+                          children: const [
+                            Text(
+                              'Copy Code',
                               style: TextStyle(
-                                color: Color(0xFF00B288),
+                                color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            Image.asset(
-                              'assets/images/qrcode.png',
-                              width: 30,
-                              height: 30,
-                            ),
+                            // const SizedBox(width: 8),
+                            // Image.asset(
+                            //   'assets/images/copylink.png',
+                            //   width: 30,
+                            //   height: 30,
+                            // ),
                           ],
                         ),
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 80,
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

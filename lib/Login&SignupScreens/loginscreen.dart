@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'signupscreen.dart';
 // ignore: unused_import
-import 'Home.dart';
-import 'components/bottomNavigatorBar.dart';
+import '../Dashboard/HomeScreen.dart';
+import '../components/bottomNavigatorBar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -141,8 +141,7 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignupScreen()),
+                        MaterialPageRoute(builder: (context) => SignupScreen()),
                       );
                     },
                     child: const Text.rich(
@@ -268,31 +267,33 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                               Positioned(
+                              Positioned(
                                 left: 30,
                                 top: 57,
                                 child: SizedBox(
-                                  width: 173,
-                                  height: 16,
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.phone,
-                                    maxLength: 11,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Your Phone Number',
-                                      hintStyle: TextStyle(
-                                        color: Color(0xFFD3D3D3),
-                                        fontSize: 14,
-                                        fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w400,
+                                    width: 173,
+                                    height: 16,
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.phone,
+                                      maxLength: 11,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Your Phone Number',
+                                        hintStyle: TextStyle(
+                                          color: Color(0xFFD3D3D3),
+                                          fontSize: 14,
+                                          fontFamily: 'Lato',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        border: InputBorder
+                                            .none, // Remove underline
+                                        counterText:
+                                            '', // Hide the default counter text
                                       ),
-                                      border: InputBorder.none, // Remove underline
-                                      counterText: '', // Hide the default counter text
-                                    ),
-                                    style: TextStyle(
-                                      color: Color(0xFFD3D3D3), // Set text color to be visible when user enters text
-                                    ),
-                                  )
-                                ),
+                                      style: TextStyle(
+                                        color: Color(
+                                            0xFFD3D3D3), // Set text color to be visible when user enters text
+                                      ),
+                                    )),
                               ),
                             ],
                           ),
@@ -386,7 +387,7 @@ class LoginScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 59,
                                 height: 59,
                                 // decoration: const ShapeDecoration(
@@ -428,7 +429,7 @@ class LoginScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 59,
                                 height: 59,
                                 // decoration: const ShapeDecoration(

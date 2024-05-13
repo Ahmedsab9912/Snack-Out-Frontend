@@ -250,10 +250,10 @@ class YourPartyScreen extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'Lets Party',
                             style: TextStyle(
                               fontFamily: 'Lato',
@@ -262,7 +262,7 @@ class YourPartyScreen extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           // Image.asset(
                           //   'assets/images/confetty.png',
                           //   width: 100,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:eataly/splashscreen.dart';
-
-
+import 'package:eataly/Login&SignupScreens/splashscreen.dart';
 
 void main() {
   runApp(const MyApp());

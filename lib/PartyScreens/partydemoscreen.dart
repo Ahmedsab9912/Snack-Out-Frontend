@@ -1,5 +1,7 @@
+import 'package:eataly/PartyScreens/AddFriendsScreen.dart';
+import 'package:eataly/PartyScreens/partyscreen.dart';
+import 'package:eataly/addfriendsscreen.dart';
 import 'package:flutter/material.dart';
-import 'myfriendsscreen.dart';
 
 class PartyDemoScreen extends StatelessWidget {
   const PartyDemoScreen({super.key});
@@ -12,7 +14,7 @@ class PartyDemoScreen extends StatelessWidget {
           children: [
             Container(
               width: 390,
-              height: 600,
+              height: 500,
               clipBehavior: Clip.antiAlias,
               decoration: ShapeDecoration(
                 color: Colors.white,
@@ -24,9 +26,9 @@ class PartyDemoScreen extends StatelessWidget {
                 children: [
                   Container(
                     width: 400,
-                    height: 120,
+                    height: 10,
                     padding: const EdgeInsets.only(
-                      top: 55,
+                      // top: 55,
                       left: 24,
                       right: 24,
                       bottom: 0,
@@ -47,53 +49,53 @@ class PartyDemoScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Good Morning',
-                                      style: TextStyle(
-                                        color: Color(0xFF222222),
-                                        fontSize: 14,
-                                        fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w500,
-                                        height: 0,
-                                      ),
-                                    ),
-                                    SizedBox(height: 2),
-                                    Text(
-                                      'John Doe',
-                                      style: TextStyle(
-                                        color: Color(0xFF222222),
-                                        fontSize: 22,
-                                        fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w600,
-                                        height: 0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 190),
-                              Image(
-                                width: 24,
-                                height: 24,
-                                image: AssetImage(
-                                    'assets/images/notification.png'),
-                              )
-                            ],
-                          ),
-                        ),
+                        // SizedBox(
+                        //   width: double.infinity,
+                        //   child: Row(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       SizedBox(
+                        //         child: Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           mainAxisAlignment: MainAxisAlignment.start,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             Text(
+                        //               'Good Morning',
+                        //               style: TextStyle(
+                        //                 color: Color(0xFF222222),
+                        //                 fontSize: 14,
+                        //                 fontFamily: 'Lato',
+                        //                 fontWeight: FontWeight.w500,
+                        //                 height: 0,
+                        //               ),
+                        //             ),
+                        //             SizedBox(height: 2),
+                        //             Text(
+                        //               'John Doe',
+                        //               style: TextStyle(
+                        //                 color: Color(0xFF222222),
+                        //                 fontSize: 22,
+                        //                 fontFamily: 'Lato',
+                        //                 fontWeight: FontWeight.w600,
+                        //                 height: 0,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       SizedBox(width: 190),
+                        //       Image(
+                        //         width: 24,
+                        //         height: 24,
+                        //         image: AssetImage(
+                        //             'assets/images/notification.png'),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -123,48 +125,56 @@ class PartyDemoScreen extends StatelessWidget {
                   SizedBox(
                     width: 305,
                     height: 45,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: Image.asset(
-                            'assets/images/addfriendss.png',
+                    child: InkWell(
+                      // onTap: () => Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AddFriendsPage(),
+                      //   ),
+                      // ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Image.asset(
+                              'assets/images/addfriendss.png',
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 101,
-                              height: 25,
-                              child: Text(
-                                'Add Friends',
-                                style: TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 18,
+                          const SizedBox(width: 16),
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 101,
+                                height: 25,
+                                child: Text(
+                                  'Add Friends',
+                                  style: TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 101,
-                              height: 20,
-                              child: Text(
-                                'Who want to Party',
-                                style: TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF888888),
-                                  height: 0,
-                                  letterSpacing: 0,
+                              SizedBox(
+                                width: 101,
+                                height: 20,
+                                child: Text(
+                                  'Who want to Party',
+                                  style: TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF888888),
+                                    height: 0,
+                                    letterSpacing: 0,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -363,50 +373,50 @@ class PartyDemoScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-                    bottom: 160,
-                    left: 25,
-                    right: 0,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                      builder: (context) => const MyFriendsScreen(),
-                          ),
-                        );
-                      },
-                      child: SizedBox(
-                        width: 300,
-                        height: 48,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+              bottom: 160,
+              left: 25,
+              right: 0,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PartyScreen(),
+                    ),
+                  );
+                },
+                child: SizedBox(
+                  width: 300,
+                  height: 48,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
                       color: const Color(0xFF00B288),
-                          ),
+                    ),
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         const Text(
-                                'Lets Party',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                        const SizedBox(width: 8),
-                              Image.asset(
-                          'assets/images/redeem.png',
-                                width: 30,
-                                height: 30,
-                              ),
-                            ],
+                          'Lets Party',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
+                        const SizedBox(width: 8),
+                        Image.asset(
+                          'assets/images/redeem.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                      ],
                     ),
                   ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

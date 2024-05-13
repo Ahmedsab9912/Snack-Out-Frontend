@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'searchscreen.dart';
-import 'components/topNavigationBar.dart';
+import '../searchscreen.dart';
+import '../components/topNavigationBar.dart';
 
 class ToggleIcon extends StatefulWidget {
   const ToggleIcon({super.key});
@@ -38,8 +37,8 @@ class _ToggleIconState extends State<ToggleIcon> {
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +55,10 @@ class Home extends StatelessWidget {
               );
             },
             child: Container(
-                height: 50,
+              height: 40,
               margin: const EdgeInsets.only(
-                  left: 24, right: 24, top: 34, bottom: 24),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+                  left: 24, right: 24, bottom: 20, top: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -69,16 +68,19 @@ class Home extends StatelessWidget {
                 ),
               ),
               child: Row(
-                children:  [
+                children: const [
                   Icon(Icons.search), // Icon widget
                   SizedBox(width: 8), // Spacing between the icon and the text
-                  Text('Search',style: TextStyle(fontSize: 19),), // Text widget
+                  Text(
+                    'Search',
+                    style: TextStyle(fontSize: 19),
+                  ), // Text widget
                 ],
               ),
             ),
           ),
           SizedBox(
-            height: 144,  // Set a height for the horizontal scroll area
+            height: 144, // Set a height for the horizontal scroll area
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

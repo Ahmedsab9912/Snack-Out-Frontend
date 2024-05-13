@@ -1,4 +1,4 @@
-import 'package:eataly/loginscreen.dart';
+import 'package:eataly/Login&SignupScreens/loginscreen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -7,11 +7,11 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 5), () {
-  Navigator.pushReplacement(
-    context,
+      Navigator.pushReplacement(
+        context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
-  );
-});
+      );
+    });
     return Scaffold(
       body: Container(
         width: 600,

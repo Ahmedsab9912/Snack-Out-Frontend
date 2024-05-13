@@ -1,5 +1,5 @@
+import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
 
 class SavedScreen extends StatelessWidget {
   const SavedScreen({super.key});
@@ -7,6 +7,7 @@ class SavedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         // Wrap the SingleChildScrollView with a Center widget
         child: Column(
@@ -73,7 +74,7 @@ class SavedScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
               child: Container(
