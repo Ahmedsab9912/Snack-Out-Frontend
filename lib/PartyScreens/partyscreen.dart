@@ -1,6 +1,5 @@
 import 'package:eataly/PartyScreens/StartPartyScreen.dart';
 import 'package:flutter/material.dart';
-import '../addfriendsscreen.dart';
 
 class PartyScreen extends StatelessWidget {
   const PartyScreen({super.key});
