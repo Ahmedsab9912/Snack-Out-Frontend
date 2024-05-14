@@ -1,9 +1,9 @@
 import 'package:eataly/TableScreens/twoTable.dart';
 import 'package:flutter/material.dart';
-import 'TableScreens/fourTable.dart';
+import '../TableScreens/fourTable.dart';
 
-import 'TableScreens/eightTable.dart';
-import 'TableScreens/sixTable.dart';
+import '../TableScreens/eightTable.dart';
+import '../TableScreens/sixTable.dart';
 
 class Bookings extends StatelessWidget {
   const Bookings({Key? key}) : super(key: key);
