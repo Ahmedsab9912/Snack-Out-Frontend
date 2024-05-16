@@ -1,3 +1,4 @@
+import 'package:eataly/ConformBookingScreen/conforimbookingpage.dart';
 import 'package:flutter/material.dart';
 
 class FourTable extends StatefulWidget {
@@ -117,16 +118,63 @@ class _BookingScreenState extends State<FourTable> {
               children: [
                 Expanded(
                   child: ListTile(
-                    title: const Text("From Time"),
-                    subtitle: Text(_selectedFromTime.format(context)),
+                    title: Text(
+                      "From Time",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    subtitle: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF00B286)),
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                _selectedFromTime.format(context),
+                                style: TextStyle(color: Color(0xFF00B286)),
+                              ),
+                              Icon(
+                                Icons.timer,
+                                color: Color(0xFF00B286),
+                              )
+                            ],
+                          ),
+                        )),
                     onTap: () =>
                         _selectTime(context, true), // true for from time
                   ),
                 ),
                 Expanded(
                   child: ListTile(
-                    title: const Text("To Time"),
-                    subtitle: Text(_selectedToTime.format(context)),
+                    title: const Text(
+                      "To Time",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    subtitle: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(10.0), // Add round border
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(_selectedToTime.format(context)),
+                            Icon(
+                              Icons.timer,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                     onTap: () =>
                         _selectTime(context, false), // false for to time
                   ),
@@ -134,16 +182,38 @@ class _BookingScreenState extends State<FourTable> {
               ],
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle booking confirmation logic
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Conforimbookingpage()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                );
               },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                textStyle: const TextStyle(fontSize: 18.0),
+              child: Container(
+                height: 44,
+                width: 326,
+                decoration: BoxDecoration(
+                  color: Color(0xFF00B286),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    'Confirm Booking',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 16,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w700,
+                      height: 0,
+                    ),
+                  ),
+                ),
               ),
-              child: const Text('Confirm Booking'),
+            ),
+            SizedBox(
+              height: 10,
             ),
           ],
         ),

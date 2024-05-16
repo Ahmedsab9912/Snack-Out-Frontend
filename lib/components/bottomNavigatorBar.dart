@@ -1,5 +1,6 @@
-import 'package:eataly/Bookings.dart';
+import 'package:eataly/BookingScreens/Bookings.dart';
 import 'package:eataly/Dashboard/HomeScreen.dart';
+import 'package:eataly/NotificationScreen/NotificationPage.dart';
 import 'package:eataly/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
@@ -77,7 +78,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   SizedBox(
                     width: double.infinity,
                     child: Row(
@@ -116,10 +117,20 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             ],
                           ),
                         ),
-                        Image(
-                          width: 24,
-                          height: 24,
-                          image: AssetImage('assets/images/notification.png'),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Notificationpage(),
+                              ),
+                            );
+                          },
+                          child: Image(
+                            width: 24,
+                            height: 24,
+                            image: AssetImage('assets/images/notification.png'),
+                          ),
                         )
                       ],
                     ),

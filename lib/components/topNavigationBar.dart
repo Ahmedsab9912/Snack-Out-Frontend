@@ -1,4 +1,4 @@
-import 'package:eataly/RestaurantFeaturesScreens/featuredCardsBookings.dart';
+import 'package:eataly/BookingScreens/featuredCardsBookings.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsDetails.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsMenu.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsPhotos.dart';

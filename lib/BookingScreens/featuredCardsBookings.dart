@@ -1,3 +1,4 @@
+import 'package:eataly/BookingScreens/ConformBooking.dart';
 import 'package:eataly/TableScreens/twoTable.dart';
 import 'package:flutter/material.dart';
 import '../TableScreens/fourTable.dart';
@@ -36,12 +37,12 @@ class Bookings extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const TwoTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                    // );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
@@ -100,12 +101,12 @@ class Bookings extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const FourTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const FourTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                    // );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
@@ -181,12 +182,12 @@ class Bookings extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const SixTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const SixTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                    // );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
@@ -245,12 +246,12 @@ class Bookings extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const EightTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const EightTable()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                    // );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
@@ -683,22 +684,32 @@ class Bookings extends StatelessWidget {
             // ),
           ]),
         ),
-        Container(
-          height: 44,
-          width: 326,
-          decoration: BoxDecoration(
-            color: Color(0xFF00B286),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text(
-              'Make a Booking',
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontSize: 16,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.w700,
-                height: 0,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ConformBookingScreen()), // Replace YourNewScreen with the actual screen class you want to navigate to
+            );
+          },
+          child: Container(
+            height: 44,
+            width: 326,
+            decoration: BoxDecoration(
+              color: Color(0xFF00B286),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                'Make a Booking',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontSize: 16,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w700,
+                  height: 0,
+                ),
               ),
             ),
           ),
@@ -707,6 +718,7 @@ class Bookings extends StatelessWidget {
           height: 10,
         ),
       ],
-    ));
+    )
+    );
   }
 }

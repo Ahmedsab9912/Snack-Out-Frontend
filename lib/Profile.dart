@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'giftVouchersScreen.dart';
 import 'loyaltyRewardsScreen.dart';
-import 'bookingRewardsScreen.dart';
+import 'BookingScreens/bookingRewardsScreen.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -180,7 +180,7 @@ class Profile extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child:  Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
