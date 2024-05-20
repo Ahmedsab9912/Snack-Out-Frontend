@@ -1,4 +1,5 @@
 import 'package:eataly/Dashboard/HomeScreen.dart';
+import 'package:eataly/MenuSectionScreens/MenuSelection.dart';
 import 'package:flutter/material.dart';
 
 class Conforimbookingpage extends StatefulWidget {
@@ -42,21 +43,31 @@ class _ConforimbookingpageState extends State<Conforimbookingpage> {
             SizedBox(
               height: 20.0,
             ),
-            Container(
-              height: 50,
-              width: 330,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xFF00B286),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MenuSelectionScreen()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                );
+              },
+              child: Container(
+                height: 50,
+                width: 330,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xFF00B286),
+                ),
+                child: Center(
+                    child: Text(
+                  'Preoceed to Menu Selection',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                )),
               ),
-              child: Center(
-                  child: Text(
-                'Preoceed to Menu Selection',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
             ),
             SizedBox(
               height: 12.0,
