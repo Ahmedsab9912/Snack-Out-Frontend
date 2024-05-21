@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:eataly/BookingScreens/featuredCardsBookings.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsDetails.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsMenu.dart';

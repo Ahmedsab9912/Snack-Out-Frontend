@@ -135,7 +135,8 @@ class GiftVoucherScreen extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   // Replace with your exact color codes and dimensions
-                  foregroundColor: Colors.white, backgroundColor: Colors.teal, // Text color
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal, // Text color
                   shadowColor: Colors.transparent, // No shadow
                   // The shape and border side can be adjusted to match your design
                   shape: RoundedRectangleBorder(
@@ -146,9 +147,7 @@ class GiftVoucherScreen extends StatelessWidget {
                       horizontal: 30,
                       vertical: 15), // Adjust padding to your needs
                 ),
-                onPressed: () {
-                  // TODO: Add your onPressed function here
-                },
+                onPressed: () {},
                 child: Row(
                   mainAxisSize: MainAxisSize
                       .min, // Use min to prevent the Row from occupying more space than its children need

@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:eataly/BookingScreens/Bookings.dart';
 import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:eataly/NotificationScreen/NotificationPage.dart';
@@ -92,7 +93,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 'Good Morning',
                                 style: TextStyle(
