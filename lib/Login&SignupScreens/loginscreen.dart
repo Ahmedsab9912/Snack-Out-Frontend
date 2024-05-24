@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../MyFunctions/Funtions.dart';
 import 'signupscreen.dart';
 // ignore: unused_import
 import '../Dashboard/HomeScreen.dart';
@@ -25,6 +28,47 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController _usernameController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
+    Future <void> l(BuildContext context) async {
+      final url = 'http:// 192.168.10.7:8000/auth/register';
+
+      final body = {
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      };
+
+      try {
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body),
+        );
+
+        if (response.statusCode == 200) {
+          // Handle successful signup
+          print('Login successful');
+          My_Funtions.f_toast(context, 'Login successful', Colors.green);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        } else {
+          // Handle signup failure
+          My_Funtions.f_toast(context, 'Login failed', Colors.red);
+          print('Signup failed');
+        }
+      } catch (e) {
+        // Handle exceptions
+        My_Funtions.f_toast(context, 'An error occurred', Colors.red);
+        print('An error occurred: $e');
+      }
+    }
+
     return Scaffold(
       body: Stack(
         children: [

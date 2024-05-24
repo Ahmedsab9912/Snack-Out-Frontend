@@ -1,414 +1,162 @@
-import 'package:flutter/material.dart';
-import 'otpscreen.dart';
+import 'dart:convert';
 
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../MyFunctions/Funtions.dart';
+import 'loginscreen.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
+
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _phoneNumberVerificationController =
+      TextEditingController();
+  final TextEditingController _emailVerificationController =
+      TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _vendorController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
+
+  Future<void> submitSignup(BuildContext context) async {
+    // API FOR MOBILE PERSONAL MOBILE BUT REMEMBER WIFI SHOULD BE SAME CHECK THROUGH cmd TYPE ipconfig add ip4 address
+    final url = 'http://192.168.10.34:8000/auth/register';
+    // API FOR EMULATOR DEVICES
+    // final url = 'http://10.0.2.2:8000/auth/register';
+
+    final body = {
+      'username': _usernameController.text,
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      'phoneNumber': _phoneNumberController.text,
+      'phoneNumberVerification':
+          _phoneNumberVerificationController.text.toLowerCase() ==
+              'true', // Bool value
+      'email_verification': _emailVerificationController.text.toLowerCase() ==
+          'true', // Bool Value
+      'address': _addressController.text,
+      'vendor': _vendorController.text.toLowerCase() == 'false', // Boll value
+      'roles': ["user"],
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        // Handle successful signup
+        print('Signup successful');
+        My_Funtions.f_toast(context, 'Registration successful', Colors.green);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      } else {
+        // Handle signup failure
+        My_Funtions.f_toast(context, 'Registration failed', Colors.red);
+        print('Signup failed');
+      }
+    } catch (e) {
+      // Handle exceptions
+      My_Funtions.f_toast(context, 'An error occurred', Colors.red);
+      print('An error occurred: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            width: 432,
-            height: 932,
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/images/backgroundimage.png'),
-                fit: BoxFit.cover,
-              ),
-              color: Colors.black.withOpacity(0.6),
+      appBar: AppBar(
+        title: Text('Signup'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            TextField(
+              controller: _usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
             ),
-          ),
-          Container(
-            width: 432,
-            height: 932,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: const Alignment(0.01, 1.00),
-                end: const Alignment(-0.01, -1),
-                colors: [Colors.black, Colors.black.withOpacity(0.1)],
-              ),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: 'Name'),
             ),
-          ),
-          Positioned(
-            top: 56,
-            left: (340 - 140) / 2,
-            child: SizedBox(
-              width: 150,
-              height: 100,
-              child: Image.asset(
-                'assets/images/eataly.png',
-                fit: BoxFit.fill,
-              ),
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(labelText: 'Email'),
             ),
-          ),
-          const Positioned(
-            left: 47,
-            top: 170,
-            child: SizedBox(
-              width: 262,
-              child: Text(
-                'Instant Table Reservations!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: 'Forum',
-                  fontWeight: FontWeight.w400,
-                  height: 0.06,
-                ),
-              ),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: false,
             ),
-          ),
-          const Positioned(
-            left: (340 - 80) / 2,
-            top: 230,
-            child: Text(
-              'Sign Up',
-              style: TextStyle(
-                color: Color(0xFF00ECB4),
-                fontSize: 26,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.w700,
-                height: 0.03,
-              ),
+            TextField(
+              controller: _phoneNumberController,
+              decoration: InputDecoration(labelText: 'Phone Number'),
             ),
-          ),
-          Positioned(
-            top: 265,
-            child: SizedBox(
-              width: 350,
-              height: 99,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 28,
-                    top: 35,
-                    child: Container(
-                      width: 300,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        color: const Color(0x33D9D9D9),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1, color: Colors.white),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    left: 28,
-                    top: 5,
-                    child: SizedBox(
-                      width: 300,
-                      height: 28,
-                      child: Text(
-                        'Name',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 35,
-                    top: 58,
-                    child: SizedBox(
-                      width: 173,
-                      height: 16,
-                      child: TextFormField(
-                        keyboardType: TextInputType.name,
-                        maxLength: 16,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Your Name',
-                          hintStyle: TextStyle(
-                            color: Color(0xFFD3D3D3),
-                            fontSize: 14,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: InputBorder.none, // Remove underline
-                          counterText: '', // Hide the default counter text
-                        ),
-                        style: TextStyle(
-                          color: Color(
-                              0xFFD3D3D3), // Set text color to be visible when user enters text
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              controller: _phoneNumberVerificationController,
+              decoration:
+                  InputDecoration(labelText: 'Phone Number Verification'),
             ),
-          ),
-          Positioned(
-            top: 357,
-            child: SizedBox(
-              width: 350,
-              height: 99,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 28,
-                    top: 35,
-                    child: Container(
-                      width: 300,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        color: const Color(0x33D9D9D9),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1, color: Colors.white),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    left: 28,
-                    top: 5,
-                    child: SizedBox(
-                      width: 300,
-                      height: 28,
-                      child: Text(
-                        'Phone Number',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 35,
-                    top: 58,
-                    child: SizedBox(
-                      width: 173,
-                      height: 16,
-                      child: TextFormField(
-                        keyboardType: TextInputType.phone,
-                        maxLength: 11,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Your Phone Number',
-                          hintStyle: TextStyle(
-                            color: Color(0xFFD3D3D3),
-                            fontSize: 14,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: InputBorder.none, // Remove underline
-                          counterText: '', // Hide the default counter text
-                        ),
-                        style: TextStyle(
-                          color: Color(
-                              0xFFD3D3D3), // Set text color to be visible when user enters text
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            TextField(
+              controller: _emailVerificationController,
+              decoration: InputDecoration(labelText: 'Email Verification'),
             ),
-          ),
-          Positioned(
-            top: 447,
-            child: SizedBox(
-              width: 350,
-              height: 99,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 28,
-                    top: 35,
-                    child: Container(
-                      width: 300,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        color: const Color(0x33D9D9D9),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1, color: Colors.white),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    left: 28,
-                    top: 5,
-                    child: SizedBox(
-                      width: 300,
-                      height: 28,
-                      child: Text(
-                        'Password',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 35,
-                    top: 58,
-                    child: SizedBox(
-                      width: 173,
-                      height: 16,
-                      child: TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Your Password',
-                          hintStyle: TextStyle(
-                            color: Color(0xFFD3D3D3),
-                            fontSize: 14,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: InputBorder.none, // Remove underline
-                        ),
-                        style: TextStyle(
-                          color: Color(
-                              0xFFD3D3D3), // Set text color to be visible when user enters text
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            TextField(
+              controller: _addressController,
+              decoration: InputDecoration(labelText: 'Address'),
             ),
-          ),
-          Positioned(
-            top: 539,
-            child: SizedBox(
-              width: 350,
-              height: 99,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 28,
-                    top: 35,
-                    child: Container(
-                      width: 300,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        color: const Color(0x33D9D9D9),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1, color: Colors.white),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    left: 28,
-                    top: 5,
-                    child: SizedBox(
-                      width: 300,
-                      height: 28,
-                      child: Text(
-                        'Confirm Password',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 35,
-                    top: 58,
-                    child: SizedBox(
-                      width: 173,
-                      height: 16,
-                      child: TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                          hintText: 'Re-enter Your Password',
-                          hintStyle: TextStyle(
-                            color: Color(0xFFD3D3D3),
-                            fontSize: 14,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: InputBorder.none, // Remove underline
-                        ),
-                        style: TextStyle(
-                          color: Color(
-                              0xFFD3D3D3), // Set text color to be visible when user enters text
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            TextField(
+              controller: _vendorController,
+              decoration: InputDecoration(labelText: 'Vendor'),
             ),
-          ),
-          Positioned(
-            left: 7,
-            top: 650,
-            child: SizedBox(
-              width: 340,
-              height: 99,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 22.5,
-                    top: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const OtpScreen()),
-                        );
-                      },
-                      child: Container(
-                        width: 300,
-                        height: 50,
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF00B287),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    left: 138,
-                    top: 24,
-                    child: SizedBox(
-                      width: 61,
-                      height: 24,
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Color(0xFFD3D3D3),
-                          fontSize: 17,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w700,
-                          height: 0.06,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            TextField(
+              controller: _roleController,
+              decoration: InputDecoration(labelText: 'Role'),
             ),
-          ),
-        ],
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                submitSignup(context);
+              },
+              child: Text('Sign Up'),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers to avoid memory leaks
+    _usernameController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _phoneNumberController.dispose();
+    _phoneNumberVerificationController.dispose();
+    _emailVerificationController.dispose();
+    _addressController.dispose();
+    _vendorController.dispose();
+    _roleController.dispose();
+    super.dispose();
   }
 }
