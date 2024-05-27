@@ -1,5 +1,3 @@
-import 'package:eataly/HomeP.dart';
-import 'package:eataly/Login&SignupScreens/signupscreen.dart';
 import 'package:eataly/Provider/AddToCartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/Login&SignupScreens/splashscreen.dart';

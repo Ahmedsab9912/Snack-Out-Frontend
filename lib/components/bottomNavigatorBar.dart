@@ -53,12 +53,12 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
         // TOP APP BAR
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 0, // Ensuring the AppBar is transparent and elevated
+          toolbarHeight: 2, // Ensuring the AppBar is transparent and elevated
           backgroundColor: Colors.transparent,
           elevation: 0,
           bottom: PreferredSize(
             preferredSize:
-                Size.fromHeight(70), // Adjust the preferred size as needed
+                Size.fromHeight(80), // Adjust the preferred size as needed
             child: Container(
               padding: EdgeInsets.only(
                 top: 0,
@@ -128,8 +128,8 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             );
                           },
                           child: Image(
-                            width: 24,
-                            height: 24,
+                            width: 34,
+                            height: 34,
                             image: AssetImage('assets/images/notification.png'),
                           ),
                         )
@@ -141,10 +141,10 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
             ),
           ),
         ),
-        body: const TabBarView(
+        body:  TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            HomeScreen(),
+            Homescreen(),
             SavedScreen(),
             PartyDemoScreen(),
             Booking(), // Make sure this matches the class name from your import

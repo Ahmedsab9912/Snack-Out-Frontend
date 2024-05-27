@@ -102,7 +102,7 @@ class _ConforimbookingpageState extends State<Conforimbookingpage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          HomeScreen()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                          Homescreen()), // Replace YourNewScreen with the actual screen class you want to navigate to
                 );
               },
               child: Text(

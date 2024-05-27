@@ -20,12 +20,12 @@ class _HomePState extends State<HomeP> {
   }
 
   Future<void> fetchData() async {
-    print('CONNECTION ESTABLISHING');
+    // print('CONNECTION ESTABLISHING');
     final response = await http.get(Uri.parse('http://10.0.2.2:8000/'));
     if (response.statusCode == 200) {
       setState(() {
         data = json.decode(response.body);
-        print('Data' + data!);
+        // print('Data' + data!);
       });
     } else {
       throw Exception('Failed to load data');

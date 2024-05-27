@@ -1,573 +1,2558 @@
-
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
+// // ignore_for_file: prefer_const_constructors
 // import 'package:flutter/material.dart';
-// import '../MyFunctions/Funtions.dart';
-// import 'signupscreen.dart';
-// // ignore: unused_import
-// import '../Dashboard/HomeScreen.dart';
-// import '../components/bottomNavigatorBar.dart';
-
-// void main() {
-//   runApp(const MyApp());
+// import 'package:flutter_svg/flutter_svg.dart';
+// import '../searchscreen.dart';
+// import '../components/topNavigationBar.dart';
+//
+// class ToggleIcon extends StatefulWidget {
+//   const ToggleIcon({super.key});
+//
+//   @override
+//   _ToggleIconState createState() => _ToggleIconState();
 // }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
+//
+// class _ToggleIconState extends State<ToggleIcon> {
+//   bool _isFilled = false; // Initial state of the icon
+//
 //   @override
 //   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: LoginScreen(),
+//     return GestureDetector(
+//       onTap: () {
+//         setState(() {
+//           _isFilled = !_isFilled; // Toggle the state on tap
+//         });
+//       },
+//       child: _isFilled
+//           ? SvgPicture.asset(
+//         'assets/svgIcons/filledHeart.svg', // Path to the filled SVG icon
+//         width: 24,
+//         height: 24,
+//       )
+//           : SvgPicture.asset(
+//         'assets/svgIcons/emptyHeart.svg', // Path to the unfilled SVG icon
+//         width: 24,
+//         height: 24,
+//       ),
 //     );
 //   }
 // }
-
-// class LoginScreen extends StatelessWidget {
-//   const LoginScreen({super.key});
-
+//
+// class HomeScreen extends StatelessWidget {
+//   const HomeScreen({Key? key}) : super(key: key);
+//
 //   @override
 //   Widget build(BuildContext context) {
-//     final TextEditingController _usernameController = TextEditingController();
-//     final TextEditingController _passwordController = TextEditingController();
-
-//     Future<void> l(BuildContext context) async {
-//       final url = 'http:// 192.168.10.34:8000/auth/register';
-
-//       final body = {
-//         'username': _usernameController.text,
-//         'password': _passwordController.text,
-//       };
-
-//       try {
-//         final response = await http.post(
-//           Uri.parse(url),
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: jsonEncode(body),
-//         );
-
-//         if (response.statusCode == 200) {
-//           // Handle successful signup
-//           print('Login successful');
-//           My_Funtions.f_toast(context, 'Login successful', Colors.green);
-//           Navigator.push(
-//             context,
-//             MaterialPageRoute(builder: (context) => LoginScreen()),
-//           );
-//         } else {
-//           // Handle signup failure
-//           My_Funtions.f_toast(context, 'Login failed', Colors.red);
-//           print('Signup failed');
-//         }
-//       } catch (e) {
-//         // Handle exceptions
-//         My_Funtions.f_toast(context, 'An error occurred', Colors.red);
-//         print('An error occurred: $e');
-//       }
-//     }
-
 //     return Scaffold(
-//       body: Stack(
+//       //implements basic material design
+//       body: ListView(
+//         //scrolling widget
 //         children: [
-//           // THIS IS THE BACKGROUND OF THE LOGIN SCREEN
-//           Container(
-//             width: 432,
-//             height: 932,
-//             decoration: BoxDecoration(
-//               image: const DecorationImage(
-//                 image: AssetImage('assets/images/backgroundimage.png'),
-//                 fit: BoxFit.cover,
+//           GestureDetector(
+//             onTap: () {
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (context) => const SearchScreen()),
+//               );
+//             },
+//             child: Container(
+//               height: 40,
+//               margin: const EdgeInsets.only(
+//                   left: 24, right: 24, bottom: 20, top: 30),
+//               padding: const EdgeInsets.symmetric(horizontal: 15),
+//               decoration: BoxDecoration(
+//                 color: Colors.white,
+//                 borderRadius: BorderRadius.circular(8),
+//                 border: Border.all(
+//                   color: const Color(0xFFD0D5DD),
+//                   width: 1,
+//                 ),
 //               ),
-//               color: Colors.black.withOpacity(0.9),
-//             ),
-//           ),
-//           // THIS IS THE LINEAR GRADIENT SHADOW
-//           Container(
-//             width: 432,
-//             height: 932,
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                 begin: const Alignment(0.01, 1.00),
-//                 end: const Alignment(-0.01, -1),
-//                 colors: [Colors.black, Colors.black.withOpacity(0.1)],
+//               child: Row(
+//                 children: const [
+//                   Icon(Icons.search), // Icon widget
+//                   SizedBox(width: 8), // Spacing between the icon and the text
+//                   Text(
+//                     'Search',
+//                     style: TextStyle(fontSize: 19),
+//                   ), // Text widget
+//                 ],
 //               ),
 //             ),
 //           ),
 //           SizedBox(
-//             width: 340,
-//             height: 701,
-//             // THIS IS THE MAIN STACK WIDGET
-//             child: Stack(
-//               children: [
-//                 Positioned(
-//                   left: 50,
-//                   top: 575,
-//                   child: SizedBox(
-//                     width: 255.08,
-//                     height: 17,
-//                     child: Stack(
-//                       children: [
-//                         //LETTER OR WITH 2 LINES ALONG IT
-//                         Positioned(
-//                           left: 0,
-//                           top: 10.08,
-//                           child: Container(
-//                             width: 111.78,
-//                             decoration: const ShapeDecoration(
-//                               shape: RoundedRectangleBorder(
-//                                 side: BorderSide(
-//                                   width: 0.59,
-//                                   color: Colors.white,
-//                                 ),
-//                               ),
-//                               shadows: [
-//                                 BoxShadow(
-//                                   color: Color(0x3F000000),
-//                                   blurRadius: 2.38,
-//                                   offset: Offset(0, 2.38),
-//                                   spreadRadius: 0,
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ),
-//                         Positioned(
-//                           left: 143.30,
-//                           top: 10.08,
-//                           child: Container(
-//                             width: 111.78,
-//                             decoration: const ShapeDecoration(
-//                               shape: RoundedRectangleBorder(
-//                                 side: BorderSide(
-//                                   width: 0.59,
-//                                   color: Colors.white,
-//                                 ),
-//                               ),
-//                               shadows: [
-//                                 BoxShadow(
-//                                   color: Color(0x3F000000),
-//                                   blurRadius: 2.38,
-//                                   offset: Offset(0, 2.38),
-//                                   spreadRadius: 0,
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ),
-//                         Positioned(
-//                           left: 117.11,
-//                           top: 2,
-//                           child: Text(
-//                             'OR',
-//                             textAlign: TextAlign.center,
-//                             style: TextStyle(
-//                               color: Colors.white,
-//                               fontSize: 14.27,
-//                               fontFamily: 'Lato',
-//                               fontWeight: FontWeight.w500,
-//                               height: 0,
-//                               letterSpacing: -0.29,
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//                 // THIS IS THE SIGNUP LINE AT THE BOTTOM OF THE SCREEN WITH INKWELL INCLUDED
-//                 Positioned(
-//                   left: 34,
-//                   top: 682,
-//                   child: InkWell(
+//             height: 144, // Set a height for the horizontal scroll area
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   GestureDetector(
 //                     onTap: () {
 //                       Navigator.push(
 //                         context,
-//                         MaterialPageRoute(builder: (context) => SignupScreen()),
+//                         MaterialPageRoute(
+//                             builder: (context) =>
+//                             const TopNavigationBarManu()), // Navigate to NewScreen1
 //                       );
 //                     },
-//                     child: const Text.rich(
-//                       TextSpan(
-//                         children: [
-//                           TextSpan(
-//                             text: 'First time here?',
-//                             style: TextStyle(
-//                               color: Colors.white,
-//                               fontSize: 16,
-//                               fontFamily: 'Lato',
-//                               fontWeight: FontWeight.w500,
-//                               height: 0,
-//                             ),
+//                     child: Padding(
+//                       padding: const EdgeInsets.only(left: 16),
+//                       child: Container(
+//                         //secondcontainer
+//                         width: 253,
+//                         height: 144,
+//                         clipBehavior: Clip.antiAlias,
+//                         decoration: ShapeDecoration(
+//                           gradient: const LinearGradient(
+//                             begin: Alignment(0.95, -0.31),
+//                             end: Alignment(-0.95, 0.31),
+//                             colors: [Color(0xFFFF9800), Color(0xFFFFC659)],
 //                           ),
-//                           TextSpan(
-//                             text: ' Sign Up for an account',
-//                             style: TextStyle(
-//                               color: Color(0xFF00ECB4),
-//                               fontSize: 16,
-//                               fontFamily: 'Lato',
-//                               fontWeight: FontWeight.w500,
-//                               height: 0,
+//                           shape: RoundedRectangleBorder(
+//                             borderRadius: BorderRadius.circular(24),
+//                           ),
+//                         ),
+//                         child: Stack(
+//                           children: [
+//                             const Positioned(
+//                               left: 16,
+//                               top: 16,
+//                               child: Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Text(
+//                                     'Bagh Restaurant',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 12,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w700,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                   SizedBox(height: 4),
+//                                   Text(
+//                                     'Upto 70 % Off',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 18,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w700,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
 //                             ),
+//                             Positioned(
+//                               left: 60,
+//                               top: 16,
+//                               child: Container(
+//                                 width: 194,
+//                                 height: 129,
+//                                 decoration: const BoxDecoration(
+//                                   image: DecorationImage(
+//                                     image:
+//                                     AssetImage('assets/images/biryani.png'),
+//                                     fit: BoxFit.fill,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             Positioned(
+//                               left: 16,
+//                               top: 104,
+//                               child: Container(
+//                                 width: 24,
+//                                 height: 24,
+//                                 decoration: ShapeDecoration(
+//                                   image: const DecorationImage(
+//                                     image: AssetImage(
+//                                         'assets/images/baghIcon.png'),
+//                                     fit: BoxFit.fill,
+//                                   ),
+//                                   shape: RoundedRectangleBorder(
+//                                     side: const BorderSide(
+//                                       width: 2,
+//                                       strokeAlign:
+//                                       BorderSide.strokeAlignOutside,
+//                                       color: Colors.white,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(159),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   GestureDetector(
+//                     onTap: () {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) =>
+//                             const TopNavigationBarManu()), // Navigate to NewScreen2
+//                       );
+//                     },
+//                     child: Padding(
+//                       padding: const EdgeInsets.only(
+//                           left: 16,
+//                           right:
+//                           16), // Add padding to both sides of the second container
+//                       child: Container(
+//                         width: 253,
+//                         height: 144,
+//                         clipBehavior: Clip.antiAlias,
+//                         decoration: ShapeDecoration(
+//                           gradient: const LinearGradient(
+//                             begin: Alignment(0.95, -0.31),
+//                             end: Alignment(-0.95, 0.31),
+//                             colors: [Color(0xFF00C572), Color(0xFF89FFDB)],
+//                           ),
+//                           shape: RoundedRectangleBorder(
+//                             borderRadius: BorderRadius.circular(24),
+//                           ),
+//                         ),
+//                         child: Stack(
+//                           children: [
+//                             const Positioned(
+//                               left: 16,
+//                               top: 16,
+//                               child: Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Text(
+//                                     'Junoon Restaurant',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 12,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w700,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                   SizedBox(height: 4),
+//                                   Text(
+//                                     'Upto 70 % Off',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 18,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w700,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             Positioned(
+//                               left: 16,
+//                               top: 104,
+//                               child: Container(
+//                                 width: 24,
+//                                 height: 24,
+//                                 decoration: ShapeDecoration(
+//                                   image: const DecorationImage(
+//                                     image: AssetImage(
+//                                         'assets/images/junoonIcon.png'),
+//                                     fit: BoxFit.fill,
+//                                   ),
+//                                   shape: RoundedRectangleBorder(
+//                                     side: const BorderSide(
+//                                       width: 2,
+//                                       strokeAlign:
+//                                       BorderSide.strokeAlignOutside,
+//                                       color: Colors.white,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(159),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             Positioned(
+//                               left: 60,
+//                               top: 16,
+//                               child: Container(
+//                                 width: 194,
+//                                 height: 129,
+//                                 decoration: const BoxDecoration(
+//                                   image: DecorationImage(
+//                                     image:
+//                                     AssetImage('assets/images/biryani.png'),
+//                                     fit: BoxFit.fill,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//           const Padding(
+//             padding: EdgeInsets.only(
+//                 top: 24,
+//                 bottom: 8,
+//                 left: 24), // Add 24px top margin and 8px bottom padding
+//             child: Text(
+//               'Restaurants Near You',
+//               style: TextStyle(
+//                 color: Color.fromARGB(255, 8, 8, 8),
+//                 fontSize: 16,
+//                 fontFamily: 'Lato',
+//                 fontWeight: FontWeight.w700,
+//                 height: 0,
+//               ),
+//             ),
+//           ),
+//           SizedBox(
+//             height: 320, // Adjust the height as needed to fit your design
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Padding(
+//                     padding: const EdgeInsets.only(left: 24, right: 16),
+//                     child: Container(
+//                       width: 212,
+//                       height: 310,
+//                       padding: const EdgeInsets.all(12),
+//                       clipBehavior: Clip.antiAlias,
+//                       decoration: ShapeDecoration(
+//                         color: Colors.white,
+//                         shape: RoundedRectangleBorder(
+//                           side: const BorderSide(
+//                               width: 1, color: Color(0xFFD0D5DD)),
+//                           borderRadius: BorderRadius.circular(16),
+//                         ),
+//                       ),
+//                       child: Column(
+//                         mainAxisSize: MainAxisSize.min,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           Column(
+//                             mainAxisSize: MainAxisSize.min,
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Container(
+//                                 width: 186,
+//                                 clipBehavior: Clip.antiAlias,
+//                                 decoration: ShapeDecoration(
+//                                   shape: RoundedRectangleBorder(
+//                                       borderRadius: BorderRadius.circular(8)),
+//                                 ),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     Container(
+//                                       width: 186,
+//                                       height: 173,
+//                                       decoration: const BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: AssetImage(
+//                                               'assets/images/black.png'),
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 12),
+//                               Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   const Row(
+//                                     mainAxisAlignment: MainAxisAlignment
+//                                         .start, // Adjust alignment as needed
+//                                     children: [
+//                                       Text(
+//                                         'Black Restaurant',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF222222),
+//                                           fontSize: 16,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w600,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       Spacer(),
+//                                       ToggleIcon(),
+//                                     ],
+//                                   ),
+//                                   const SizedBox(height: 8),
+//                                   const Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.start,
+//                                     children: [
+//                                       Text(
+//                                         '\$\$\$',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         '.',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         'Continental',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   const SizedBox(height: 8),
+//                                   const Text(
+//                                     '3.1 mi away',
+//                                     style: TextStyle(
+//                                       color: Color(0xFF888888),
+//                                       fontSize: 14,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w400,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                   const SizedBox(height: 8),
+//                                   Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.center,
+//                                     children: [
+//                                       const Text(
+//                                         '4.5',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       const SizedBox(width: 4),
+//                                       Row(
+//                                         mainAxisSize: MainAxisSize.min,
+//                                         mainAxisAlignment:
+//                                         MainAxisAlignment.start,
+//                                         crossAxisAlignment:
+//                                         CrossAxisAlignment.start,
+//                                         children: [
+//                                           Container(
+//                                             width: 16,
+//                                             height: 16,
+//                                             decoration: const ShapeDecoration(
+//                                               color: Color(0xFFFFCC1B),
+//                                               shape: StarBorder(
+//                                                 points: 5,
+//                                                 innerRadiusRatio: 0.38,
+//                                                 pointRounding: 0,
+//                                                 valleyRounding: 0,
+//                                                 rotation: 0,
+//                                                 squash: 0,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                           const SizedBox(width: 4),
+//                                           Container(
+//                                             width: 16,
+//                                             height: 16,
+//                                             decoration: const ShapeDecoration(
+//                                               color: Color(0xFFFFCC1B),
+//                                               shape: StarBorder(
+//                                                 points: 5,
+//                                                 innerRadiusRatio: 0.38,
+//                                                 pointRounding: 0,
+//                                                 valleyRounding: 0,
+//                                                 rotation: 0,
+//                                                 squash: 0,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                           const SizedBox(width: 4),
+//                                           Container(
+//                                             width: 16,
+//                                             height: 16,
+//                                             decoration: const ShapeDecoration(
+//                                               color: Color(0xFFFFCC1B),
+//                                               shape: StarBorder(
+//                                                 points: 5,
+//                                                 innerRadiusRatio: 0.38,
+//                                                 pointRounding: 0,
+//                                                 valleyRounding: 0,
+//                                                 rotation: 0,
+//                                                 squash: 0,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                           const SizedBox(width: 4),
+//                                           Container(
+//                                             width: 16,
+//                                             height: 16,
+//                                             decoration: const ShapeDecoration(
+//                                               color: Color(0xFFFFCC1B),
+//                                               shape: StarBorder(
+//                                                 points: 5,
+//                                                 innerRadiusRatio: 0.38,
+//                                                 pointRounding: 0,
+//                                                 valleyRounding: 0,
+//                                                 rotation: 0,
+//                                                 squash: 0,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                           const SizedBox(width: 4),
+//                                           Container(
+//                                             width: 16,
+//                                             height: 16,
+//                                             decoration: const ShapeDecoration(
+//                                               color: Color(0xFFD9D9D9),
+//                                               shape: StarBorder(
+//                                                 points: 5,
+//                                                 innerRadiusRatio: 0.38,
+//                                                 pointRounding: 0,
+//                                                 valleyRounding: 0,
+//                                                 rotation: 0,
+//                                                 squash: 0,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ],
+//                               ),
+//                             ],
 //                           ),
 //                         ],
 //                       ),
 //                     ),
 //                   ),
-//                 ),
-//                 // EATALY LOGO AT THE TOP OF THE SCREEN
-//                 Positioned(
-//                   top: 56,
-//                   left: (340 - 140) / 2,
-//                   child: SizedBox(
-//                     width: 150,
-//                     height: 100,
-//                     child: Image.asset(
-//                       'assets/images/eataly.png',
-//                       fit: BoxFit.fill,
-//                     ),
-//                   ),
-//                 ),
-//                 // INSTANT TABLE RESERVATIONS AFTER THE EATALY LOGO
-//                 Positioned(
-//                   left: 47,
-//                   top: 170,
-//                   child: SizedBox(
-//                     width: 262,
-//                     child: Text(
-//                       'Instant Table Reservations!',
-//                       textAlign: TextAlign.center,
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 20,
-//                         fontFamily: 'Forum',
-//                         fontWeight: FontWeight.w400,
-//                         height: 0.06,
+//                   Padding(
+//                       padding: const EdgeInsets.only(left: 16, right: 16),
+//                       child: Container(
+//                         width: 212,
+//                         height: 310,
+//                         padding: const EdgeInsets.all(12),
+//                         clipBehavior: Clip.antiAlias,
+//                         decoration: ShapeDecoration(
+//                           color: Colors.white,
+//                           shape: RoundedRectangleBorder(
+//                             side: const BorderSide(
+//                                 width: 1, color: Color(0xFFD0D5DD)),
+//                             borderRadius: BorderRadius.circular(16),
+//                           ),
+//                         ),
+//                         child: Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.center,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Container(
+//                                   clipBehavior: Clip.antiAlias,
+//                                   decoration: ShapeDecoration(
+//                                     shape: RoundedRectangleBorder(
+//                                         borderRadius: BorderRadius.circular(8)),
+//                                   ),
+//                                   child: Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.center,
+//                                     children: [
+//                                       Container(
+//                                         width: 186,
+//                                         height: 173,
+//                                         decoration: const BoxDecoration(
+//                                           image: DecorationImage(
+//                                             image: AssetImage(
+//                                                 'assets/images/marina.png'),
+//                                             fit: BoxFit.fill,
+//                                           ),
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                                 const SizedBox(height: 12),
+//                                 Column(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     const Row(
+//                                       mainAxisAlignment: MainAxisAlignment
+//                                           .start, // Adjust alignment as needed
+//                                       children: [
+//                                         Text(
+//                                           'Marina’s Cafe',
+//                                           style: TextStyle(
+//                                             color: Color(0xFF222222),
+//                                             fontSize: 16,
+//                                             fontFamily: 'Lato',
+//                                             fontWeight: FontWeight.w600,
+//                                             height: 0,
+//                                           ),
+//                                         ),
+//                                         Spacer(),
+//                                         ToggleIcon(),
+//                                       ],
+//                                     ),
+//                                     const SizedBox(height: 8),
+//                                     const Row(
+//                                       mainAxisSize: MainAxisSize.min,
+//                                       mainAxisAlignment:
+//                                       MainAxisAlignment.start,
+//                                       crossAxisAlignment:
+//                                       CrossAxisAlignment.start,
+//                                       children: [
+//                                         Text(
+//                                           '\$\$\$',
+//                                           style: TextStyle(
+//                                             color: Color(0xFF888888),
+//                                             fontSize: 14,
+//                                             fontFamily: 'Lato',
+//                                             fontWeight: FontWeight.w400,
+//                                             height: 0,
+//                                           ),
+//                                         ),
+//                                         SizedBox(width: 4),
+//                                         Text(
+//                                           '.',
+//                                           style: TextStyle(
+//                                             color: Color(0xFF888888),
+//                                             fontSize: 14,
+//                                             fontFamily: 'Lato',
+//                                             fontWeight: FontWeight.w400,
+//                                             height: 0,
+//                                           ),
+//                                         ),
+//                                         SizedBox(width: 4),
+//                                         Text(
+//                                           'Tea & Biscuits',
+//                                           style: TextStyle(
+//                                             color: Color(0xFF888888),
+//                                             fontSize: 14,
+//                                             fontFamily: 'Lato',
+//                                             fontWeight: FontWeight.w400,
+//                                             height: 0,
+//                                           ),
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     const SizedBox(height: 8),
+//                                     const Text(
+//                                       '10.1 mi away',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     const SizedBox(height: 8),
+//                                     Row(
+//                                       mainAxisSize: MainAxisSize.min,
+//                                       mainAxisAlignment:
+//                                       MainAxisAlignment.start,
+//                                       crossAxisAlignment:
+//                                       CrossAxisAlignment.center,
+//                                       children: [
+//                                         const Text(
+//                                           '4.5',
+//                                           style: TextStyle(
+//                                             color: Color(0xFF888888),
+//                                             fontSize: 14,
+//                                             fontFamily: 'Lato',
+//                                             fontWeight: FontWeight.w400,
+//                                             height: 0,
+//                                           ),
+//                                         ),
+//                                         const SizedBox(width: 4),
+//                                         Row(
+//                                           mainAxisSize: MainAxisSize.min,
+//                                           mainAxisAlignment:
+//                                           MainAxisAlignment.start,
+//                                           crossAxisAlignment:
+//                                           CrossAxisAlignment.start,
+//                                           children: [
+//                                             Container(
+//                                               width: 16,
+//                                               height: 16,
+//                                               decoration: const ShapeDecoration(
+//                                                 color: Color(0xFFFFCC1B),
+//                                                 shape: StarBorder(
+//                                                   points: 5,
+//                                                   innerRadiusRatio: 0.38,
+//                                                   pointRounding: 0,
+//                                                   valleyRounding: 0,
+//                                                   rotation: 0,
+//                                                   squash: 0,
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             const SizedBox(width: 4),
+//                                             Container(
+//                                               width: 16,
+//                                               height: 16,
+//                                               decoration: const ShapeDecoration(
+//                                                 color: Color(0xFFFFCC1B),
+//                                                 shape: StarBorder(
+//                                                   points: 5,
+//                                                   innerRadiusRatio: 0.38,
+//                                                   pointRounding: 0,
+//                                                   valleyRounding: 0,
+//                                                   rotation: 0,
+//                                                   squash: 0,
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             const SizedBox(width: 4),
+//                                             Container(
+//                                               width: 16,
+//                                               height: 16,
+//                                               decoration: const ShapeDecoration(
+//                                                 color: Color(0xFFFFCC1B),
+//                                                 shape: StarBorder(
+//                                                   points: 5,
+//                                                   innerRadiusRatio: 0.38,
+//                                                   pointRounding: 0,
+//                                                   valleyRounding: 0,
+//                                                   rotation: 0,
+//                                                   squash: 0,
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             const SizedBox(width: 4),
+//                                             Container(
+//                                               width: 16,
+//                                               height: 16,
+//                                               decoration: const ShapeDecoration(
+//                                                 color: Color(0xFFFFCC1B),
+//                                                 shape: StarBorder(
+//                                                   points: 5,
+//                                                   innerRadiusRatio: 0.38,
+//                                                   pointRounding: 0,
+//                                                   valleyRounding: 0,
+//                                                   rotation: 0,
+//                                                   squash: 0,
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             const SizedBox(width: 4),
+//                                             Container(
+//                                               width: 16,
+//                                               height: 16,
+//                                               decoration: const ShapeDecoration(
+//                                                 color: Color(0xFFD9D9D9),
+//                                                 shape: StarBorder(
+//                                                   points: 5,
+//                                                   innerRadiusRatio: 0.38,
+//                                                   pointRounding: 0,
+//                                                   valleyRounding: 0,
+//                                                   rotation: 0,
+//                                                   squash: 0,
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                       ],
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       )),
+//                 ],
+//               ),
+//             ),
+//           ),
+//           const Padding(
+//             padding: EdgeInsets.only(
+//                 top: 24,
+//                 bottom: 8,
+//                 left: 24), // Add 24px top margin and 8px bottom margin
+//             child: Text(
+//               'Recently Used Places',
+//               style: TextStyle(
+//                 color: Color(0xFF00B288),
+//                 fontSize: 16,
+//                 fontFamily: 'Lato',
+//                 fontWeight: FontWeight.w700,
+//                 height: 0,
+//               ),
+//             ),
+//           ),
+//           SizedBox(
+//             height: 320, // Adjust the height as needed to fit your design
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 24, right: 16),
+//                     width: 213,
+//                     height: 310,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
 //                       ),
 //                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Container(
+//                               width: 188,
+//                               clipBehavior: Clip.antiAlias,
+//                               decoration: ShapeDecoration(
+//                                 shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(8)),
+//                               ),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.center,
+//                                 crossAxisAlignment: CrossAxisAlignment.center,
+//                                 children: [
+//                                   Container(
+//                                     width: 186,
+//                                     height: 173,
+//                                     decoration: const BoxDecoration(
+//                                       image: DecorationImage(
+//                                         image: AssetImage(
+//                                             'assets/images/yellow.png'),
+//                                         fit: BoxFit.fill,
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             const SizedBox(height: 12),
+//                             Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 const Row(
+//                                   mainAxisAlignment: MainAxisAlignment
+//                                       .start, // Adjust alignment as needed
+//                                   children: [
+//                                     Text(
+//                                       'Yellow Aesthetic Cafe',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF222222),
+//                                         fontSize: 16,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w600,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     Spacer(),
+//                                     ToggleIcon(),
+//                                   ],
+//                                 ),
+//                                 const SizedBox(height: 8),
+//                                 const Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     Text(
+//                                       '\$\$\$',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     SizedBox(width: 4),
+//                                     Text(
+//                                       '.',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     SizedBox(width: 4),
+//                                     Text(
+//                                       'Continental',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 const SizedBox(height: 8),
+//                                 const Text(
+//                                   '3.1 mi away',
+//                                   style: TextStyle(
+//                                     color: Color(0xFF888888),
+//                                     fontSize: 14,
+//                                     fontFamily: 'Lato',
+//                                     fontWeight: FontWeight.w400,
+//                                     height: 0,
+//                                   ),
+//                                 ),
+//                                 const SizedBox(height: 8),
+//                                 Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     const Text(
+//                                       '4.5',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     const SizedBox(width: 4),
+//                                     Row(
+//                                       mainAxisSize: MainAxisSize.min,
+//                                       mainAxisAlignment:
+//                                       MainAxisAlignment.start,
+//                                       crossAxisAlignment:
+//                                       CrossAxisAlignment.start,
+//                                       children: [
+//                                         Container(
+//                                           width: 16,
+//                                           height: 16,
+//                                           decoration: const ShapeDecoration(
+//                                             color: Color(0xFFFFCC1B),
+//                                             shape: StarBorder(
+//                                               points: 5,
+//                                               innerRadiusRatio: 0.38,
+//                                               pointRounding: 0,
+//                                               valleyRounding: 0,
+//                                               rotation: 0,
+//                                               squash: 0,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                         const SizedBox(width: 4),
+//                                         Container(
+//                                           width: 16,
+//                                           height: 16,
+//                                           decoration: const ShapeDecoration(
+//                                             color: Color(0xFFFFCC1B),
+//                                             shape: StarBorder(
+//                                               points: 5,
+//                                               innerRadiusRatio: 0.38,
+//                                               pointRounding: 0,
+//                                               valleyRounding: 0,
+//                                               rotation: 0,
+//                                               squash: 0,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                         const SizedBox(width: 4),
+//                                         Container(
+//                                           width: 16,
+//                                           height: 16,
+//                                           decoration: const ShapeDecoration(
+//                                             color: Color(0xFFFFCC1B),
+//                                             shape: StarBorder(
+//                                               points: 5,
+//                                               innerRadiusRatio: 0.38,
+//                                               pointRounding: 0,
+//                                               valleyRounding: 0,
+//                                               rotation: 0,
+//                                               squash: 0,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                         const SizedBox(width: 4),
+//                                         Container(
+//                                           width: 16,
+//                                           height: 16,
+//                                           decoration: const ShapeDecoration(
+//                                             color: Color(0xFFFFCC1B),
+//                                             shape: StarBorder(
+//                                               points: 5,
+//                                               innerRadiusRatio: 0.38,
+//                                               pointRounding: 0,
+//                                               valleyRounding: 0,
+//                                               rotation: 0,
+//                                               squash: 0,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                         const SizedBox(width: 4),
+//                                         Container(
+//                                           width: 16,
+//                                           height: 16,
+//                                           decoration: const ShapeDecoration(
+//                                             color: Color(0xFFD9D9D9),
+//                                             shape: StarBorder(
+//                                               points: 5,
+//                                               innerRadiusRatio: 0.38,
+//                                               pointRounding: 0,
+//                                               valleyRounding: 0,
+//                                               rotation: 0,
+//                                               squash: 0,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ],
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
 //                   ),
-//                 ),
-//                 // LOGIN BUTTON TEXT
-//                 Positioned(
-//                   left: 7,
-//                   top: 250,
-//                   child: SizedBox(
-//                     width: 340,
-//                     height: 278,
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 16, right: 16),
+//                     width: 212,
+//                     height: 310,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Container(
+//                               width: 188,
+//                               clipBehavior: Clip.antiAlias,
+//                               decoration: ShapeDecoration(
+//                                 shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(8)),
+//                               ),
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.center,
+//                                 crossAxisAlignment: CrossAxisAlignment.center,
+//                                 children: [
+//                                   Container(
+//                                     width: 186,
+//                                     height: 173,
+//                                     decoration: const BoxDecoration(
+//                                       image: DecorationImage(
+//                                         image: AssetImage(
+//                                             'assets/images/marriam.png'),
+//                                         fit: BoxFit.fill,
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             const SizedBox(height: 12),
+//                             const Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Row(
+//                                   mainAxisAlignment: MainAxisAlignment
+//                                       .start, // Adjust alignment as needed
+//                                   children: [
+//                                     Text(
+//                                       'Marriam’s Kitchen',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF222222),
+//                                         fontSize: 16,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w600,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     Spacer(),
+//                                     ToggleIcon(),
+//                                   ],
+//                                 ),
+//                                 SizedBox(height: 8),
+//                                 Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     Text(
+//                                       '\$\$\$',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     SizedBox(width: 4),
+//                                     Text(
+//                                       '.',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                     SizedBox(width: 4),
+//                                     Text(
+//                                       'Continental',
+//                                       style: TextStyle(
+//                                         color: Color(0xFF888888),
+//                                         fontSize: 14,
+//                                         fontFamily: 'Lato',
+//                                         fontWeight: FontWeight.w400,
+//                                         height: 0,
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 SizedBox(height: 8),
+//                                 Text(
+//                                   '10.1 mi away',
+//                                   style: TextStyle(
+//                                     color: Color(0xFF888888),
+//                                     fontSize: 14,
+//                                     fontFamily: 'Lato',
+//                                     fontWeight: FontWeight.w400,
+//                                     height: 0,
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                         const SizedBox(height: 10),
+//                         Row(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             const Text(
+//                               '4.5',
+//                               style: TextStyle(
+//                                 color: Color(0xFF888888),
+//                                 fontSize: 14,
+//                                 fontFamily: 'Lato',
+//                                 fontWeight: FontWeight.w400,
+//                                 height: 0,
+//                               ),
+//                             ),
+//                             const SizedBox(width: 4),
+//                             Row(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFD9D9D9),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   )
+//                 ],
+//               ),
+//             ),
+//           ),
+//           const Padding(
+//             padding: EdgeInsets.only(
+//               top: 24,
+//               bottom: 8,
+//               left: 24,
+//             ), // Add 24px top margin and 8px bottom margin
+//             child: Text(
+//               'Cuisines',
+//               style: TextStyle(
+//                 color: Color(0xFF00B288),
+//                 fontSize: 16,
+//                 fontFamily: 'Lato',
+//                 fontWeight: FontWeight.w700,
+//                 height: 0,
+//               ),
+//             ),
+//           ),
+//           SizedBox(
+//             height: 175, // Adjust based on your content
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 24, right: 16),
+//                     width: 128,
+//                     height: 155,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
 //                     child: Column(
 //                       mainAxisSize: MainAxisSize.min,
 //                       mainAxisAlignment: MainAxisAlignment.start,
 //                       crossAxisAlignment: CrossAxisAlignment.center,
 //                       children: [
-//                         const Text(
-//                           'Log In',
-//                           style: TextStyle(
-//                             color: Color(0xFF00ECB4),
-//                             fontSize: 26,
-//                             fontFamily: 'Lato',
-//                             fontWeight: FontWeight.w700,
-//                             height: 0.03,
-//                           ),
-//                         ),
-//                         const SizedBox(height: 25),
-//                         SizedBox(
-//                           width: 350,
-//                           height: 99,
-//                           child: Stack(
-//                             children: [
-//                               // THIS IS THE PHONE-NUMBER TEXTEDITCONTROLLOR
-//                               Positioned(
-//                                 left: 22.5,
-//                                 top: 35,
-//                                 child: Container(
-//                                   width: 300,
-//                                   height: 50,
-//                                   decoration: ShapeDecoration(
-//                                     color: const Color(0x33D9D9D9),
-//                                     shape: RoundedRectangleBorder(
-//                                       side: const BorderSide(
-//                                           width: 1, color: Colors.white),
-//                                       borderRadius: BorderRadius.circular(8),
-//                                     ),
-//                                   ),
-//                                 ),
+//                         Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             Container(
+//                               width: 102,
+//                               height: 102,
+//                               clipBehavior: Clip.antiAlias,
+//                               decoration: ShapeDecoration(
+//                                 shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(8)),
 //                               ),
-//                               const Positioned(
-//                                 left: 22.5,
-//                                 top: 5,
-//                                 child: SizedBox(
-//                                   width: 300,
-//                                   height: 28,
-//                                   child: Text(
-//                                     'Phone Number',
-//                                     style: TextStyle(
-//                                       color: Colors.white,
-//                                       fontSize: 16,
-//                                       fontFamily: 'Lato',
-//                                       fontWeight: FontWeight.w400,
-//                                       height: 0,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                               Positioned(
-//                                 left: 30,
-//                                 top: 57,
-//                                 child: SizedBox(
-//                                     width: 173,
-//                                     height: 16,
-//                                     child: TextFormField(
-//                                       keyboardType: TextInputType.phone,
-//                                       maxLength: 11,
-//                                       decoration: InputDecoration(
-//                                         hintText: 'Enter Your Phone Number',
-//                                         hintStyle: TextStyle(
-//                                           color: Color(0xFFD3D3D3),
-//                                           fontSize: 14,
-//                                           fontFamily: 'Lato',
-//                                           fontWeight: FontWeight.w400,
-//                                         ),
-//                                         border: InputBorder
-//                                             .none, // Remove underline
-//                                         counterText:
-//                                             '', // Hide the default counter text
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.center,
+//                                 crossAxisAlignment: CrossAxisAlignment.center,
+//                                 children: [
+//                                   Container(
+//                                     width: 102,
+//                                     height: 102,
+//                                     decoration: const BoxDecoration(
+//                                       image: DecorationImage(
+//                                         image: AssetImage(
+//                                             'assets/images/burger.png'),
+//                                         fit: BoxFit.cover,
 //                                       ),
-//                                       style: TextStyle(
-//                                         color: Color(
-//                                             0xFFD3D3D3), // Set text color to be visible when user enters text
-//                                       ),
-//                                     )),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                         const SizedBox(height: 0),
-//                         SizedBox(
-//                           width: 350,
-//                           height: 99,
-//                           child: Stack(
-//                             children: [
-//                               Positioned(
-//                                 left: 22.5,
-//                                 top: 35,
-//                                 child: Container(
-//                                   width: 300,
-//                                   height: 50,
-//                                   decoration: ShapeDecoration(
-//                                     color: const Color(0x33D9D9D9),
-//                                     shape: RoundedRectangleBorder(
-//                                       side: const BorderSide(
-//                                           width: 1, color: Colors.white),
-//                                       borderRadius: BorderRadius.circular(8),
 //                                     ),
 //                                   ),
-//                                 ),
+//                                 ],
 //                               ),
-//                               const Positioned(
-//                                 left: 22.5,
-//                                 top: 5,
-//                                 child: SizedBox(
-//                                   width: 340,
-//                                   height: 28,
-//                                   child: Text(
-//                                     'Password',
-//                                     style: TextStyle(
-//                                       color: Colors.white,
-//                                       fontSize: 16,
-//                                       fontFamily: 'Lato',
-//                                       fontWeight: FontWeight.w400,
-//                                       height: 0,
-//                                     ),
+//                             ),
+//                             const SizedBox(height: 8),
+//                             const Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Text(
+//                                   'Burgers',
+//                                   style: TextStyle(
+//                                     color: Color(0xFF222222),
+//                                     fontSize: 16,
+//                                     fontFamily: 'Lato',
+//                                     fontWeight: FontWeight.w600,
+//                                     height: 0,
 //                                   ),
 //                                 ),
-//                               ),
-//                               const Positioned(
-//                                 left: 30,
-//                                 top: 58,
-//                                 child: SizedBox(
-//                                   width: 173,
-//                                   height: 16,
-//                                   child: TextField(
-//                                     decoration: InputDecoration(
-//                                       hintText: 'Enter Your Password',
-//                                       hintStyle: TextStyle(
-//                                         color: Color(0xFFD3D3D3),
-//                                         fontSize: 14,
-//                                         fontFamily: 'Lato',
-//                                         fontWeight: FontWeight.w400,
-//                                       ),
-//                                       border:
-//                                           InputBorder.none, // Remove underline
-//                                     ),
-//                                     style: TextStyle(
-//                                       color: Color(
-//                                           0xFFD3D3D3), // Set text color to be visible when user enters text
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
+//                               ],
+//                             ),
+//                           ],
 //                         ),
 //                       ],
 //                     ),
 //                   ),
-//                 ),
-//                 Positioned(
-//                   left: 107,
-//                   top: 605,
-//                   child: SizedBox(
-//                     width: 154,
-//                     height: 69,
-//                     child: Row(
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 16, right: 16),
+//                     width: 128,
+//                     height: 155,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
 //                       mainAxisSize: MainAxisSize.min,
 //                       mainAxisAlignment: MainAxisAlignment.start,
-//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.center,
 //                       children: [
-//                         Expanded(
-//                           child: Row(
-//                             mainAxisSize: MainAxisSize.min,
-//                             mainAxisAlignment: MainAxisAlignment.start,
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 width: 59,
-//                                 height: 59,
-//                                 // decoration: const ShapeDecoration(
-//                                 //   color: Color(0xFFECECEC),
-//                                 //   // shape: CircleBorder(
-//                                 //   //   side: BorderSide(
-//                                 //   //       width: 0.50, color: Color(0xFF00B287)),
-//                                 //   // ),
-//                                 //   shadows: [
-//                                 //     BoxShadow(
-//                                 //       color: Color(0x3F000000),
-//                                 //       blurRadius: 4,
-//                                 //       offset: Offset(0, 0),
-//                                 //       spreadRadius: 0,
-//                                 //     ),
-//                                 //   ],
-//                                 // ),
-//                                 child: Container(
-//                                   width: 32,
-//                                   height: 32,
-//                                   decoration: const BoxDecoration(
-//                                     shape: BoxShape.circle,
-//                                     image: DecorationImage(
-//                                       image: AssetImage(
-//                                           "assets/images/facebook1.png"),
-//                                       fit: BoxFit.fill,
-//                                     ),
-//                                   ),
-//                                 ),
+//                         Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             Container(
+//                               width: 102,
+//                               height: 102,
+//                               clipBehavior: Clip.antiAlias,
+//                               decoration: ShapeDecoration(
+//                                 shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(8)),
 //                               ),
-//                               const SizedBox(width: 10),
-//                             ],
-//                           ),
-//                         ),
-//                         const SizedBox(width: 16),
-//                         Expanded(
-//                           child: Row(
-//                             mainAxisSize: MainAxisSize.min,
-//                             mainAxisAlignment: MainAxisAlignment.start,
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 width: 59,
-//                                 height: 59,
-//                                 // decoration: const ShapeDecoration(
-//                                 //   color: Color(0xFFECECEC),
-//                                 //   shape: CircleBorder(
-//                                 //     side: BorderSide(
-//                                 //         width: 0.50, color: Color(0xFF00B287)),
-//                                 //   ),
-//                                 //   shadows: [
-//                                 //     BoxShadow(
-//                                 //       color: Color(0x3F000000),
-//                                 //       blurRadius: 4,
-//                                 //       offset: Offset(0, 0),
-//                                 //       spreadRadius: 0,
-//                                 //     ),
-//                                 //   ],
-//                                 // ),
-//                                 child: Center(
-//                                   child: Container(
-//                                     width: 62,
-//                                     height: 62,
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.center,
+//                                 crossAxisAlignment: CrossAxisAlignment.center,
+//                                 children: [
+//                                   Container(
+//                                     width: 102,
+//                                     height: 102,
 //                                     decoration: const BoxDecoration(
-//                                       shape: BoxShape.circle,
 //                                       image: DecorationImage(
 //                                         image: AssetImage(
-//                                             "assets/images/google1.png"),
+//                                             'assets/images/japanese.png'),
 //                                         fit: BoxFit.fill,
 //                                       ),
 //                                     ),
 //                                   ),
-//                                 ),
+//                                 ],
 //                               ),
-//                               const SizedBox(width: 10),
-//                             ],
-//                           ),
+//                             ),
+//                             const SizedBox(height: 8),
+//                             const Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Text(
+//                                   'Japanese',
+//                                   style: TextStyle(
+//                                     color: Color(0xFF222222),
+//                                     fontSize: 16,
+//                                     fontFamily: 'Lato',
+//                                     fontWeight: FontWeight.w600,
+//                                     height: 0,
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
 //                         ),
 //                       ],
 //                     ),
 //                   ),
-//                 ),
-//                 Positioned(
-//                   left: 7,
-//                   top: 490,
-//                   child: SizedBox(
-//                     width: 340,
-//                     height: 99,
-//                     child: Stack(
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 16, right: 16),
+//                     width: 128,
+//                     height: 155,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.center,
 //                       children: [
-//                         Positioned(
-//                           left: 22.5,
-//                           top: 0,
-//                           child: GestureDetector(
-//                             onTap: () {
-//                               Navigator.push(
-//                                 context,
-//                                 MaterialPageRoute(
-//                                     builder: (context) =>
-//                                         const BottomNavigationBarMenu()),
-//                               );
-//                             },
-//                             child: Container(
-//                               width: 300,
-//                               height: 50,
+//                         Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             Container(
+//                               clipBehavior: Clip.antiAlias,
 //                               decoration: ShapeDecoration(
-//                                 color: const Color(0xFF00B287),
 //                                 shape: RoundedRectangleBorder(
 //                                     borderRadius: BorderRadius.circular(8)),
 //                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         const Positioned(
-//                           left: 138,
-//                           top: 24,
-//                           child: SizedBox(
-//                             width: 61,
-//                             height: 24,
-//                             child: Text(
-//                               'Log In',
-//                               style: TextStyle(
-//                                 color: Color(0xFFD3D3D3),
-//                                 fontSize: 17,
-//                                 fontFamily: 'Lato',
-//                                 fontWeight: FontWeight.w700,
-//                                 height: 0.06,
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.center,
+//                                 children: [
+//                                   Container(
+//                                     width: 102,
+//                                     height: 102,
+//                                     decoration: const BoxDecoration(
+//                                       image: DecorationImage(
+//                                         image: AssetImage(
+//                                             'assets/images/chinese.png'),
+//                                         fit: BoxFit.fill,
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ],
 //                               ),
 //                             ),
+//                             const SizedBox(height: 8),
+//                             const Column(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Text(
+//                                   'Chinese',
+//                                   style: TextStyle(
+//                                     color: Color(0xFF222222),
+//                                     fontSize: 16,
+//                                     fontFamily: 'Lato',
+//                                     fontWeight: FontWeight.w600,
+//                                     height: 0,
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   )
+//                 ],
+//               ),
+//             ),
+//           ),
+//           const Padding(
+//             padding: EdgeInsets.only(
+//                 top: 24,
+//                 bottom: 8,
+//                 left: 24), // Add 24px top margin and 8px bottom margin
+//             child: Text(
+//               'All Restaurants',
+//               style: TextStyle(
+//                 color: Color(0xFF00B288),
+//                 fontSize: 16,
+//                 fontFamily: 'Lato',
+//                 fontWeight: FontWeight.w700,
+//                 height: 0,
+//               ),
+//             ),
+//           ),
+//           Expanded(
+//             // Use Expanded widget if this code is inside Column of Scaffold body
+//             child: SingleChildScrollView(
+//               child: Column(
+//                 children: [
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 24, right: 24),
+//                     width: 342,
+//                     height: 340,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         SizedBox(
+//                           width: double.infinity,
+//                           height: 285,
+//                           child: Column(
+//                             mainAxisSize: MainAxisSize.min,
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Container(
+//                                 width: 286,
+//                                 height: 200,
+//                                 clipBehavior: Clip.antiAlias,
+//                                 decoration: ShapeDecoration(
+//                                   shape: RoundedRectangleBorder(
+//                                       borderRadius: BorderRadius.circular(8)),
+//                                 ),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     Container(
+//                                       width: 286,
+//                                       height: 200,
+//                                       decoration: const BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: AssetImage(
+//                                               'assets/images/avari.png'),
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 12),
+//                               const Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Row(
+//                                     mainAxisAlignment: MainAxisAlignment
+//                                         .start, // Adjust alignment as needed
+//                                     children: [
+//                                       Text(
+//                                         'Avari Dine in Pizza Place',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF00B288),
+//                                           fontSize: 16,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w700,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       Spacer(),
+//                                       ToggleIcon(),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.start,
+//                                     children: [
+//                                       Text(
+//                                         '\$\$\$',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         '.',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         'Pizza Place',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Text(
+//                                     '2.2 mi away',
+//                                     style: TextStyle(
+//                                       color: Color(0xFF888888),
+//                                       fontSize: 14,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w400,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ],
 //                           ),
+//                         ),
+//                         const SizedBox(height: 10),
+//                         Row(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             const Text(
+//                               '4.5',
+//                               style: TextStyle(
+//                                 color: Color(0xFF888888),
+//                                 fontSize: 14,
+//                                 fontFamily: 'Lato',
+//                                 fontWeight: FontWeight.w400,
+//                                 height: 0,
+//                               ),
+//                             ),
+//                             const SizedBox(width: 4),
+//                             Row(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFD9D9D9),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
 //                         ),
 //                       ],
 //                     ),
 //                   ),
-//                 ),
-//               ],
+//                   Container(
+//                     margin: const EdgeInsets.only(top: 16, left: 24, right: 24),
+//                     width: 342,
+//                     height: 340,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         SizedBox(
+//                           width: double.infinity,
+//                           height: 285,
+//                           child: Column(
+//                             mainAxisSize: MainAxisSize.min,
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Container(
+//                                 width: 318,
+//                                 clipBehavior: Clip.antiAlias,
+//                                 decoration: ShapeDecoration(
+//                                   shape: RoundedRectangleBorder(
+//                                       borderRadius: BorderRadius.circular(8)),
+//                                 ),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     Container(
+//                                       width: 286,
+//                                       height: 200,
+//                                       decoration: const BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: AssetImage(
+//                                               'assets/images/fujiama.png'),
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 12),
+//                               const Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Row(
+//                                     mainAxisAlignment: MainAxisAlignment
+//                                         .start, // Adjust alignment as needed
+//                                     children: [
+//                                       Text(
+//                                         'Fujiama',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF00B288),
+//                                           fontSize: 16,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w700,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       Spacer(),
+//                                       ToggleIcon(),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.start,
+//                                     children: [
+//                                       Text(
+//                                         '\$\$\$',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         '.',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         'Japanese Food',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Text(
+//                                     '3.2 mi away',
+//                                     style: TextStyle(
+//                                       color: Color(0xFF888888),
+//                                       fontSize: 14,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w400,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                         const SizedBox(height: 10),
+//                         Row(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             const Text(
+//                               '4.5',
+//                               style: TextStyle(
+//                                 color: Color(0xFF888888),
+//                                 fontSize: 14,
+//                                 fontFamily: 'Lato',
+//                                 fontWeight: FontWeight.w400,
+//                                 height: 0,
+//                               ),
+//                             ),
+//                             const SizedBox(width: 4),
+//                             Row(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFD9D9D9),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Container(
+//                     margin: const EdgeInsets.only(top: 16, left: 24, right: 24),
+//                     width: 342,
+//                     height: 340,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         SizedBox(
+//                           width: double.infinity,
+//                           height: 285,
+//                           child: Column(
+//                             mainAxisSize: MainAxisSize.min,
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Container(
+//                                 width: 286,
+//                                 height: 200,
+//                                 clipBehavior: Clip.antiAlias,
+//                                 decoration: ShapeDecoration(
+//                                   shape: RoundedRectangleBorder(
+//                                       borderRadius: BorderRadius.circular(8)),
+//                                 ),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.center,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     Container(
+//                                       width: 286,
+//                                       height: 477,
+//                                       decoration: const BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: AssetImage(
+//                                               'assets/images/spaghetti.png'),
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 12),
+//                               const Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Row(
+//                                     mainAxisAlignment: MainAxisAlignment
+//                                         .start, // Adjust alignment as needed
+//                                     children: [
+//                                       Text(
+//                                         'Spaghetti',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF00B288),
+//                                           fontSize: 16,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w700,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       Spacer(),
+//                                       ToggleIcon(),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.start,
+//                                     children: [
+//                                       Text(
+//                                         '\$\$\$',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         '.',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         'Chinese Food',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Text(
+//                                     '2.2 mi away',
+//                                     style: TextStyle(
+//                                       color: Color(0xFF888888),
+//                                       fontSize: 14,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w400,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                         const SizedBox(height: 10),
+//                         Row(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             const Text(
+//                               '4.5',
+//                               style: TextStyle(
+//                                 color: Color(0xFF888888),
+//                                 fontSize: 14,
+//                                 fontFamily: 'Lato',
+//                                 fontWeight: FontWeight.w400,
+//                                 height: 0,
+//                               ),
+//                             ),
+//                             const SizedBox(width: 4),
+//                             Row(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFD9D9D9),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Container(
+//                     margin: const EdgeInsets.only(top: 16, left: 24, right: 24),
+//                     width: 342,
+//                     height: 340,
+//                     padding: const EdgeInsets.all(12),
+//                     clipBehavior: Clip.antiAlias,
+//                     decoration: ShapeDecoration(
+//                       color: Colors.white,
+//                       shape: RoundedRectangleBorder(
+//                         side: const BorderSide(
+//                             width: 1, color: Color(0xFFD0D5DD)),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                     ),
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         SizedBox(
+//                           width: double.infinity,
+//                           height: 285,
+//                           child: Column(
+//                             mainAxisSize: MainAxisSize.min,
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Container(
+//                                 clipBehavior: Clip.antiAlias,
+//                                 decoration: ShapeDecoration(
+//                                   shape: RoundedRectangleBorder(
+//                                       borderRadius: BorderRadius.circular(8)),
+//                                 ),
+//                                 child: Row(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   mainAxisAlignment: MainAxisAlignment.end,
+//                                   crossAxisAlignment: CrossAxisAlignment.center,
+//                                   children: [
+//                                     Container(
+//                                       width: 286,
+//                                       height: 200,
+//                                       decoration: const BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: AssetImage(
+//                                               'assets/images/cake.png'),
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               const SizedBox(height: 12),
+//                               const Column(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Row(
+//                                     mainAxisAlignment: MainAxisAlignment
+//                                         .start, // Adjust alignment as needed
+//                                     children: [
+//                                       Text(
+//                                         'Cake',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF00B288),
+//                                           fontSize: 16,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w700,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       Spacer(),
+//                                       ToggleIcon(),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     mainAxisAlignment: MainAxisAlignment.start,
+//                                     crossAxisAlignment:
+//                                     CrossAxisAlignment.start,
+//                                     children: [
+//                                       Text(
+//                                         '\$\$\$',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         '.',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                       SizedBox(width: 4),
+//                                       Text(
+//                                         'Chinese Food',
+//                                         style: TextStyle(
+//                                           color: Color(0xFF888888),
+//                                           fontSize: 14,
+//                                           fontFamily: 'Lato',
+//                                           fontWeight: FontWeight.w400,
+//                                           height: 0,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   SizedBox(height: 8),
+//                                   Text(
+//                                     '2.2 mi away',
+//                                     style: TextStyle(
+//                                       color: Color(0xFF888888),
+//                                       fontSize: 14,
+//                                       fontFamily: 'Lato',
+//                                       fontWeight: FontWeight.w400,
+//                                       height: 0,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                         const SizedBox(height: 10),
+//                         Row(
+//                           mainAxisSize: MainAxisSize.min,
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             const Text(
+//                               '4.5',
+//                               style: TextStyle(
+//                                 color: Color(0xFF888888),
+//                                 fontSize: 14,
+//                                 fontFamily: 'Lato',
+//                                 fontWeight: FontWeight.w400,
+//                                 height: 0,
+//                               ),
+//                             ),
+//                             const SizedBox(width: 4),
+//                             Row(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.start,
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFFFCC1B),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 const SizedBox(width: 4),
+//                                 Container(
+//                                   width: 16,
+//                                   height: 16,
+//                                   decoration: const ShapeDecoration(
+//                                     color: Color(0xFFD9D9D9),
+//                                     shape: StarBorder(
+//                                       points: 5,
+//                                       innerRadiusRatio: 0.38,
+//                                       pointRounding: 0,
+//                                       valleyRounding: 0,
+//                                       rotation: 0,
+//                                       squash: 0,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   )
+//                 ],
+//               ),
 //             ),
 //           ),
 //         ],
