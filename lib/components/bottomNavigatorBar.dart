@@ -81,9 +81,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: double.infinity,
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -104,7 +102,6 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                                   height: 0,
                                 ),
                               ),
-                              SizedBox(height: 2),
                               Text(
                                 'John Doe',
                                 style: TextStyle(
@@ -118,21 +115,42 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Notificationpage(),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Notificationpage(),
+                                  ),
+                                );
+                              },
+                              child: Image(
+                                width: 34,
+                                height: 34,
+                                image: AssetImage(
+                                    'assets/images/shoppingcart.png'),
                               ),
-                            );
-                          },
-                          child: Image(
-                            width: 34,
-                            height: 34,
-                            image: AssetImage('assets/images/notification.png'),
-                          ),
-                        )
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Notificationpage(),
+                                  ),
+                                );
+                              },
+                              child: Image(
+                                width: 34,
+                                height: 34,
+                                image: AssetImage(
+                                    'assets/images/notification.png'),
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -141,7 +159,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
             ),
           ),
         ),
-        body:  TabBarView(
+        body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
             Homescreen(),

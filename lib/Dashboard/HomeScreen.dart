@@ -57,7 +57,8 @@ class _HomescreenState extends State<Homescreen> {
 
   Future<void> fetchRestaurants() async {
     var response =
-        await http.get(Uri.parse('http://192.168.43.54:8000/restaurants'));
+        // ALWAYS UPDATE YOUR IP ADDRESS TO RUN THE API FROM BACKEND
+        await http.get(Uri.parse('http://192.168.100.113:8000/restaurants'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -180,7 +181,7 @@ class _HomescreenState extends State<Homescreen> {
                 controller: search_Controller,
                 onChanged: searchFunction,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(size: 35, Icons.search, color: Colors.grey),
+                  prefixIcon: Icon(size: 25, Icons.search, color: Colors.grey),
                   suffixIcon: IconButton(
                     onPressed: () {
                       search_Controller.clear();
@@ -188,12 +189,12 @@ class _HomescreenState extends State<Homescreen> {
                         searchlistModel = restaurantListModel;
                       });
                     },
-                    icon: Icon(Icons.cancel, color: Colors.grey),
+                    icon: Icon(Icons.cancel, size: 20, color: Colors.grey),
                   ),
                   hintText: 'Search',
                   labelText: 'Search',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(color: Colors.grey, width: 1.0),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -225,13 +226,43 @@ class _HomescreenState extends State<Homescreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Image from the internet
+                                  // Image from the internet with a loading indicator
                                   Center(
-                                    child: Image.network(
-                                      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
-                                      height: 220,
-                                      width: 350,
-                                      fit: BoxFit.cover,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Adjust the radius as needed
+                                      child: Image.network(
+                                        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
+                                        height: 220,
+                                        width: 350,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      (loadingProgress
+                                                              .expectedTotalBytes ??
+                                                          1)
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Center(
+                                              child:
+                                                  Text('Failed to load image'));
+                                        },
+                                      ),
                                     ),
                                   ),
                                   SizedBox(height: 10),
@@ -265,14 +296,15 @@ class _HomescreenState extends State<Homescreen> {
                                   ),
                                   SizedBox(height: 10),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       // Rating text
                                       Text(
-                                        "Rating: 4",
+                                        "4.5",
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.black),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0,
                                       ),
                                       // Star rating
                                       Row(

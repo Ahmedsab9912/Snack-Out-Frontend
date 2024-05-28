@@ -1,4 +1,5 @@
 import 'package:eataly/Dashboard/HomeScreen.dart';
+import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 
 class SavedScreen extends StatelessWidget {
@@ -74,7 +75,8 @@ class SavedScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Homescreen()),
+                  MaterialPageRoute(
+                      builder: (context) => BottomNavigationBarMenu()),
                 );
               },
               child: Container(

@@ -68,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> submitSignup(BuildContext context) async {
-    const url = 'http://192.168.43.54:8000/auth/register';
+    const url = 'http://192.168.100.113:8000/auth/register';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -174,6 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
               ),
               TextFormField(
+                maxLength: 8,
                 controller: _passwordController,
                 focusNode: _passwordFocusNode,
                 decoration: InputDecoration(labelText: 'Password'),
@@ -190,6 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
               ),
               TextFormField(
+                maxLength: 11,
                 controller: _phoneNumberController,
                 focusNode: _phoneNumberFocusNode,
                 decoration: InputDecoration(labelText: 'Phone Number'),

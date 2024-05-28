@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
-    const url = 'http://192.168.43.54:8000/auth/login';
+    const url = 'http://10.0.2.2:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -72,8 +72,7 @@ class _LoginPageState extends State<LoginPage> {
           );
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) =>  BottomNavigationBarMenu()),
+            MaterialPageRoute(builder: (context) => BottomNavigationBarMenu()),
           );
         } else {
           // Handle login failure
@@ -98,14 +97,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Login'),
+        title: Text('Login'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Center(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10), // Set the desired radius
+                borderRadius:
+                    BorderRadius.circular(10), // Set the desired radius
                 child: Image.network(
                   'https://st2.depositphotos.com/3867453/7605/v/450/depositphotos_76055207-stock-illustration-letter-s-logo-icon-design.jpg',
                   height: 220,
@@ -134,7 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_passwordFocusNode);
+                          FocusScope.of(context)
+                              .requestFocus(_passwordFocusNode);
                         },
                       ),
                       TextFormField(
@@ -163,12 +164,14 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignupScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => SignupScreen()),
                           );
                         },
                         child: Text(
                           'Create New Account',
-                          style: TextStyle(fontSize: 17.0, color: Colors.purple),
+                          style:
+                              TextStyle(fontSize: 17.0, color: Colors.purple),
                         ),
                       ),
                     ],
