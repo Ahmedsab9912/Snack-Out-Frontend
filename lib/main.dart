@@ -1,7 +1,6 @@
 import 'package:eataly/Provider/AddToCartProvider.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
-import 'package:eataly/Login&SignupScreens/splashscreen.dart';
 import 'package:provider/provider.dart';
 
 void main() {

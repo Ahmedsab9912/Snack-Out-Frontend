@@ -1,4 +1,3 @@
-import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 
