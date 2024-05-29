@@ -6,15 +6,29 @@ import 'package:eataly/RestaurantFeaturesScreens/featuredCardsPhotos.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsReviews.dart';
 import 'package:flutter/material.dart';
 
-class TopNavigationBarManu extends StatelessWidget {
-  const TopNavigationBarManu({super.key});
+import '../Models/AllRestaurantsAPI.dart';
 
+class TopNavigationBarManu extends StatelessWidget {
+  final Data restaurant;
+
+  TopNavigationBarManu({required this.restaurant, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 40,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(
+            'Restaurant Details',
+            style: TextStyle(
+              color: Color(0xFF00C572),
+              fontSize: 22,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w700,
+              height: 0,
+            ),
+          ),
+        ),
         body: Column(
           children: [
             Expanded(
@@ -42,53 +56,57 @@ class TopNavigationBarManu extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: ShapeDecoration(
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(
-                                        width: 2,
-                                        strokeAlign:
-                                            BorderSide.strokeAlignOutside,
-                                        color: Colors.white,
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          50), // Adjust the radius as needed
+                                      child: Image.network(
+                                        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
+                                        height: 48,
+                                        width: 48,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      (loadingProgress
+                                                              .expectedTotalBytes ??
+                                                          1)
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Center(
+                                              child:
+                                                  Text('Failed to load image'));
+                                        },
                                       ),
-                                      borderRadius: BorderRadius.circular(6),
                                     ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 44,
-                                        height: 44,
-                                        decoration: ShapeDecoration(
-                                          image: const DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/baghBlueIcon.png'),
-                                            fit: BoxFit.fill,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(24),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  ],
                                 ),
-                                const SizedBox(width: 16),
-                                const SizedBox(
+                                SizedBox(width: 16),
+                                SizedBox(
                                   width: 204,
                                   child: Text(
-                                    'Bagh Restaurant - Ultimate Desi Cuisine ',
+                                    restaurant.name ?? "No Name",
                                     style: TextStyle(
                                       color: Color(0xFF00C572),
-                                      fontSize: 16,
+                                      fontSize: 19,
                                       fontFamily: 'Lato',
                                       fontWeight: FontWeight.w700,
                                       height: 0,
@@ -97,41 +115,18 @@ class TopNavigationBarManu extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Row(
-                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Row(
+                                Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '\$\$\$',
-                                      style: TextStyle(
-                                        color: Color(0xFF888888),
-                                        fontSize: 14,
-                                        fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
-                                      ),
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '.',
-                                      style: TextStyle(
-                                        color: Color(0xFF888888),
-                                        fontSize: 14,
-                                        fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
-                                      ),
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      'The Desi Cuisine',
+                                      restaurant.address ?? "No Name",
                                       style: TextStyle(
                                         color: Color(0xFF888888),
                                         fontSize: 14,
@@ -142,27 +137,26 @@ class TopNavigationBarManu extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(width: 16),
-                                Transform(
-                                  transform: Matrix4.identity()
-                                    ..translate(0.0, 0.0)
-                                    ..rotateZ(1.57),
-                                  child: Container(
-                                    width: 10,
-                                    decoration: const ShapeDecoration(
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                          width: 1,
-                                          strokeAlign:
-                                              BorderSide.strokeAlignCenter,
-                                          color: Color(0xFF888888),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                const Text(
+                                SizedBox(width: 12),
+                                // Transform(
+                                //   transform: Matrix4.identity()
+                                //     ..translate(0.0, 0.0)
+                                //     ..rotateZ(1.57),
+                                //   child: Container(
+                                //     width: 10,
+                                //     decoration:  ShapeDecoration(
+                                //       shape: RoundedRectangleBorder(
+                                //         side: BorderSide(
+                                //           width: 1,
+                                //           strokeAlign:
+                                //               BorderSide.strokeAlignCenter,
+                                //           color: Color(0xFF888888),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                Text(
                                   '2.2 mi away',
                                   style: TextStyle(
                                     color: Color(0xFF888888),
@@ -174,7 +168,7 @@ class TopNavigationBarManu extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,

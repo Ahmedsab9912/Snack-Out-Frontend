@@ -1,43 +1,102 @@
 // import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'bottom_navigation_bar_menu.dart';  // Make sure you have this import
+//
+// class LoginScreen extends StatefulWidget {
+//   @override
+//   _LoginScreenState createState() => _LoginScreenState();
 // }
-
-// class MyApp extends StatelessWidget {
+//
+// class _LoginScreenState extends State<LoginScreen> {
+//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+//   final TextEditingController _usernameController = TextEditingController();
+//   final TextEditingController _passwordController = TextEditingController();
+//
+//   Future<void> login() async {
+//     const url = 'http://10.0.2.2:8000/auth/login';
+//
+//     if (_formKey.currentState?.validate() ?? false) {
+//       final body = {
+//         'username': _usernameController.text,
+//         'password': _passwordController.text,
+//       };
+//
+//       try {
+//         final response = await http.post(
+//           Uri.parse(url),
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: jsonEncode(body),
+//         );
+//
+//         if (response.statusCode == 200) {
+//           // Save username in shared preferences
+//           SharedPreferences prefs = await SharedPreferences.getInstance();
+//           await prefs.setString('username', _usernameController.text);
+//
+//           // Handle successful login
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(
+//                 content: Text('Login successful'),
+//                 backgroundColor: Colors.green),
+//           );
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(builder: (context) => BottomNavigationBarMenu()),
+//           );
+//         } else {
+//           // Handle login failure
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(
+//                 content: Text('Login failed'), backgroundColor: Colors.red),
+//           );
+//         }
+//       } catch (e) {
+//         // Handle exceptions
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//               content: Text('An error occurred'), backgroundColor: Colors.red),
+//         );
+//       }
+//     }
+//   }
+//
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Rounded Network Image'),
-//         ),
-//         body: Center(
-//           child: ClipRRect(
-//             borderRadius:
-//                 BorderRadius.circular(30), // Adjust the radius as needed
-//             child: Image.network(
-//               'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
-//               height: 220,
-//               width: 350,
-//               fit: BoxFit.cover,
-//               loadingBuilder: (BuildContext context, Widget child,
-//                   ImageChunkEvent? loadingProgress) {
-//                 if (loadingProgress == null) return child;
-//                 return Center(
-//                   child: CircularProgressIndicator(
-//                     value: loadingProgress.expectedTotalBytes != null
-//                         ? loadingProgress.cumulativeBytesLoaded /
-//                             (loadingProgress.expectedTotalBytes ?? 1)
-//                         : null,
-//                   ),
-//                 );
-//               },
-//               errorBuilder: (context, error, stackTrace) {
-//                 return Center(child: Text('Failed to load image'));
+//     return Scaffold(
+//       body: Form(
+//         key: _formKey,
+//         child: Column(
+//           children: <Widget>[
+//             TextFormField(
+//               controller: _usernameController,
+//               decoration: InputDecoration(labelText: 'Username'),
+//               validator: (value) {
+//                 if (value == null || value.isEmpty) {
+//                   return 'Please enter your username';
+//                 }
+//                 return null;
 //               },
 //             ),
-//           ),
+//             TextFormField(
+//               controller: _passwordController,
+//               decoration: InputDecoration(labelText: 'Password'),
+//               obscureText: true,
+//               validator: (value) {
+//                 if (value == null || value.isEmpty) {
+//                   return 'Please enter your password';
+//                 }
+//                 return null;
+//               },
+//             ),
+//             ElevatedButton(
+//               onPressed: login,
+//               child: Text('Login'),
+//             ),
+//           ],
 //         ),
 //       ),
 //     );

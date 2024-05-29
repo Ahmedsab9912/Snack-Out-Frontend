@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -63,8 +65,11 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         if (response.statusCode == 200) {
+          // // Save username in shared preferences
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // await prefs.setString('username', _usernameController.text);
+
           // Handle successful login
-          // print('Login successful');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text('Login successful'),
@@ -76,7 +81,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         } else {
           // Handle login failure
-          // print('Login failed');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text('Login failed'), backgroundColor: Colors.red),
@@ -84,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       } catch (e) {
         // Handle exceptions
-        // print('An error occurred: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text('An error occurred'), backgroundColor: Colors.red),

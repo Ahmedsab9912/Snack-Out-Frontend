@@ -68,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> submitSignup(BuildContext context) async {
-    const url = 'http://192.168.100.113:8000/auth/register';
+    const url = 'http://10.0.2.2:8000/auth/register';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -79,11 +79,11 @@ class _SignupScreenState extends State<SignupScreen> {
         'phoneNumber': _phoneNumberController.text,
         'phoneNumberVerification':
             _phoneNumberVerificationController.text.toLowerCase() == 'true',
-        'email_verification':
+        'emailVerification':
             _emailVerificationController.text.toLowerCase() == 'true',
         'address': _addressController.text,
-        'vendor': _vendorController.text.toLowerCase() == 'false',
-        'roles': ["user"],
+        // 'vendor': _vendorController.text.toLowerCase() == 'false',
+        'roles': [],
       };
 
       try {
@@ -97,7 +97,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
         if (response.statusCode == 200) {
           // Handle successful signup
-          // print('Signup successful');
+          print('Signup successful');
           My_Funtions.f_toast(context, 'Registration successful', Colors.green);
           Navigator.push(
             context,
@@ -106,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
         } else {
           // Handle signup failure
           My_Funtions.f_toast(context, 'Registration failed', Colors.red);
-          // print('Signup failed');
+          print('Signup failed');
         }
       } catch (e) {
         // Handle exceptions

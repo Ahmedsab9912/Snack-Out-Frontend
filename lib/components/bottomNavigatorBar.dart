@@ -5,6 +5,7 @@ import 'package:eataly/NotificationScreen/NotificationPage.dart';
 import 'package:eataly/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../PartyScreens/partydemoscreen.dart';
 
@@ -17,6 +18,24 @@ class BottomNavigationBarMenu extends StatefulWidget {
 }
 
 class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
+
+  //THIS IS THE SHAREDPREFENCES
+  String _username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsername();
+  }
+
+  Future<void> _loadUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _username = prefs.getString('username') ?? 'John Doe';
+    });
+  }
+
+
   int _selectedIndex = 0; // Keeps track of the selected tab index
   // Define your custom color
   final Color _selectedColor = const Color(0xFF00B288);
@@ -91,7 +110,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children:  [
                               Text(
                                 'Good Morning',
                                 style: TextStyle(
@@ -103,7 +122,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                                 ),
                               ),
                               Text(
-                                'John Doe',
+                                _username ?? 'User',
                                 style: TextStyle(
                                   color: Color(0xFF222222),
                                   fontSize: 22,
@@ -176,7 +195,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
               _selectedIndex = index;
             });
           },
-          indicatorColor: const Color(0xFF00B288),
+          indicatorColor:  Color(0xFF00B288),
           tabs: List.generate(
             5,
             (index) {
