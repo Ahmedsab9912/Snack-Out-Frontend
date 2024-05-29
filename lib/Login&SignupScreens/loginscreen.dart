@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eataly/Login&SignupScreens/signupscreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -43,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
-    final url = 'http://192.168.10.34:8000/auth/login';
+    const url = 'http://10.0.2.2:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -61,8 +65,11 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         if (response.statusCode == 200) {
+          // // Save username in shared preferences
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // await prefs.setString('username', _usernameController.text);
+
           // Handle successful login
-          print('Login successful');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text('Login successful'),
@@ -70,12 +77,10 @@ class _LoginPageState extends State<LoginPage> {
           );
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => const BottomNavigationBarMenu()),
+            MaterialPageRoute(builder: (context) => BottomNavigationBarMenu()),
           );
         } else {
           // Handle login failure
-          print('Login failed');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text('Login failed'), backgroundColor: Colors.red),
@@ -83,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       } catch (e) {
         // Handle exceptions
-        print('An error occurred: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text('An error occurred'), backgroundColor: Colors.red),
@@ -98,66 +102,87 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text('Login'),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _usernameController,
-                  focusNode: _usernameFocusNode,
-                  decoration: InputDecoration(labelText: 'Username'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_passwordFocusNode);
-                  },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(10), // Set the desired radius
+                child: Image.network(
+                  'https://st2.depositphotos.com/3867453/7605/v/450/depositphotos_76055207-stock-illustration-letter-s-logo-icon-design.jpg',
+                  height: 220,
+                  width: 330,
+                  fit: BoxFit.cover,
                 ),
-                TextFormField(
-                  controller: _passwordController,
-                  focusNode: _passwordFocusNode,
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                  textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) {
-                    login();
-                  },
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: login,
-                  child: Text('Login'),
-                ),
-                SizedBox(height: 20),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignupScreen()),
-                    );
-                  },
-                  child: Text(
-                    'Click Me Signup Page',
-                    style: TextStyle(fontSize: 20.0, color: Colors.purple),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: _usernameController,
+                        focusNode: _usernameFocusNode,
+                        decoration: InputDecoration(labelText: 'Username'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your username';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context)
+                              .requestFocus(_passwordFocusNode);
+                        },
+                      ),
+                      TextFormField(
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                        decoration: InputDecoration(labelText: 'Password'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (_) {
+                          login();
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: login,
+                        child: Text('Login'),
+                      ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignupScreen()),
+                          );
+                        },
+                        child: Text(
+                          'Create New Account',
+                          style:
+                              TextStyle(fontSize: 17.0, color: Colors.purple),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

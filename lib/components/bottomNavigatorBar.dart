@@ -5,6 +5,7 @@ import 'package:eataly/NotificationScreen/NotificationPage.dart';
 import 'package:eataly/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../PartyScreens/partydemoscreen.dart';
 
@@ -17,6 +18,24 @@ class BottomNavigationBarMenu extends StatefulWidget {
 }
 
 class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
+
+  //THIS IS THE SHAREDPREFENCES
+  String _username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsername();
+  }
+
+  Future<void> _loadUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _username = prefs.getString('username') ?? 'John Doe';
+    });
+  }
+
+
   int _selectedIndex = 0; // Keeps track of the selected tab index
   // Define your custom color
   final Color _selectedColor = const Color(0xFF00B288);
@@ -53,12 +72,12 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
         // TOP APP BAR
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 0, // Ensuring the AppBar is transparent and elevated
+          toolbarHeight: 2, // Ensuring the AppBar is transparent and elevated
           backgroundColor: Colors.transparent,
           elevation: 0,
           bottom: PreferredSize(
             preferredSize:
-                Size.fromHeight(70), // Adjust the preferred size as needed
+                Size.fromHeight(80), // Adjust the preferred size as needed
             child: Container(
               padding: EdgeInsets.only(
                 top: 0,
@@ -81,9 +100,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: double.infinity,
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -93,7 +110,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children:  [
                               Text(
                                 'Good Morning',
                                 style: TextStyle(
@@ -104,9 +121,8 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                                   height: 0,
                                 ),
                               ),
-                              SizedBox(height: 2),
                               Text(
-                                'John Doe',
+                                _username ?? 'User',
                                 style: TextStyle(
                                   color: Color(0xFF222222),
                                   fontSize: 22,
@@ -118,21 +134,42 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Notificationpage(),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Notificationpage(),
+                                  ),
+                                );
+                              },
+                              child: Image(
+                                width: 34,
+                                height: 34,
+                                image: AssetImage(
+                                    'assets/images/shoppingcart.png'),
                               ),
-                            );
-                          },
-                          child: Image(
-                            width: 24,
-                            height: 24,
-                            image: AssetImage('assets/images/notification.png'),
-                          ),
-                        )
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Notificationpage(),
+                                  ),
+                                );
+                              },
+                              child: Image(
+                                width: 34,
+                                height: 34,
+                                image: AssetImage(
+                                    'assets/images/notification.png'),
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -141,10 +178,10 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
             ),
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            HomeScreen(),
+            Homescreen(),
             SavedScreen(),
             PartyDemoScreen(),
             Booking(), // Make sure this matches the class name from your import
@@ -158,7 +195,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
               _selectedIndex = index;
             });
           },
-          indicatorColor: const Color(0xFF00B288),
+          indicatorColor:  Color(0xFF00B288),
           tabs: List.generate(
             5,
             (index) {

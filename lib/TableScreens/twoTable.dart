@@ -9,7 +9,7 @@ class TwoTable extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<TwoTable> {
-  int _numberOfSeats = 2;
+  int _numberOfSeats = 0;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedFromTime = const TimeOfDay(hour: 16, minute: 00);
   TimeOfDay _selectedToTime = const TimeOfDay(hour: 19, minute: 00);
@@ -56,22 +56,22 @@ class _BookingScreenState extends State<TwoTable> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text('2-Seat Table', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8), // Add some spacing
+            // Text('2-Seat Table', style: Theme.of(context).textTheme.titleLarge),
+            // const SizedBox(height: 8), // Add some spacing
             // Image widget here
-            Center(
-              // Center widget to align the image horizontally
-              child: SizedBox(
-                width: 130.50,
-                height: 130.50,
-                child: Image.asset(
-                  'assets/images/2seat.png', // Replace with your image asset path
-                  fit: BoxFit
-                      .cover, // This makes sure the image covers the container area
-                ),
-              ),
-            ),
-            const Divider(),
+            // Center(
+            //   // Center widget to align the image horizontally
+            //   child: SizedBox(
+            //     width: 130.50,
+            //     height: 130.50,
+            //     child: Image.asset(
+            //       'assets/images/2seat.png', // Replace with your image asset path
+            //       fit: BoxFit
+            //           .cover, // This makes sure the image covers the container area
+            //     ),
+            //   ),
+            // ),
+            // const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -79,7 +79,7 @@ class _BookingScreenState extends State<TwoTable> {
                   icon: const Icon(Icons.remove),
                   onPressed: () {
                     setState(() {
-                      if (_numberOfSeats > 1) _numberOfSeats--;
+                      if (_numberOfSeats < 1) _numberOfSeats++;
                     });
                   },
                 ),
@@ -89,7 +89,7 @@ class _BookingScreenState extends State<TwoTable> {
                   onPressed: () {
                     setState(
                       () {
-                        if (_numberOfSeats < 2) {
+                        if (_numberOfSeats < 50) {
                           // Check if the current number of seats is less than 4
                           _numberOfSeats++; // Only increment if less than 4
                         } else {

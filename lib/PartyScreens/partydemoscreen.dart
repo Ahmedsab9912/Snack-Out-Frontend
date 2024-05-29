@@ -12,7 +12,7 @@ class PartyDemoScreen extends StatelessWidget {
           children: [
             Container(
               width: 390,
-              height: 500,
+              height: 580,
               clipBehavior: Clip.antiAlias,
               decoration: ShapeDecoration(
                 color: Colors.white,
@@ -371,7 +371,7 @@ class PartyDemoScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 160,
+              bottom: 200,
               left: 25,
               right: 0,
               child: InkWell(
@@ -379,7 +379,7 @@ class PartyDemoScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PartyScreen(),
+                      builder: (context) => PartyScreen(),
                     ),
                   );
                 },
