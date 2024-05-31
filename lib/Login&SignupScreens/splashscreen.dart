@@ -29,7 +29,7 @@ class SplashScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/eataly.png',
+                    'assets/images/snackmate.png',
                     width: 200,
                     height: 200,
                   ),

@@ -1,12 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:eataly/Login&SignupScreens/signupscreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import '../Models/LoginModel.dart';
+import '../Shared_Preferences/shared_preferences_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -65,9 +63,13 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         if (response.statusCode == 200) {
-          // // Save username in shared preferences
-          // SharedPreferences prefs = await SharedPreferences.getInstance();
-          // await prefs.setString('username', _usernameController.text);
+          final loginResponse = LoginModel.fromJson(jsonDecode(response.body));
+
+          // Save username and accessToken in shared preferences
+          SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
+          await sharedPreferences.saveUsername(_usernameController.text);
+          await sharedPreferences
+              .saveAccessToken(loginResponse.data?.accessToken ?? '');
 
           // Handle successful login
           ScaffoldMessenger.of(context).showSnackBar(
@@ -99,91 +101,96 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(10), // Set the desired radius
-                child: Image.network(
-                  'https://st2.depositphotos.com/3867453/7605/v/450/depositphotos_76055207-stock-illustration-letter-s-logo-icon-design.jpg',
-                  height: 220,
-                  width: 330,
-                  fit: BoxFit.cover,
-                ),
-              ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding:  EdgeInsets.only(bottom: 80.0),
+            child: Container(
+              height: 230.0,
+              width: 390,
+              child: Image.asset("assets/images/pattern.png"),
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        controller: _usernameController,
-                        focusNode: _usernameFocusNode,
-                        decoration: InputDecoration(labelText: 'Username'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your username';
-                          }
-                          return null;
-                        },
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context)
-                              .requestFocus(_passwordFocusNode);
-                        },
-                      ),
-                      TextFormField(
-                        controller: _passwordController,
-                        focusNode: _passwordFocusNode,
-                        decoration: InputDecoration(labelText: 'Password'),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                        textInputAction: TextInputAction.done,
-                        onFieldSubmitted: (_) {
-                          login();
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: login,
-                        child: Text('Login'),
-                      ),
-                      SizedBox(height: 20),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignupScreen()),
-                          );
-                        },
-                        child: Text(
-                          'Create New Account',
-                          style:
-                              TextStyle(fontSize: 17.0, color: Colors.purple),
-                        ),
-                      ),
-                    ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _usernameController,
+                    focusNode: _usernameFocusNode,
+                    decoration: InputDecoration(labelText: 'Username'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your username';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_passwordFocusNode);
+                    },
                   ),
-                ),
+                  TextFormField(
+                    controller: _passwordController,
+                    focusNode: _passwordFocusNode,
+                    decoration: InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) {
+                      login();
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      login();
+                    },
+                    child: Container(
+                      height: 45,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.purple,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Center(
+                          child: Text(
+                        'Login',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 19.0,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignupScreen()),
+                      );
+                    },
+                    child: Text(
+                      'Create New Account',
+                      style: TextStyle(fontSize: 17.0, color: Colors.purple),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

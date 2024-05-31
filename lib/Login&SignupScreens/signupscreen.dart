@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../MyFunctions/Funtions.dart';
+import '../OTP_Screens/OTP_Screen.dart';
 import 'loginscreen.dart';
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -21,10 +23,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _phoneNumberVerificationController =
-      TextEditingController();
-  final TextEditingController _emailVerificationController =
-      TextEditingController();
+  final TextEditingController _phoneNumberVerificationController = TextEditingController();
+  final TextEditingController _emailVerificationController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _vendorController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
@@ -67,6 +67,13 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  bool _validatePassword(String password) {
+    final RegExp passwordExp = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$',
+    );
+    return passwordExp.hasMatch(password);
+  }
+
   Future<void> submitSignup(BuildContext context) async {
     const url = 'http://10.0.2.2:8000/auth/register';
 
@@ -77,10 +84,8 @@ class _SignupScreenState extends State<SignupScreen> {
         'email': _emailController.text,
         'password': _passwordController.text,
         'phoneNumber': _phoneNumberController.text,
-        'phoneNumberVerification':
-            _phoneNumberVerificationController.text.toLowerCase() == 'true',
-        'emailVerification':
-            _emailVerificationController.text.toLowerCase() == 'true',
+        'phoneNumberVerification': _phoneNumberVerificationController.text.toLowerCase() == 'false',
+        'emailVerification': _emailVerificationController.text.toLowerCase() == 'false',
         'address': _addressController.text,
         // 'vendor': _vendorController.text.toLowerCase() == 'false',
         'roles': [],
@@ -99,9 +104,15 @@ class _SignupScreenState extends State<SignupScreen> {
           // Handle successful signup
           print('Signup successful');
           My_Funtions.f_toast(context, 'Registration successful', Colors.green);
+
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
+            MaterialPageRoute(
+              builder: (context) => OTPScreen(
+                email: _emailController.text,
+                phoneNumber: _phoneNumberController.text,
+              ),
+            ),
           );
         } else {
           // Handle signup failure
@@ -182,6 +193,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
+                  } else if (!_validatePassword(value)) {
+                    return 'Password must contain at least 1 upper, 1 lowercase, and 1 special char';
                   }
                   return null;
                 },
@@ -191,10 +204,28 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
               ),
               TextFormField(
-                maxLength: 11,
+                maxLength: 10,
+                keyboardType: TextInputType.number,
                 controller: _phoneNumberController,
                 focusNode: _phoneNumberFocusNode,
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: InputDecoration(
+                  labelText: 'Phone Number',
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/pakistan_flag.png', // Make sure you have the flag image in your assets folder
+                          width: 24,
+                          height: 24,
+                        ),
+                        SizedBox(width: 8),
+                        Text('+92',style: TextStyle(),),
+                      ],
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';
@@ -203,50 +234,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
-                  FocusScope.of(context)
-                      .requestFocus(_phoneNumberVerificationFocusNode);
+                  FocusScope.of(context).requestFocus(_phoneNumberVerificationFocusNode);
                 },
               ),
-              TextFormField(
-                controller: _phoneNumberVerificationController,
-                focusNode: _phoneNumberVerificationFocusNode,
-                decoration:
-                    InputDecoration(labelText: 'Phone Number Verification'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null ||
-                //       value.isEmpty ||
-                //       (value.toLowerCase() != 'true' &&
-                //           value.toLowerCase() != 'false')) {
-                //     return 'Please enter true or false';
-                //   }
-                //   return null;
-                // },
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context)
-                      .requestFocus(_emailVerificationFocusNode);
-                },
-              ),
-              TextFormField(
-                controller: _emailVerificationController,
-                focusNode: _emailVerificationFocusNode,
-                decoration: InputDecoration(labelText: 'Email Verification'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null ||
-                //       value.isEmpty ||
-                //       (value.toLowerCase() != 'true' &&
-                //           value.toLowerCase() != 'false')) {
-                //     return 'Please enter true or false';
-                //   }
-                //   return null;
-                // },
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_addressFocusNode);
-                },
-              ),
+              // ... (remaining fields and widgets)
               TextFormField(
                 controller: _addressController,
                 focusNode: _addressFocusNode,
@@ -262,48 +253,29 @@ class _SignupScreenState extends State<SignupScreen> {
                   FocusScope.of(context).requestFocus(_vendorFocusNode);
                 },
               ),
-              TextFormField(
-                controller: _vendorController,
-                focusNode: _vendorFocusNode,
-                decoration: InputDecoration(labelText: 'Vendor'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null ||
-                //       value.isEmpty ||
-                //       (value.toLowerCase() != 'true' &&
-                //           value.toLowerCase() != 'false')) {
-                //     return 'Please enter true or false';
-                //   }
-                //   return null;
-                // },
-                // textInputAction: TextInputAction.next,
-                // onFieldSubmitted: (_) {
-                //   FocusScope.of(context).requestFocus(_roleFocusNode);
-                // },
-              ),
-              TextFormField(
-                controller: _roleController,
-                focusNode: _roleFocusNode,
-                decoration: InputDecoration(labelText: 'Role'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter your role';
-                //   }
-                //   return null;
-                // },
-                // textInputAction: TextInputAction.done,
-                // onFieldSubmitted: (_) {
-                //   submitSignup(context);
-                // },
-              ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   submitSignup(context);
                 },
-                child: Text('Sign Up'),
-              ),
+                child: Container(
+                  height: 45,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
