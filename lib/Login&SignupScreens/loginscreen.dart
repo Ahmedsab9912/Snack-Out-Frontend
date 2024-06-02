@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/LoginModel.dart';
 import '../Shared_Preferences/shared_preferences_page.dart';
+import '../app_theme/app_theme.dart'; // Importing the Data From Custom Directory
 
 void main() {
   runApp(MyApp());
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
-    const url = 'http://10.0.2.2:8000/auth/login';
+    const url = 'http://192.168.100.136:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -100,97 +101,182 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final width = screenSize.width * 0.95; // 95% of screen width
+    final height = screenSize.height * 0.95; // 95% of screen height
+
+
+    // Define sizes relative to the screen size
+    final containerHeight = screenSize.height * 0.065;
+    final containerWidth = screenSize.width * 0.9;
+    final imageHeight = screenSize.height * 0.36;
+    final imageWidth = screenSize.width * 0.9;
+    final buttonHeight = screenSize.height * 0.07;
+    final buttonWidth = screenSize.width * 0.8;
+    final containerPadding = screenSize.height * 0.02;
+
+
+
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding:  EdgeInsets.only(bottom: 80.0),
-            child: Container(
-              height: 230.0,
-              width: 390,
-              child: Image.asset("assets/images/pattern.png"),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    controller: _usernameController,
-                    focusNode: _usernameFocusNode,
-                    decoration: InputDecoration(labelText: 'Username'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
-                      }
-                      return null;
-                    },
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_passwordFocusNode);
-                    },
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    focusNode: _passwordFocusNode,
-                    decoration: InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) {
-                      login();
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      login();
-                    },
-                    child: Container(
-                      height: 45,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.purple,
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Center(
-                          child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
-                      );
-                    },
-                    child: Text(
-                      'Create New Account',
-                      style: TextStyle(fontSize: 17.0, color: Colors.purple),
-                    ),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 55.0),
+              child: Container(
+                height: imageHeight,
+                width: imageWidth,
+                child: Image.asset("assets/images/pattern.png"),
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 320),
+                      child: Text(
+                        'Log In',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: AppColors.primaryTextColor, // Using custom text color
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding:  EdgeInsets.only(right: 320),
+                      child: Text('Username',style: TextStyle(fontSize: 17,color: Colors.black),),
+                    ),
+                    SizedBox(height: 5,),
+                    Container(
+                      height: containerHeight,
+                      width: containerWidth,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFFA6A6A6), // Set the border color
+                          width: 1.0, // Set the border width
+                        ),
+                        borderRadius: BorderRadius.circular(8.0), // Optional: Add rounded corners
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _usernameController,
+                          focusNode: _usernameFocusNode,
+                          decoration: InputDecoration(border: InputBorder.none,hintText: 'Your Phone Number/ Username'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your username';
+                            }
+                            return null;
+                          },
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context).requestFocus(_passwordFocusNode);
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Padding(
+                      padding:  EdgeInsets.only(right: 320),
+                      child: Text('Password',style: TextStyle(fontSize: 17,color: Colors.black),),
+                    ),
+                    SizedBox(height: 5,),
+                    Container(
+                      height: containerHeight,
+                      width: containerWidth,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFFA6A6A6), // Set the border color
+                          width: 1.0, // Set the border width
+                        ),
+                        borderRadius: BorderRadius.circular(8.0), // Optional: Add rounded corners
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _passwordController,
+                          focusNode: _passwordFocusNode,
+                          decoration: InputDecoration(border: InputBorder.none,hintText: 'Your Password'),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) {
+                            login();
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 4,),
+                    Padding(
+                      padding:  EdgeInsets.only(left: 250),
+                      child: Text('Forget Password?',style: TextStyle(fontSize: 17,color: Colors.black),),
+                    ),
+                    SizedBox(height: 5,),
+                    SizedBox(height: 20),
+                    InkWell(
+                      onTap: () {
+                        login();
+                      },
+                      child: Container(
+                        height: buttonHeight,
+                        width: buttonWidth,
+                        decoration: BoxDecoration(
+                          color: AppColors.buttonColor,
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Login',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.bold),
+                        )),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignupScreen()),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'First time here?',
+                            style: TextStyle(fontSize: 17.0, color: Colors.black),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'Sign Up for the Accounts',
+                            style: TextStyle(fontSize: 17.0, color : AppColors.primaryTextColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

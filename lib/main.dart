@@ -4,6 +4,8 @@ import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app_theme/app_colors.dart';
+
 void main() {
   runApp(
     MultiProvider(
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       title: 'Flutter Demo',
+      theme: AppTheme.themeData,
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
