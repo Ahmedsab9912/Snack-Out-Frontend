@@ -1,479 +1,11 @@
-// import 'dart:convert';
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'otpscreen.dart';
-
-// class SignupScreen extends StatefulWidget {
-//   const SignupScreen({super.key});
-
-//   @override
-//   _SignupScreenState createState() => _SignupScreenState();
-// }
-
-// class _SignupScreenState extends State<SignupScreen> {
-//   final _formKey = GlobalKey<FormState>();
-//   final _nameController = TextEditingController();
-//   final _phoneController = TextEditingController();
-//   final _passwordController = TextEditingController();
-//   final _confirmPasswordController = TextEditingController();
-
-//   Future<void> _register() async {
-//     if (_formKey.currentState!.validate()) {
-//       final name = _nameController.text;
-//       final phone = _phoneController.text;
-//       final password = _passwordController.text;
-//       final confirmPassword = _confirmPasswordController.text;
-
-//       if (password != confirmPassword) {
-//         // Show error message
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text("Passwords do not match")),
-//         );
-//         return;
-//       }
-
-//       final response = await http.post(
-//         Uri.parse(
-//             'http://10.0.2.2:8000/auth/register'), // Replace with your API URL
-//         headers: <String, String>{
-//           'Content-Type': 'application/json; charset=UTF-8',
-//         },
-//         body: jsonEncode(<String, dynamic>{
-//           'name': name,
-//           'phoneNumber': phone,
-//           'password': password,
-//           'username': 'Sarah1',
-//           'email': 'sarah1233333@gmail.com',
-//           'phoneNumberVerification': true,
-//           'email_verification': true,
-//           'address': '123 Lhr',
-//           'vendor': false,
-//           "roles": ["user"]
-//         }),
-//       );
-//       if (response.statusCode == 200) {
-//         // Registration successful, navigate to OTP screen
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => const OtpScreen()),
-//         );
-//       } else {
-//         // Show error message
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text("Failed to register")),
-//         );
-//       }
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           Container(
-//             width: 432,
-//             height: 932,
-//             decoration: BoxDecoration(
-//               image: const DecorationImage(
-//                 image: AssetImage('assets/images/backgroundimage.png'),
-//                 fit: BoxFit.cover,
-//               ),
-//               color: Colors.black.withOpacity(0.6),
-//             ),
-//           ),
-//           Container(
-//             width: 432,
-//             height: 932,
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                 begin: const Alignment(0.01, 1.00),
-//                 end: const Alignment(-0.01, -1),
-//                 colors: [Colors.black, Colors.black.withOpacity(0.1)],
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             top: 56,
-//             left: (340 - 140) / 2,
-//             child: SizedBox(
-//               width: 150,
-//               height: 100,
-//               child: Image.asset(
-//                 'assets/images/eataly.png',
-//                 fit: BoxFit.fill,
-//               ),
-//             ),
-//           ),
-//           const Positioned(
-//             left: 47,
-//             top: 170,
-//             child: SizedBox(
-//               width: 262,
-//               child: Text(
-//                 'Instant Table Reservations!',
-//                 textAlign: TextAlign.center,
-//                 style: TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 20,
-//                   fontFamily: 'Forum',
-//                   fontWeight: FontWeight.w400,
-//                   height: 0.06,
-//                 ),
-//               ),
-//             ),
-//           ),
-//           const Positioned(
-//             left: (340 - 80) / 2,
-//             top: 230,
-//             child: Text(
-//               'Sign Up',
-//               style: TextStyle(
-//                 color: Color(0xFF00ECB4),
-//                 fontSize: 26,
-//                 fontFamily: 'Lato',
-//                 fontWeight: FontWeight.w700,
-//                 height: 0.03,
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             top: 265,
-//             child: SizedBox(
-//               width: 350,
-//               height: 99,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 28,
-//                     top: 35,
-//                     child: Container(
-//                       width: 300,
-//                       height: 50,
-//                       decoration: ShapeDecoration(
-//                         color: const Color(0x33D9D9D9),
-//                         shape: RoundedRectangleBorder(
-//                           side: const BorderSide(width: 1, color: Colors.white),
-//                           borderRadius: BorderRadius.circular(8),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   const Positioned(
-//                     left: 28,
-//                     top: 5,
-//                     child: SizedBox(
-//                       width: 300,
-//                       height: 28,
-//                       child: Text(
-//                         'Name',
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                           fontSize: 16,
-//                           fontFamily: 'Lato',
-//                           fontWeight: FontWeight.w400,
-//                           height: 0,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 35,
-//                     top: 58,
-//                     child: SizedBox(
-//                       width: 173,
-//                       height: 16,
-//                       child: TextFormField(
-//                         controller: _nameController,
-//                         keyboardType: TextInputType.name,
-//                         maxLength: 16,
-//                         decoration: InputDecoration(
-//                           hintText: 'Enter Your Name',
-//                           hintStyle: TextStyle(
-//                             color: Color(0xFFD3D3D3),
-//                             fontSize: 14,
-//                             fontFamily: 'Lato',
-//                             fontWeight: FontWeight.w400,
-//                           ),
-//                           border: InputBorder.none, // Remove underline
-//                           counterText: '', // Hide the default counter text
-//                         ),
-//                         style: TextStyle(
-//                           color: Color(
-//                               0xFFD3D3D3), // Set text color to be visible when user enters text
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             top: 357,
-//             child: SizedBox(
-//               width: 350,
-//               height: 99,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 28,
-//                     top: 35,
-//                     child: Container(
-//                       width: 300,
-//                       height: 50,
-//                       decoration: ShapeDecoration(
-//                         color: const Color(0x33D9D9D9),
-//                         shape: RoundedRectangleBorder(
-//                           side: const BorderSide(width: 1, color: Colors.white),
-//                           borderRadius: BorderRadius.circular(8),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   const Positioned(
-//                     left: 28,
-//                     top: 5,
-//                     child: SizedBox(
-//                       width: 300,
-//                       height: 28,
-//                       child: Text(
-//                         'Phone Number',
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                           fontSize: 16,
-//                           fontFamily: 'Lato',
-//                           fontWeight: FontWeight.w400,
-//                           height: 0,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 35,
-//                     top: 58,
-//                     child: SizedBox(
-//                       width: 173,
-//                       height: 16,
-//                       child: TextFormField(
-//                         controller: _phoneController,
-//                         keyboardType: TextInputType.phone,
-//                         maxLength: 11,
-//                         decoration: InputDecoration(
-//                           hintText: 'Enter Your Phone Number',
-//                           hintStyle: TextStyle(
-//                             color: Color(0xFFD3D3D3),
-//                             fontSize: 14,
-//                             fontFamily: 'Lato',
-//                             fontWeight: FontWeight.w400,
-//                           ),
-//                           border: InputBorder.none, // Remove underline
-//                           counterText: '', // Hide the default counter text
-//                         ),
-//                         style: TextStyle(
-//                           color: Color(
-//                               0xFFD3D3D3), // Set text color to be visible when user enters text
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             top: 447,
-//             child: SizedBox(
-//               width: 350,
-//               height: 99,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 28,
-//                     top: 35,
-//                     child: Container(
-//                       width: 300,
-//                       height: 50,
-//                       decoration: ShapeDecoration(
-//                         color: const Color(0x33D9D9D9),
-//                         shape: RoundedRectangleBorder(
-//                           side: const BorderSide(width: 1, color: Colors.white),
-//                           borderRadius: BorderRadius.circular(8),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   const Positioned(
-//                     left: 28,
-//                     top: 5,
-//                     child: SizedBox(
-//                       width: 300,
-//                       height: 28,
-//                       child: Text(
-//                         'Password',
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                           fontSize: 16,
-//                           fontFamily: 'Lato',
-//                           fontWeight: FontWeight.w400,
-//                           height: 0,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 35,
-//                     top: 58,
-//                     child: SizedBox(
-//                       width: 173,
-//                       height: 16,
-//                       child: TextFormField(
-//                         controller: _passwordController,
-//                         keyboardType: TextInputType.visiblePassword,
-//                         decoration: InputDecoration(
-//                           hintText: 'Enter Your Password',
-//                           hintStyle: TextStyle(
-//                             color: Color(0xFFD3D3D3),
-//                             fontSize: 14,
-//                             fontFamily: 'Lato',
-//                             fontWeight: FontWeight.w400,
-//                           ),
-//                           border: InputBorder.none, // Remove underline
-//                         ),
-//                         style: TextStyle(
-//                           color: Color(
-//                               0xFFD3D3D3), // Set text color to be visible when user enters text
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             top: 539,
-//             child: SizedBox(
-//               width: 350,
-//               height: 99,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 28,
-//                     top: 35,
-//                     child: Container(
-//                       width: 300,
-//                       height: 50,
-//                       decoration: ShapeDecoration(
-//                         color: const Color(0x33D9D9D9),
-//                         shape: RoundedRectangleBorder(
-//                           side: const BorderSide(width: 1, color: Colors.white),
-//                           borderRadius: BorderRadius.circular(8),
-//                         ),
-//                       ),
-//                     ),=
-//                   ),
-//                   const Positioned(
-//                     left: 28,
-//                     top: 5,
-//                     child: SizedBox(
-//                       width: 300,
-//                       height: 28,
-//                       child: Text(
-//                         'Confirm Password',
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                           fontSize: 16,
-//                           fontFamily: 'Lato',
-//                           fontWeight: FontWeight.w400,
-//                           height: 0,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Positioned(
-//                     left: 35,
-//                     top: 58,
-//                     child: SizedBox(
-//                       width: 173,
-//                       height: 16,
-//                       child: TextFormField(
-//                         controller: _confirmPasswordController,
-//                         keyboardType: TextInputType.visiblePassword,
-//                         obscureText: true,
-//                         decoration: InputDecoration(
-//                           hintText: 'Re-enter Your Password',
-//                           hintStyle: TextStyle(
-//                             color: Color(0xFFD3D3D3),
-//                             fontSize: 14,
-//                             fontFamily: 'Lato',
-//                             fontWeight: FontWeight.w400,
-//                           ),
-//                           border: InputBorder.none, // Remove underline
-//                         ),
-//                         style: TextStyle(
-//                           color: Color(
-//                               0xFFD3D3D3), // Set text color to be visible when user enters text
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             left: 7,
-//             top: 650,
-//             child: SizedBox(
-//               width: 340,
-//               height: 99,
-//               child: Stack(
-//                 children: [
-//                   Positioned(
-//                     left: 22.5,
-//                     top: 0,
-//                     child: GestureDetector(
-//                       onTap: _register,
-//                       child: Container(
-//                         width: 300,
-//                         height: 50,
-//                         decoration: ShapeDecoration(
-//                           color: const Color(0xFF00B287),
-//                           shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(8)),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'loginscreen.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class My_Funtions {
-  static f_toast(BuildContext context, String msg, var clr) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: clr,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-}
+import '../MyFunctions/Funtions.dart';
+import '../OTP_Screens/OTP_Screen.dart';
+import 'loginscreen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -536,8 +68,15 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  bool _validatePassword(String password) {
+    final RegExp passwordExp = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$',
+    );
+    return passwordExp.hasMatch(password);
+  }
+
   Future<void> submitSignup(BuildContext context) async {
-    final url = 'http://192.168.10.34:8000/auth/register';
+    const url = 'http://10.0.2.2:8000/auth/register';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -547,12 +86,12 @@ class _SignupScreenState extends State<SignupScreen> {
         'password': _passwordController.text,
         'phoneNumber': _phoneNumberController.text,
         'phoneNumberVerification':
-            _phoneNumberVerificationController.text.toLowerCase() == 'true',
-        'email_verification':
-            _emailVerificationController.text.toLowerCase() == 'true',
+            _phoneNumberVerificationController.text.toLowerCase() == 'false',
+        'emailVerification':
+            _emailVerificationController.text.toLowerCase() == 'false',
         'address': _addressController.text,
-        'vendor': _vendorController.text.toLowerCase() == 'false',
-        'roles': ["user"],
+        // 'vendor': _vendorController.text.toLowerCase() == 'false',
+        'roles': [],
       };
 
       try {
@@ -568,9 +107,15 @@ class _SignupScreenState extends State<SignupScreen> {
           // Handle successful signup
           print('Signup successful');
           My_Funtions.f_toast(context, 'Registration successful', Colors.green);
+
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
+            MaterialPageRoute(
+              builder: (context) => OTPScreen(
+                email: _emailController.text,
+                phoneNumber: _phoneNumberController.text,
+              ),
+            ),
           );
         } else {
           // Handle signup failure
@@ -580,7 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
       } catch (e) {
         // Handle exceptions
         My_Funtions.f_toast(context, 'An error occurred', Colors.red);
-        print('An error occurred: $e');
+        // print('An error occurred: $e');
       }
     }
   }
@@ -643,6 +188,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
               ),
               TextFormField(
+                maxLength: 8,
                 controller: _passwordController,
                 focusNode: _passwordFocusNode,
                 decoration: InputDecoration(labelText: 'Password'),
@@ -650,6 +196,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
+                  } else if (!_validatePassword(value)) {
+                    return 'Password must contain at least 1 upper, 1 lowercase, and 1 special char';
                   }
                   return null;
                 },
@@ -659,9 +207,31 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
               ),
               TextFormField(
+                maxLength: 10,
+                keyboardType: TextInputType.number,
                 controller: _phoneNumberController,
                 focusNode: _phoneNumberFocusNode,
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: InputDecoration(
+                  labelText: 'Phone Number',
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/pakistan_flag.png', // Make sure you have the flag image in your assets folder
+                          width: 24,
+                          height: 24,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          '+92',
+                          style: TextStyle(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';
@@ -674,46 +244,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       .requestFocus(_phoneNumberVerificationFocusNode);
                 },
               ),
-              TextFormField(
-                controller: _phoneNumberVerificationController,
-                focusNode: _phoneNumberVerificationFocusNode,
-                decoration:
-                    InputDecoration(labelText: 'Phone Number Verification'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null ||
-                //       value.isEmpty ||
-                //       (value.toLowerCase() != 'true' &&
-                //           value.toLowerCase() != 'false')) {
-                //     return 'Please enter true or false';
-                //   }
-                //   return null;
-                // },
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context)
-                      .requestFocus(_emailVerificationFocusNode);
-                },
-              ),
-              TextFormField(
-                controller: _emailVerificationController,
-                focusNode: _emailVerificationFocusNode,
-                decoration: InputDecoration(labelText: 'Email Verification'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null ||
-                //       value.isEmpty ||
-                //       (value.toLowerCase() != 'true' &&
-                //           value.toLowerCase() != 'false')) {
-                //     return 'Please enter true or false';
-                //   }
-                //   return null;
-                // },
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_addressFocusNode);
-                },
-              ),
+              // ... (remaining fields and widgets)
               TextFormField(
                 controller: _addressController,
                 focusNode: _addressFocusNode,
@@ -729,48 +260,29 @@ class _SignupScreenState extends State<SignupScreen> {
                   FocusScope.of(context).requestFocus(_vendorFocusNode);
                 },
               ),
-              TextFormField(
-                controller: _vendorController,
-                focusNode: _vendorFocusNode,
-                decoration: InputDecoration(labelText: 'Vendor'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null ||
-                //       value.isEmpty ||
-                //       (value.toLowerCase() != 'true' &&
-                //           value.toLowerCase() != 'false')) {
-                //     return 'Please enter true or false';
-                //   }
-                //   return null;
-                // },
-                // textInputAction: TextInputAction.next,
-                // onFieldSubmitted: (_) {
-                //   FocusScope.of(context).requestFocus(_roleFocusNode);
-                // },
-              ),
-              TextFormField(
-                controller: _roleController,
-                focusNode: _roleFocusNode,
-                decoration: InputDecoration(labelText: 'Role'),
-                enabled: false,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter your role';
-                //   }
-                //   return null;
-                // },
-                // textInputAction: TextInputAction.done,
-                // onFieldSubmitted: (_) {
-                //   submitSignup(context);
-                // },
-              ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   submitSignup(context);
                 },
-                child: Text('Sign Up'),
-              ),
+                child: Container(
+                  height: 45,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

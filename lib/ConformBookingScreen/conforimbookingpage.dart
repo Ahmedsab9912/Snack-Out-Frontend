@@ -2,6 +2,8 @@ import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:eataly/MenuSectionScreens/MenuSelection.dart';
 import 'package:flutter/material.dart';
 
+import '../components/bottomNavigatorBar.dart';
+
 class Conforimbookingpage extends StatefulWidget {
   const Conforimbookingpage({super.key});
 
@@ -102,7 +104,7 @@ class _ConforimbookingpageState extends State<Conforimbookingpage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          Homescreen()), // Replace YourNewScreen with the actual screen class you want to navigate to
+                          BottomNavigationBarMenu()), // Replace YourNewScreen with the actual screen class you want to navigate to
                 );
               },
               child: Text(

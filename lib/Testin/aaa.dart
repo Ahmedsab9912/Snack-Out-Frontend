@@ -1,45 +1,44 @@
 // import 'package:flutter/material.dart';
-// import 'package:eataly/Login&SignupScreens/splashscreen.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
+//
+// class MyPhoneNumberField extends StatelessWidget {
+//   final TextEditingController _phoneNumberController = TextEditingController();
+//   final FocusNode _phoneNumberFocusNode = FocusNode();
+//   final FocusNode _phoneNumberVerificationFocusNode = FocusNode();
+//
 //   @override
 //   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       title: 'Flutter Demo',
-//       debugShowCheckedModeBanner: false,
-//       //home: Home(),
-//       //home: SearchResults(),
-//       //home: Bookings(),
-//       //home: Reviews(),
-//       //home: Menus(),
-//       //home: Photos(),
-//       //home: Details(),
-//       //home: TopNavigationBarManu(),
-//       home: SplashScreen(),
-//       //home: BottomNavigationBarMenu(),
-//       //home: GiftVoucherScreen(),
-//       //home: Profile(),
-//       //home: loyaltyRewardsScreen(),
-//       //home: bookingRewardsScreen(),
+//     return TextFormField(
+//       maxLength: 11,
+//       controller: _phoneNumberController,
+//       focusNode: _phoneNumberFocusNode,
+//       decoration: InputDecoration(
+//         labelText: 'Phone Number',
+//         prefixIcon: Padding(
+//           padding: const EdgeInsets.only(right: 8.0),
+//           child: Row(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Image.asset(
+//                 'assets/pakistan_flag.png', // Make sure you have the flag image in your assets folder
+//                 width: 24,
+//                 height: 24,
+//               ),
+//               SizedBox(width: 8),
+//               Text('+92'),
+//             ],
+//           ),
+//         ),
+//       ),
+//       validator: (value) {
+//         if (value == null || value.isEmpty) {
+//           return 'Please enter your phone number';
+//         }
+//         return null;
+//       },
+//       textInputAction: TextInputAction.next,
+//       onFieldSubmitted: (_) {
+//         FocusScope.of(context).requestFocus(_phoneNumberVerificationFocusNode);
+//       },
 //     );
 //   }
-// }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Scaffold(
-//     appBar: AppBar(
-//       title: const Text("Home Page"),
-//     ),
-//     body: const Center(
-//       child: Text("This is the new home page!"),
-//     ),
-//   );
 // }
