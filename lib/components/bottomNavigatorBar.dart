@@ -18,7 +18,6 @@ class BottomNavigationBarMenu extends StatefulWidget {
 }
 
 class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
-
   //THIS IS THE SHAREDPREFENCES
   String _username = '';
 
@@ -34,7 +33,6 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
       _username = prefs.getString('username') ?? 'John Doe';
     });
   }
-
 
   int _selectedIndex = 0; // Keeps track of the selected tab index
   // Define your custom color
@@ -110,7 +108,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children:  [
+                            children: [
                               Text(
                                 'Good Morning',
                                 style: TextStyle(
@@ -195,7 +193,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
               _selectedIndex = index;
             });
           },
-          indicatorColor:  Color(0xFF00B288),
+          indicatorColor: Color(0xFF00B288),
           tabs: List.generate(
             5,
             (index) {

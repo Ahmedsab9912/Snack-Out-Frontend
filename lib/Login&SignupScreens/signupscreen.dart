@@ -7,7 +7,6 @@ import '../MyFunctions/Funtions.dart';
 import '../OTP_Screens/OTP_Screen.dart';
 import 'loginscreen.dart';
 
-
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
@@ -23,8 +22,10 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _phoneNumberVerificationController = TextEditingController();
-  final TextEditingController _emailVerificationController = TextEditingController();
+  final TextEditingController _phoneNumberVerificationController =
+      TextEditingController();
+  final TextEditingController _emailVerificationController =
+      TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _vendorController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
@@ -84,8 +85,10 @@ class _SignupScreenState extends State<SignupScreen> {
         'email': _emailController.text,
         'password': _passwordController.text,
         'phoneNumber': _phoneNumberController.text,
-        'phoneNumberVerification': _phoneNumberVerificationController.text.toLowerCase() == 'false',
-        'emailVerification': _emailVerificationController.text.toLowerCase() == 'false',
+        'phoneNumberVerification':
+            _phoneNumberVerificationController.text.toLowerCase() == 'false',
+        'emailVerification':
+            _emailVerificationController.text.toLowerCase() == 'false',
         'address': _addressController.text,
         // 'vendor': _vendorController.text.toLowerCase() == 'false',
         'roles': [],
@@ -221,7 +224,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           height: 24,
                         ),
                         SizedBox(width: 8),
-                        Text('+92',style: TextStyle(),),
+                        Text(
+                          '+92',
+                          style: TextStyle(),
+                        ),
                       ],
                     ),
                   ),
@@ -234,7 +240,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_phoneNumberVerificationFocusNode);
+                  FocusScope.of(context)
+                      .requestFocus(_phoneNumberVerificationFocusNode);
                 },
               ),
               // ... (remaining fields and widgets)

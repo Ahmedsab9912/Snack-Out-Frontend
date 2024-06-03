@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:eataly/Models/AllRestaurantsAPI.dart';
 
 class Details extends StatelessWidget {
-  const Details({Key? key}) : super(key: key);
+  final Data restaurant;
+
+  const Details({Key? key, required this.restaurant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,14 +114,14 @@ class Details extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.only(
                                     left:
                                         8), // Add 24px top margin and 8px bottom padding
                                 child:
                                     // This ensures text takes up remaining space
                                     Text(
-                                  '243 San Street, 371 Road, Ireland',
+                                  restaurant.address ?? 'No Address',
                                   style: TextStyle(
                                     color: Color(0xFF888888),
                                     fontSize: 12,
@@ -198,9 +201,9 @@ class Details extends StatelessWidget {
                             fit: BoxFit
                                 .cover, // You can change this to BoxFit.fill if you want to stretch the image.
                           ),
-                          const SizedBox(width: 12),
-                          const Text(
-                            '+ 123  456  789',
+                           SizedBox(width: 12),
+                           Text(
+                            restaurant.phoneNumber ?? 'No Address',
                             style: TextStyle(
                               color: Color(0xFF00B288),
                               fontSize: 16,
@@ -340,12 +343,12 @@ class Details extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               SizedBox(width: 12),
                               Text(
                                 'Restaurant Availability Time',
@@ -375,7 +378,7 @@ class Details extends StatelessWidget {
                                   ),
                                   SizedBox(height: 4),
                                   Text(
-                                    '9:30 am - 10:30 pm',
+                                  '${restaurant.openingTime ?? 'No Opening Time'} - ${restaurant.closingTime ?? 'No Closing Time'}',
                                     style: TextStyle(
                                       color: Color(0xFF888888),
                                       fontSize: 14,
@@ -429,14 +432,14 @@ class Details extends StatelessWidget {
                             fit: BoxFit
                                 .cover, // You can change this to BoxFit.fill if you want to stretch the image.
                           ),
-                          const SizedBox(width: 12),
-                          const Column(
+                           SizedBox(width: 12),
+                           Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Retail Parking, Street Parking',
+                                restaurant.parkingType ?? 'No parking available',
                                 style: TextStyle(
                                   color: Color(0xFF888888),
                                   fontSize: 16,
@@ -449,7 +452,7 @@ class Details extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                     SizedBox(height: 16),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -473,8 +476,8 @@ class Details extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          const Column(
+                          SizedBox(width: 12),
+                          Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -501,7 +504,7 @@ class Details extends StatelessWidget {
                                 width: 280,
                                 height: 380,
                                 child: Text(
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n',
+                                  restaurant.details ?? 'No details available',
                                   style: TextStyle(
                                     color: Color(0xFF888888),
                                     fontSize: 14,
