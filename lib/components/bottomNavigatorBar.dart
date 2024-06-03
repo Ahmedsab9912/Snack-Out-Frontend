@@ -5,7 +5,6 @@ import 'package:eataly/NotificationScreen/NotificationPage.dart';
 import 'package:eataly/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
-
 import '../PartyScreens/partydemoscreen.dart';
 
 class BottomNavigationBarMenu extends StatefulWidget {
@@ -144,7 +143,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
         body: const TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            HomeScreen(),
+            Homescreen(),
             SavedScreen(),
             PartyDemoScreen(),
             Booking(), // Make sure this matches the class name from your import

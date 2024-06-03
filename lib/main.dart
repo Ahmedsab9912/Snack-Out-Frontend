@@ -1,7 +1,11 @@
 import 'package:eataly/Provider/AddToCartProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:eataly/Login&SignupScreens/signupscreen.dart';
 import 'package:eataly/Login&SignupScreens/splashscreen.dart';
+import 'package:eataly/components/topNavigationBar.dart';
 import 'package:provider/provider.dart';
+import 'package:eataly/Dashboard/HomeScreen.dart';
+import 'package:eataly/components/bottomNavigatorBar.dart';
 
 void main() {
   runApp(
@@ -22,7 +26,9 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: BottomNavigationBarMenu(),
+      //home: TopNavigationBarManu(),
+      //routes: {'/': (context) => const SplashScreen();}
     );
   }
 }

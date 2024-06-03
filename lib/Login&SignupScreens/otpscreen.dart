@@ -208,7 +208,7 @@ class OtpScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginScreen()),
+                              builder: (context) => LoginPage()),
                         );
                       },
                       child: Container(
