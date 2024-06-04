@@ -7,6 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 
+import 'Login&SignupScreens/otpscreen.dart';
+import 'OTP_Screens/OTP_Screen_Phone.dart';
+import 'app_theme/app_colors.dart';
+
 void main() {
   runApp(
     MultiProvider(
@@ -25,8 +29,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: AppTheme.themeData,
       debugShowCheckedModeBanner: false,
-      home: BottomNavigationBarMenu(),
+      home: SplashScreen(),
       //home: TopNavigationBarManu(),
       //routes: {'/': (context) => const SplashScreen();}
     );

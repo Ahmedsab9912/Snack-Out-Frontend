@@ -1,23 +1,23 @@
 /// message : "New user created"
-/// data : {"newUser":{"id":19,"username":"aaaaa","name":"aaaa","email":"aaa@gmail.com","password":"$2b$15$devK6NQCGXXNmGsD7gB0Le.6lqNCNnLTYb6qZWexCxSEor94fbeRO","phoneNumber":"1234567890","phoneNumberVerification":false,"address":"123 Lhr","vendor":false,"roles":["user"],"createdAt":"2024-05-23T08:31:48.059Z","updatedAt":"2024-05-23T08:31:48.059Z","email_verification":false}}
+/// data : {"newUser":{"id":4,"username":"ahmed","name":"Ahmed Baig","email":"ejazbaig700@gmail.com","password":"$2b$15$QkAVO5UEqWUPxDRBIIwwteuB63B/BqUzNUwVolOcbg4ZWeQP1IPbq","phoneNumber":"+923200470838","phoneNumberVerification":false,"roles":[],"createdAt":"2024-06-04T07:39:48.086Z","updatedAt":"2024-06-04T07:39:48.086Z","emailVerification":false}}
 
-class SignUpModel {
-  SignUpModel({
+class SignupModel {
+  SignupModel({
       String? message, 
       Data? data,}){
     _message = message;
     _data = data;
 }
 
-  SignUpModel.fromJson(dynamic json) {
+  SignupModel.fromJson(dynamic json) {
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   String? _message;
   Data? _data;
-SignUpModel copyWith({  String? message,
+SignupModel copyWith({  String? message,
   Data? data,
-}) => SignUpModel(  message: message ?? _message,
+}) => SignupModel(  message: message ?? _message,
   data: data ?? _data,
 );
   String? get message => _message;
@@ -34,7 +34,7 @@ SignUpModel copyWith({  String? message,
 
 }
 
-/// newUser : {"id":19,"username":"aaaaa","name":"aaaa","email":"aaa@gmail.com","password":"$2b$15$devK6NQCGXXNmGsD7gB0Le.6lqNCNnLTYb6qZWexCxSEor94fbeRO","phoneNumber":"1234567890","phoneNumberVerification":false,"address":"123 Lhr","vendor":false,"roles":["user"],"createdAt":"2024-05-23T08:31:48.059Z","updatedAt":"2024-05-23T08:31:48.059Z","email_verification":false}
+/// newUser : {"id":4,"username":"ahmed","name":"Ahmed Baig","email":"ejazbaig700@gmail.com","password":"$2b$15$QkAVO5UEqWUPxDRBIIwwteuB63B/BqUzNUwVolOcbg4ZWeQP1IPbq","phoneNumber":"+923200470838","phoneNumberVerification":false,"roles":[],"createdAt":"2024-06-04T07:39:48.086Z","updatedAt":"2024-06-04T07:39:48.086Z","emailVerification":false}
 
 class Data {
   Data({
@@ -61,19 +61,17 @@ Data copyWith({  NewUser? newUser,
 
 }
 
-/// id : 19
-/// username : "aaaaa"
-/// name : "aaaa"
-/// email : "aaa@gmail.com"
-/// password : "$2b$15$devK6NQCGXXNmGsD7gB0Le.6lqNCNnLTYb6qZWexCxSEor94fbeRO"
-/// phoneNumber : "1234567890"
+/// id : 4
+/// username : "ahmed"
+/// name : "Ahmed Baig"
+/// email : "ejazbaig700@gmail.com"
+/// password : "$2b$15$QkAVO5UEqWUPxDRBIIwwteuB63B/BqUzNUwVolOcbg4ZWeQP1IPbq"
+/// phoneNumber : "+923200470838"
 /// phoneNumberVerification : false
-/// address : "123 Lhr"
-/// vendor : false
-/// roles : ["user"]
-/// createdAt : "2024-05-23T08:31:48.059Z"
-/// updatedAt : "2024-05-23T08:31:48.059Z"
-/// email_verification : false
+/// roles : []
+/// createdAt : "2024-06-04T07:39:48.086Z"
+/// updatedAt : "2024-06-04T07:39:48.086Z"
+/// emailVerification : false
 
 class NewUser {
   NewUser({
@@ -84,9 +82,7 @@ class NewUser {
       String? password, 
       String? phoneNumber, 
       bool? phoneNumberVerification, 
-      String? address, 
-      bool? vendor, 
-      List<String>? roles, 
+      List<dynamic>? roles, 
       String? createdAt, 
       String? updatedAt, 
       bool? emailVerification,}){
@@ -97,8 +93,6 @@ class NewUser {
     _password = password;
     _phoneNumber = phoneNumber;
     _phoneNumberVerification = phoneNumberVerification;
-    _address = address;
-    _vendor = vendor;
     _roles = roles;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
@@ -113,12 +107,15 @@ class NewUser {
     _password = json['password'];
     _phoneNumber = json['phoneNumber'];
     _phoneNumberVerification = json['phoneNumberVerification'];
-    _address = json['address'];
-    _vendor = json['vendor'];
-    _roles = json['roles'] != null ? json['roles'].cast<String>() : [];
+    if (json['roles'] != null) {
+      _roles = [];
+      json['roles'].forEach((v) {
+        _roles?.add(v as Map<String, dynamic>); // Assuming roles is a list of objects
+      });
+    }
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
-    _emailVerification = json['email_verification'];
+    _emailVerification = json['emailVerification'];
   }
   num? _id;
   String? _username;
@@ -127,9 +124,7 @@ class NewUser {
   String? _password;
   String? _phoneNumber;
   bool? _phoneNumberVerification;
-  String? _address;
-  bool? _vendor;
-  List<String>? _roles;
+  List<dynamic>? _roles;
   String? _createdAt;
   String? _updatedAt;
   bool? _emailVerification;
@@ -140,9 +135,7 @@ NewUser copyWith({  num? id,
   String? password,
   String? phoneNumber,
   bool? phoneNumberVerification,
-  String? address,
-  bool? vendor,
-  List<String>? roles,
+  List<dynamic>? roles,
   String? createdAt,
   String? updatedAt,
   bool? emailVerification,
@@ -153,8 +146,6 @@ NewUser copyWith({  num? id,
   password: password ?? _password,
   phoneNumber: phoneNumber ?? _phoneNumber,
   phoneNumberVerification: phoneNumberVerification ?? _phoneNumberVerification,
-  address: address ?? _address,
-  vendor: vendor ?? _vendor,
   roles: roles ?? _roles,
   createdAt: createdAt ?? _createdAt,
   updatedAt: updatedAt ?? _updatedAt,
@@ -167,9 +158,7 @@ NewUser copyWith({  num? id,
   String? get password => _password;
   String? get phoneNumber => _phoneNumber;
   bool? get phoneNumberVerification => _phoneNumberVerification;
-  String? get address => _address;
-  bool? get vendor => _vendor;
-  List<String>? get roles => _roles;
+  List<dynamic>? get roles => _roles;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   bool? get emailVerification => _emailVerification;
@@ -183,12 +172,12 @@ NewUser copyWith({  num? id,
     map['password'] = _password;
     map['phoneNumber'] = _phoneNumber;
     map['phoneNumberVerification'] = _phoneNumberVerification;
-    map['address'] = _address;
-    map['vendor'] = _vendor;
-    map['roles'] = _roles;
+    if (_roles != null) {
+      map['roles'] = _roles?.map((v) => v.toJson()).toList();
+    }
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
-    map['email_verification'] = _emailVerification;
+    map['emailVerification'] = _emailVerification;
     return map;
   }
 
