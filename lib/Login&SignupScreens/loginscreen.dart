@@ -45,8 +45,10 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+
   Future<void> login() async {
-    const url = 'http://192.168.100.136:8000/auth/login';
+    // const url = 'http://10.0.2.2:8000/auth/login';
+    const url = 'http://192.168.10.25:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -66,11 +68,10 @@ class _LoginPageState extends State<LoginPage> {
         if (response.statusCode == 200) {
           final loginResponse = LoginModel.fromJson(jsonDecode(response.body));
 
-          // Save username and accessToken in shared preferences
+          // Save username, accessToken, and userId in shared preferences
           SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
           await sharedPreferences.saveUsername(_usernameController.text);
-          await sharedPreferences
-              .saveAccessToken(loginResponse.data?.accessToken ?? '');
+          await sharedPreferences.saveAccessToken(loginResponse.data?.accessToken ?? '');
 
           // Handle successful login
           ScaffoldMessenger.of(context).showSnackBar(
@@ -99,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -108,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
 
     // Define sizes relative to the screen size
     final containerHeight = screenSize.height * 0.065;
-    final containerWidth = screenSize.width * 0.9;
+    final containerWidth = screenSize.width * 0.85;
     final imageHeight = screenSize.height * 0.36;
     final imageWidth = screenSize.width * 0.9;
     final buttonHeight = screenSize.height * 0.07;
@@ -169,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: TextFormField(
                           controller: _usernameController,
                           focusNode: _usernameFocusNode,
+                          style: TextStyle(color: Colors.black), // Set text color to black
                           decoration: InputDecoration(border: InputBorder.none,hintText: 'Your Phone Number/ Username'),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -204,6 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: TextFormField(
                           controller: _passwordController,
                           focusNode: _passwordFocusNode,
+                          style: TextStyle(color: Colors.black), // Set text color to black
                           decoration: InputDecoration(border: InputBorder.none,hintText: 'Your Password'),
                           obscureText: true,
                           validator: (value) {

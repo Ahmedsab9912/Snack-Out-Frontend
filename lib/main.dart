@@ -4,6 +4,8 @@ import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Login&SignupScreens/otpscreen.dart';
+import 'OTP_Screens/OTP_Screen_Phone.dart';
 import 'app_theme/app_colors.dart';
 
 void main() {

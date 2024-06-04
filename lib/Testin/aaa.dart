@@ -4,7 +4,7 @@
 // import 'package:http/http.dart' as http;
 //
 // import '../MyFunctions/Funtions.dart';
-// import '../OTP_Screens/OTP_Screen.dart';
+// import '../OTP_Screens/OTP_Screen_Phone.dart';
 // import 'loginscreen.dart';
 //
 //

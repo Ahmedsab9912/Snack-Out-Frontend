@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../Models/SignupModel.dart';
 import '../MyFunctions/Funtions.dart';
-import '../OTP_Screens/OTP_Screen.dart';
+import '../OTP_Screens/OTP_Screen_Phone.dart';
+import '../Shared_Preferences/shared_preferences_page.dart';
 import '../app_theme/app_theme.dart';
 import 'loginscreen.dart';
 import '../app_theme/app_colors.dart'; // Import custom colors
@@ -50,13 +52,13 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool _validatePassword(String password) {
     final RegExp passwordExp = RegExp(
-      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$',
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$', // Minimum 8 characters
     );
     return passwordExp.hasMatch(password);
   }
 
-  Future<void> submitSignup(BuildContext context) async {
-    const url = 'http://192.168.100.136:8000/auth/register';
+  Future<int> submitSignup(BuildContext context) async {
+    const url = 'http://192.168.10.25:8000/auth/register';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -64,8 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
         'name': _nameController.text,
         'email': _emailController.text,
         'password': _passwordController.text,
-        'phoneNumber': _phoneNumberController.text,
-        'address': _addressController.text,
+        'phoneNumber': '+92' + _phoneNumberController.text,
         'phoneNumberVerification': false,
         'emailVerification': false,
         'roles': [],
@@ -81,18 +82,29 @@ class _SignupScreenState extends State<SignupScreen> {
         );
 
         if (response.statusCode == 200) {
+          final signupResponse = SignupModel.fromJson(jsonDecode(response.body));
+
+          // Save username, accessToken, and userId in shared preferences
+          SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
+          await sharedPreferences.saveUsername(_usernameController.text);
+          int userId = signupResponse.data?.newUser?.id?.toInt() ?? 0;
+          await sharedPreferences.saveUserId(userId);
+
           print('Signup successful');
           My_Funtions.f_toast(context, 'Registration successful', Colors.green);
 
+          // Navigate to OTP page
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => OTPScreen(
+              builder: (context) => OTP_Screen_Phone(
                 email: _emailController.text,
                 phoneNumber: _phoneNumberController.text,
               ),
             ),
           );
+
+          return userId;
         } else {
           My_Funtions.f_toast(context, 'Registration failed', Colors.red);
           print('Signup failed');
@@ -101,14 +113,56 @@ class _SignupScreenState extends State<SignupScreen> {
         My_Funtions.f_toast(context, 'An error occurred', Colors.red);
       }
     }
+    return 0;
   }
+
+  // Future<void> sendOtp(BuildContext context) async {
+  //   final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
+  //   final int userId = await sharedPreferences.getUserId() ?? 0;
+  //
+  //   const url ='http://192.168.10.25:8000/otp-verification/phone';
+  //   final body = {
+  //     'userId': userId,
+  //   };
+  //
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(url),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: jsonEncode(body),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       print('OTP sent successfully');
+  //       My_Funtions.f_toast(context, 'OTP sent successfully', Colors.green);
+  //
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => OTP_Screen_Phone(
+  //             email: _emailController.text,
+  //             phoneNumber: _phoneNumberController.text,
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       My_Funtions.f_toast(context, 'Failed to send OTP', Colors.red);
+  //       print('Failed to send OTP');
+  //     }
+  //   } catch (e) {
+  //     My_Funtions.f_toast(context, 'An error occurred', Colors.red);
+  //   }
+  // }
+
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
     final containerHeight = screenSize.height * 0.065;
-    final containerWidth = screenSize.width * 0.9;
+    final containerWidth = screenSize.width * 0.85;
     final imageHeight = screenSize.height * 0.33;
     final imageWidth = screenSize.width * 1;
     final buttonHeight = screenSize.height * 0.07;
@@ -171,6 +225,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _usernameController,
                           focusNode: _usernameFocusNode,
+                          style: TextStyle(color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Username',
                             border: InputBorder.none,
@@ -208,13 +263,14 @@ class _SignupScreenState extends State<SignupScreen> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _nameController,
                           focusNode: _nameFocusNode,
+                          style: TextStyle(color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Name',
-                            border: InputBorder.none,
+                            border: InputBorder.none, // Remove underline
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -224,8 +280,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
-                            FocusScope.of(context)
-                                .requestFocus(_emailFocusNode);
+                            FocusScope.of(context).requestFocus(_emailFocusNode);
                           },
                         ),
                       ),
@@ -254,6 +309,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _emailController,
                           focusNode: _emailFocusNode,
+                          style: TextStyle(color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Email',
                             border: InputBorder.none,
@@ -298,6 +354,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _passwordController,
                           focusNode: _passwordFocusNode,
+                          style: TextStyle(color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Password',
                             border: InputBorder.none,
@@ -308,14 +365,13 @@ class _SignupScreenState extends State<SignupScreen> {
                               return 'Please enter a password';
                             }
                             if (!_validatePassword(value)) {
-                              return 'Password must contain upper, lower, and special characters';
+                              return 'Password must be at least 8 characters and contain upper, lower, and special characters';
                             }
                             return null;
                           },
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
-                            FocusScope.of(context)
-                                .requestFocus(_phoneNumberFocusNode);
+                            FocusScope.of(context).requestFocus(_phoneNumberFocusNode);
                           },
                         ),
                       ),
@@ -358,7 +414,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         Container(
                           height: containerHeight,
-                          width: 305,
+                          width: 300,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Color(0xFFA6A6A6),
@@ -375,7 +431,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _phoneNumberController,
                               focusNode: _phoneNumberFocusNode,
                               enabled: true,
-                              style: TextStyle(fontSize: 16.0), // Adjust the font size as needed
+                              style: TextStyle(fontSize: 16.0,color: Colors.black), // Adjust the font size as needed
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric( vertical: 6,horizontal: 10.0), // Adjust padding
                                 border: InputBorder.none,
@@ -396,47 +452,48 @@ class _SignupScreenState extends State<SignupScreen> {
                       ],
                     ),
                     SizedBox(height: 15),
-                    Padding(
-                      padding: EdgeInsets.only(right: 325),
-                      child: Text(
-                        'Address',
-                        style: TextStyle(fontSize: 17, color: Colors.black),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Container(
-                      height: containerHeight,
-                      width: containerWidth,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xFFA6A6A6),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _addressController,
-                          focusNode: _addressFocusNode,
-                          decoration: InputDecoration(
-                            hintText: '  Your Address',
-                            border: InputBorder.none,
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your address';
-                            }
-                            return null;
-                          },
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(right: 325),
+                    //   child: Text(
+                    //     'Address',
+                    //     style: TextStyle(fontSize: 17, color: Colors.black),
+                    //   ),
+                    // ),
+                    // SizedBox(height: 5),
+                    // Container(
+                    //   height: containerHeight,
+                    //   width: containerWidth,
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(
+                    //       color: Color(0xFFA6A6A6),
+                    //       width: 1.0,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(8.0),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: TextFormField(
+                    //       controller: _addressController,
+                    //       focusNode: _addressFocusNode,
+                    //       style: TextStyle(color: Colors.black), // Set text color to black
+                    //       decoration: InputDecoration(
+                    //         hintText: '  Your Address',
+                    //         border: InputBorder.none,
+                    //       ),
+                    //       validator: (value) {
+                    //         if (value == null || value.isEmpty) {
+                    //           return 'Please enter your address';
+                    //         }
+                    //         return null;
+                    //       },
+                    //       textInputAction: TextInputAction.done,
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 20),
                     InkWell(
-                      onTap: () {
-                        submitSignup(context);
+                      onTap: () async {
+                        await submitSignup(context);
                       },
                       child: Container(
                         height: buttonHeight,
@@ -446,13 +503,15 @@ class _SignupScreenState extends State<SignupScreen> {
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         child: Center(
-                            child: Text(
-                          'Sign Up',
-                          style: TextStyle(
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 19.0,
-                              fontWeight: FontWeight.bold),
-                        )),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(height: 20),

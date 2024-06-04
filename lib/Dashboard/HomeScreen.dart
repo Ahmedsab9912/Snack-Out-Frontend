@@ -60,8 +60,8 @@ class _HomescreenState extends State<Homescreen> {
   Future<void> fetchRestaurants() async {
     var response =
         // ALWAYS UPDATE YOUR IP ADDRESS TO RUN THE API FROM BACKEND
-        await http.get(Uri.parse('http://10.0.2.2:8000/restaurants'));
-
+        // await http.get(Uri.parse('http://10.0.2.2:8000/restaurants'));
+        await http.get(Uri.parse('http://192.168.10.25:8000/restaurants'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       var restaurants = AllRestaurantsApi.fromJson(data);
@@ -88,92 +88,6 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: SafeArea(
-      //     child: Column(
-      //       children: [
-      //         Padding(
-      //           padding: EdgeInsets.only(top: 20.0),
-      //           child: SizedBox(
-      //             width: double.infinity,
-      //             child: Row(
-      //               mainAxisSize: MainAxisSize.min,
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               crossAxisAlignment: CrossAxisAlignment.center,
-      //               children: [
-      //                 Padding(
-      //                   padding: EdgeInsets.only(bottom: 10),
-      //                   child: Column(
-      //                     mainAxisSize: MainAxisSize.min,
-      //                     mainAxisAlignment: MainAxisAlignment.start,
-      //                     crossAxisAlignment: CrossAxisAlignment.start,
-      //                     children: [
-      //                       Text(
-      //                         'Good Morning',
-      //                         style: TextStyle(
-      //                           color: Color(0xFF222222),
-      //                           fontSize: 18,
-      //                           fontFamily: 'Lato',
-      //                           fontWeight: FontWeight.w500,
-      //                           height: 0,
-      //                         ),
-      //                       ),
-      //                       SizedBox(height: 2),
-      //                       Text(
-      //                         'John Doe',
-      //                         style: TextStyle(
-      //                           color: Color(0xFF222222),
-      //                           fontSize: 26,
-      //                           fontFamily: 'Lato',
-      //                           fontWeight: FontWeight.w600,
-      //                           height: 0,
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ),
-      //                 Row(
-      //                   children: [
-      //                     InkWell(
-      //                       onTap: () {
-      //                         Navigator.push(
-      //                           context,
-      //                           MaterialPageRoute(
-      //                             builder: (context) => Notificationpage(),
-      //                           ),
-      //                         );
-      //                       },
-      //                       child: Icon(
-      //                         Icons.shopping_cart,
-      //                         color: Color.fromRGBO(0, 178, 136, 1),
-      //                         size: 30,
-      //                       ),
-      //                     ),
-      //                     InkWell(
-      //                       onTap: () {
-      //                         Navigator.push(
-      //                           context,
-      //                           MaterialPageRoute(
-      //                             builder: (context) => Notificationpage(),
-      //                           ),
-      //                         );
-      //                       },
-      //                       child: Icon(
-      //                         Icons.notifications,
-      //                         color: Color.fromRGBO(0, 178, 136, 1),
-      //                         size: 30,
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 )
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       body: SafeArea(
         child: Column(
           children: [
