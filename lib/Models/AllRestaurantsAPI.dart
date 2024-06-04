@@ -95,7 +95,9 @@ class Data {
     _district = json['district'];
     _state = json['state'];
     _country = json['country'];
-    _coordinates = json['coordinates'] != null ? Coordinates.fromJson(json['coordinates']) : null;
+    _coordinates = json['coordinates'] != null
+        ? Coordinates.fromJson(json['coordinates'])
+        : null;
     _phoneNumber = json['phoneNumber'];
     _bankAccountId = json['bankAccountId'];
     _openingTime = json['openingTime'];

@@ -133,11 +133,13 @@ class _HomescreenState extends State<Homescreen> {
                       itemBuilder: (context, index) {
                         var restaurant = searchlistModel[index];
                         return InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TopNavigationBarManu(restaurant: restaurant,)),
+                                  builder: (context) => TopNavigationBarManu(
+                                        restaurant: restaurant,
+                                      )),
                             );
                           },
                           child: Padding(
@@ -162,7 +164,8 @@ class _HomescreenState extends State<Homescreen> {
                                           fit: BoxFit.cover,
                                           loadingBuilder: (BuildContext context,
                                               Widget child,
-                                              ImageChunkEvent? loadingProgress) {
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
                                             if (loadingProgress == null) {
                                               return child;
                                             }
@@ -183,8 +186,8 @@ class _HomescreenState extends State<Homescreen> {
                                           errorBuilder:
                                               (context, error, stackTrace) {
                                             return Center(
-                                                child:
-                                                    Text('Failed to load image'));
+                                                child: Text(
+                                                    'Failed to load image'));
                                           },
                                         ),
                                       ),
@@ -225,14 +228,16 @@ class _HomescreenState extends State<Homescreen> {
                                         Text(
                                           "4.5",
                                           style: TextStyle(
-                                              fontSize: 14, color: Colors.black),
+                                              fontSize: 14,
+                                              color: Colors.black),
                                         ),
                                         SizedBox(
                                           width: 5.0,
                                         ),
                                         // Star rating
                                         Row(
-                                          children: List.generate(5, (starIndex) {
+                                          children:
+                                              List.generate(5, (starIndex) {
                                             return Icon(
                                               Icons.star,
                                               color: starIndex < 4
@@ -256,5 +261,16 @@ class _HomescreenState extends State<Homescreen> {
         ),
       ),
     );
+  }
+}
+class RestaurantDetailScreen extends StatelessWidget {
+  final Data restaurant;
+
+  const RestaurantDetailScreen({Key? key, required this.restaurant})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TopNavigationBarManu(restaurant: restaurant);
   }
 }

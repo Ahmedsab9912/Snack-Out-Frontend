@@ -1,33 +1,25 @@
-// ignore: file_names
 import 'package:eataly/BookingScreens/featuredCardsBookings.dart';
+import 'package:eataly/Models/AllRestaurantsAPI.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsDetails.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsMenu.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsPhotos.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsReviews.dart';
 import 'package:flutter/material.dart';
-
-import '../Models/AllRestaurantsAPI.dart';
+import 'package:eataly/Models/AllRestaurantsAPI.dart';
+import 'package:eataly/RestaurantFeaturesScreens/featuredCardsMenu.dart';
 
 class TopNavigationBarManu extends StatelessWidget {
   final Data restaurant;
 
-  TopNavigationBarManu({required this.restaurant, Key? key}) : super(key: key);
+  TopNavigationBarManu({Key? key, required this.restaurant}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 40,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Restaurant Details',
-            style: TextStyle(
-              color: Color(0xFF00C572),
-              fontSize: 22,
-              fontFamily: 'Lato',
-              fontWeight: FontWeight.w700,
-              height: 0,
-            ),
-          ),
+          title: Text(restaurant.name ?? "Restaurant Details"),
         ),
         body: Column(
           children: [
@@ -56,57 +48,53 @@ class TopNavigationBarManu extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          50), // Adjust the radius as needed
-                                      child: Image.network(
-                                        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D',
-                                        height: 48,
-                                        width: 48,
-                                        fit: BoxFit.cover,
-                                        loadingBuilder: (BuildContext context,
-                                            Widget child,
-                                            ImageChunkEvent? loadingProgress) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          }
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      (loadingProgress
-                                                              .expectedTotalBytes ??
-                                                          1)
-                                                  : null,
-                                            ),
-                                          );
-                                        },
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Center(
-                                              child:
-                                                  Text('Failed to load image'));
-                                        },
+                                Container(
+                                  width: 44,
+                                  height: 44,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 2,
+                                        strokeAlign:
+                                            BorderSide.strokeAlignOutside,
+                                        color: Colors.white,
                                       ),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
-                                  ],
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 44,
+                                        height: 44,
+                                        decoration: ShapeDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/baghBlueIcon.png'),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(width: 16),
                                 SizedBox(
                                   width: 204,
                                   child: Text(
-                                    restaurant.name ?? "No Name",
+                                    restaurant.name ?? "Restaurant Name",
                                     style: TextStyle(
-                                      color: Color(0xFF00C572),
-                                      fontSize: 19,
+                                      color: Color.fromARGB(255, 0, 2, 1),
+                                      fontSize: 16,
                                       fontFamily: 'Lato',
                                       fontWeight: FontWeight.w700,
                                       height: 0,
@@ -117,6 +105,7 @@ class TopNavigationBarManu extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -126,7 +115,29 @@ class TopNavigationBarManu extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      restaurant.address ?? "No Name",
+                                      '\$\$\$',
+                                      style: TextStyle(
+                                        color: Color(0xFF888888),
+                                        fontSize: 14,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '.',
+                                      style: TextStyle(
+                                        color: Color(0xFF888888),
+                                        fontSize: 14,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'The Desi Cuisine',
                                       style: TextStyle(
                                         color: Color(0xFF888888),
                                         fontSize: 14,
@@ -137,25 +148,26 @@ class TopNavigationBarManu extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(width: 12),
-                                // Transform(
-                                //   transform: Matrix4.identity()
-                                //     ..translate(0.0, 0.0)
-                                //     ..rotateZ(1.57),
-                                //   child: Container(
-                                //     width: 10,
-                                //     decoration:  ShapeDecoration(
-                                //       shape: RoundedRectangleBorder(
-                                //         side: BorderSide(
-                                //           width: 1,
-                                //           strokeAlign:
-                                //               BorderSide.strokeAlignCenter,
-                                //           color: Color(0xFF888888),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
+                                SizedBox(width: 16),
+                                Transform(
+                                  transform: Matrix4.identity()
+                                    ..translate(0.0, 0.0)
+                                    ..rotateZ(1.57),
+                                  child: Container(
+                                    width: 10,
+                                    decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                          width: 1,
+                                          strokeAlign:
+                                              BorderSide.strokeAlignCenter,
+                                          color: Color(0xFF888888),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 16),
                                 Text(
                                   '2.2 mi away',
                                   style: TextStyle(
@@ -174,7 +186,7 @@ class TopNavigationBarManu extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   '4.5',
                                   style: TextStyle(
                                     color: Color(0xFF222222),
@@ -184,7 +196,7 @@ class TopNavigationBarManu extends StatelessWidget {
                                     height: 0,
                                   ),
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -193,7 +205,7 @@ class TopNavigationBarManu extends StatelessWidget {
                                     Container(
                                       width: 16,
                                       height: 16,
-                                      decoration: const ShapeDecoration(
+                                      decoration: ShapeDecoration(
                                         color: Color(0xFFFFCC1B),
                                         shape: StarBorder(
                                           points: 5,
@@ -205,11 +217,11 @@ class TopNavigationBarManu extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Container(
                                       width: 16,
                                       height: 16,
-                                      decoration: const ShapeDecoration(
+                                      decoration: ShapeDecoration(
                                         color: Color(0xFFFFCC1B),
                                         shape: StarBorder(
                                           points: 5,
@@ -221,11 +233,11 @@ class TopNavigationBarManu extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Container(
                                       width: 16,
                                       height: 16,
-                                      decoration: const ShapeDecoration(
+                                      decoration: ShapeDecoration(
                                         color: Color(0xFFFFCC1B),
                                         shape: StarBorder(
                                           points: 5,
@@ -237,11 +249,11 @@ class TopNavigationBarManu extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Container(
                                       width: 16,
                                       height: 16,
-                                      decoration: const ShapeDecoration(
+                                      decoration: ShapeDecoration(
                                         color: Color(0xFFFFCC1B),
                                         shape: StarBorder(
                                           points: 5,
@@ -253,11 +265,11 @@ class TopNavigationBarManu extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Container(
                                       width: 16,
                                       height: 16,
-                                      decoration: const ShapeDecoration(
+                                      decoration: ShapeDecoration(
                                         color: Color(0xFFD9D9D9),
                                         shape: StarBorder(
                                           points: 5,
@@ -275,8 +287,8 @@ class TopNavigationBarManu extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(width: 16),
-                        const Row(
+                        SizedBox(width: 16),
+                        Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,7 +319,7 @@ class TopNavigationBarManu extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                   ],
                 ),
               ),
@@ -318,23 +330,25 @@ class TopNavigationBarManu extends StatelessWidget {
               unselectedLabelColor: Colors.grey, // Unselected tab text color
               indicatorColor:
                   Color(0xFF00B288), // Underline color for selected tab
-              tabs: const [
-                Tab(text: 'Bookings'),
-                Tab(text: 'Reviews'),
+              tabs: [
+                Tab(text: 'Details'),
                 Tab(text: 'Photos'),
                 Tab(text: 'Menu'),
-                Tab(text: 'Details'),
+                Tab(text: 'Bookings'),
+                Tab(text: 'Reviews'),
               ],
             ),
-            const Expanded(
+            Expanded(
               // Content that changes based on the selected tab
               child: TabBarView(
                 children: [
+                  Details(
+                    restaurant: restaurant,
+                  ),
+                  Photos(),
+                  MenuListWidget(restaurantId: restaurant.id!.toInt()),
                   Bookings(),
                   Reviews(),
-                  Photos(),
-                  MenuListWidget(),
-                  Details(),
                 ],
               ),
             ),

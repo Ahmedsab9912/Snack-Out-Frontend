@@ -82,7 +82,8 @@ class _SignupScreenState extends State<SignupScreen> {
         );
 
         if (response.statusCode == 200) {
-          final signupResponse = SignupModel.fromJson(jsonDecode(response.body));
+          final signupResponse =
+              SignupModel.fromJson(jsonDecode(response.body));
 
           // Save username, accessToken, and userId in shared preferences
           SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
@@ -156,7 +157,6 @@ class _SignupScreenState extends State<SignupScreen> {
   //   }
   // }
 
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -225,7 +225,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _usernameController,
                           focusNode: _usernameFocusNode,
-                          style: TextStyle(color: Colors.black), // Set text color to black
+                          style: TextStyle(
+                              color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Username',
                             border: InputBorder.none,
@@ -267,7 +268,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _nameController,
                           focusNode: _nameFocusNode,
-                          style: TextStyle(color: Colors.black), // Set text color to black
+                          style: TextStyle(
+                              color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Name',
                             border: InputBorder.none, // Remove underline
@@ -280,7 +282,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
-                            FocusScope.of(context).requestFocus(_emailFocusNode);
+                            FocusScope.of(context)
+                                .requestFocus(_emailFocusNode);
                           },
                         ),
                       ),
@@ -309,7 +312,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _emailController,
                           focusNode: _emailFocusNode,
-                          style: TextStyle(color: Colors.black), // Set text color to black
+                          style: TextStyle(
+                              color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Email',
                             border: InputBorder.none,
@@ -354,7 +358,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _passwordController,
                           focusNode: _passwordFocusNode,
-                          style: TextStyle(color: Colors.black), // Set text color to black
+                          style: TextStyle(
+                              color: Colors.black), // Set text color to black
                           decoration: InputDecoration(
                             hintText: 'Your Password',
                             border: InputBorder.none,
@@ -371,7 +376,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
-                            FocusScope.of(context).requestFocus(_phoneNumberFocusNode);
+                            FocusScope.of(context)
+                                .requestFocus(_phoneNumberFocusNode);
                           },
                         ),
                       ),
@@ -387,9 +393,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     SizedBox(height: 5),
                     Row(
                       children: [
-                        SizedBox(width: 5.0,),
+                        SizedBox(
+                          width: 5.0,
+                        ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal padding
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.0), // Adjust horizontal padding
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,7 +411,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               SizedBox(width: 4),
                               Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 5,left: 3.0),
+                                  padding:
+                                      const EdgeInsets.only(top: 5, left: 3.0),
                                   child: Text(
                                     '+92',
                                     style: TextStyle(),
@@ -431,9 +441,14 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _phoneNumberController,
                               focusNode: _phoneNumberFocusNode,
                               enabled: true,
-                              style: TextStyle(fontSize: 16.0,color: Colors.black), // Adjust the font size as needed
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors
+                                      .black), // Adjust the font size as needed
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric( vertical: 6,horizontal: 10.0), // Adjust padding
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 6,
+                                    horizontal: 10.0), // Adjust padding
                                 border: InputBorder.none,
                               ),
                               validator: (value) {
@@ -444,7 +459,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               },
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
-                                FocusScope.of(context).requestFocus(_addressFocusNode);
+                                FocusScope.of(context)
+                                    .requestFocus(_addressFocusNode);
                               },
                             ),
                           ),
