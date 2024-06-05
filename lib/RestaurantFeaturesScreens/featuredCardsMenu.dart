@@ -92,7 +92,7 @@ class MenuItemCard extends StatelessWidget {
 
 Future<List<CreateMenuItemDto>> fetchMenuItems(int restaurantId) async {
   final response = await http
-      .get(Uri.parse('http:// 192.168.8.102:8000/menu-items/$restaurantId'));
+      .get(Uri.parse('http://192.168.100.136:8000/menu-items/$restaurantId'));
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);

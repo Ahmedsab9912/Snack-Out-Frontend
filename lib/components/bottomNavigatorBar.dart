@@ -2,7 +2,7 @@
 import 'package:eataly/BookingScreens/Bookings.dart';
 import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:eataly/NotificationScreen/NotificationPage.dart';
-import 'package:eataly/Profile.dart';
+import 'package:eataly/Profile/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +19,7 @@ class BottomNavigationBarMenu extends StatefulWidget {
 
 class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
   //THIS IS THE SHAREDPREFENCES
-  String _username = '';
+  String name = '';
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
   Future<void> _loadUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _username = prefs.getString('username') ?? 'John Doe';
+      name = prefs.getString('name') ?? 'UserName';
     });
   }
 
@@ -120,7 +120,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                                 ),
                               ),
                               Text(
-                                _username ?? 'User',
+                                name ?? 'User',
                                 style: TextStyle(
                                   color: Color(0xFF222222),
                                   fontSize: 22,

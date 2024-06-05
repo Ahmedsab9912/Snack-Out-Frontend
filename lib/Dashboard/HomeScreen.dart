@@ -60,8 +60,8 @@ class _HomescreenState extends State<Homescreen> {
   Future<void> fetchRestaurants() async {
     var response =
         // ALWAYS UPDATE YOUR IP ADDRESS TO RUN THE API FROM BACKEND
-        // await http.get(Uri.parse('http://10.0.2.2:8000/restaurants'));
-        await http.get(Uri.parse('http://192.168.10.25:8000/restaurants'));
+        await http.get(Uri.parse('http://10.0.2.2:8000/restaurants'));
+        // await http.get(Uri.parse('http://192.168.100.136:8000/restaurants'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       var restaurants = AllRestaurantsApi.fromJson(data);

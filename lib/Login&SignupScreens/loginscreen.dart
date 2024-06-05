@@ -2,8 +2,10 @@ import 'package:eataly/Login&SignupScreens/signupscreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../Models/LoginModel.dart';
+import '../MyFunctions/Funtions.dart';
 import '../Shared_Preferences/shared_preferences_page.dart';
 import '../app_theme/app_theme.dart'; // Importing the Data From Custom Directory
 
@@ -45,10 +47,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-
-  Future<void> login() async {
-    // const url = 'http://10.0.2.2:8000/auth/login';
-    const url = 'http://192.168.0.102/auth/login';
+  Future<int> login(BuildContext context) async {
+    const url = 'http://10.0.2.2:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -64,223 +64,247 @@ class _LoginPageState extends State<LoginPage> {
           },
           body: jsonEncode(body),
         );
-
         if (response.statusCode == 200) {
           final loginResponse = LoginModel.fromJson(jsonDecode(response.body));
-
           // Save username, accessToken, and userId in shared preferences
-          SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
-          await sharedPreferences.saveUsername(_usernameController.text);
-          await sharedPreferences.saveAccessToken(loginResponse.data?.accessToken ?? '');
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('username', loginResponse.data!.user!.username.toString());
+          await prefs.setInt('userId', loginResponse.data!.user!.id!.toInt() ?? 0);
+          await prefs.setString('accessToken', loginResponse.data!.accessToken.toString());
+          await prefs.setString('name', loginResponse.data!.user!.name.toString());
+          await prefs.setString('email', loginResponse.data!.user!.email.toString());
+          await prefs.setString('phoneNumber', loginResponse.data!.user!.phoneNumber.toString());
+          await prefs.setString('profileImage', loginResponse.data!.user!.profileImage.toString());
 
-          // Handle successful login
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('Login successful'),
-                backgroundColor: Colors.green),
-          );
+          print('Login successful');
+          My_Funtions.f_toast(context, 'Login successful', Colors.green);
+
+          // Navigate to home page
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BottomNavigationBarMenu()),
+            MaterialPageRoute(
+              builder: (context) => BottomNavigationBarMenu(),
+            ),
           );
-        } else {
-          // Handle login failure
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('Login failed'), backgroundColor: Colors.red),
-          );
+
+          return loginResponse.data!.user!.id!.toInt() ?? 0;
+        }
+        else {
+          My_Funtions.f_toast(context, 'Login failed', Colors.red);
+          print('Login failed');
         }
       } catch (e) {
-        // Handle exceptions
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('An error occurred'), backgroundColor: Colors.red),
-        );
+        My_Funtions.f_toast(context, 'An error occurred', Colors.red);
       }
     }
+    return 0;
   }
 
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final width = screenSize.width * 0.95; // 95% of screen width
-    final height = screenSize.height * 0.95; // 95% of screen height
-
-
-    // Define sizes relative to the screen size
-    final containerHeight = screenSize.height * 0.065;
-    final containerWidth = screenSize.width * 0.85;
-    final imageHeight = screenSize.height * 0.36;
-    final imageWidth = screenSize.width * 0.9;
-    final buttonHeight = screenSize.height * 0.07;
-    final buttonWidth = screenSize.width * 0.8;
-    final containerPadding = screenSize.height * 0.02;
-
-
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 55.0),
-              child: Container(
-                height: imageHeight,
-                width: imageWidth,
-                child: Image.asset("assets/images/pattern.png"),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 320),
-                      child: Text(
-                        'Log In',
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: AppColors.primaryTextColor, // Using custom text color
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding:  EdgeInsets.only(right: 320),
-                      child: Text('Username',style: TextStyle(fontSize: 17,color: Colors.black),),
-                    ),
-                    SizedBox(height: 5,),
-                    Container(
-                      height: containerHeight,
-                      width: containerWidth,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xFFA6A6A6), // Set the border color
-                          width: 1.0, // Set the border width
-                        ),
-                        borderRadius: BorderRadius.circular(8.0), // Optional: Add rounded corners
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _usernameController,
-                          focusNode: _usernameFocusNode,
-                          style: TextStyle(color: Colors.black), // Set text color to black
-                          decoration: InputDecoration(border: InputBorder.none,hintText: 'Your Phone Number/ Username'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your username';
-                            }
-                            return null;
-                          },
-                          textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) {
-                            FocusScope.of(context).requestFocus(_passwordFocusNode);
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15,),
-                    Padding(
-                      padding:  EdgeInsets.only(right: 320),
-                      child: Text('Password',style: TextStyle(fontSize: 17,color: Colors.black),),
-                    ),
-                    SizedBox(height: 5,),
-                    Container(
-                      height: containerHeight,
-                      width: containerWidth,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xFFA6A6A6), // Set the border color
-                          width: 1.0, // Set the border width
-                        ),
-                        borderRadius: BorderRadius.circular(8.0), // Optional: Add rounded corners
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          focusNode: _passwordFocusNode,
-                          style: TextStyle(color: Colors.black), // Set text color to black
-                          decoration: InputDecoration(border: InputBorder.none,hintText: 'Your Password'),
-                          obscureText: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
-                          textInputAction: TextInputAction.done,
-                          onFieldSubmitted: (_) {
-                            login();
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 4,),
-                    Padding(
-                      padding:  EdgeInsets.only(left: 250),
-                      child: Text('Forget Password?',style: TextStyle(fontSize: 17,color: Colors.black),),
-                    ),
-                    SizedBox(height: 5,),
-                    SizedBox(height: 20),
-                    InkWell(
-                      onTap: () {
-                        login();
-                      },
-                      child: Container(
-                        height: buttonHeight,
-                        width: buttonWidth,
-                        decoration: BoxDecoration(
-                          color: AppColors.buttonColor,
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Center(
-                            child: Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupScreen()),
-                        );
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'First time here?',
-                            style: TextStyle(fontSize: 17.0, color: Colors.black),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'Sign Up for the Accounts',
-                            style: TextStyle(fontSize: 17.0, color : AppColors.primaryTextColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // THESE TERMS ARE USED TO RESPONSIVENESS OF CODE
+          final containerHeight = constraints.maxHeight * 0.065;
+          final containerWidth = constraints.maxWidth * 0.85;
+          final imageHeight = constraints.maxHeight * 0.36;
+          final imageWidth = constraints.maxWidth * 0.9;
+          final buttonHeight = constraints.maxHeight * 0.07;
+          final buttonWidth = constraints.maxWidth * 0.8;
+
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 55.0),
+                  child: Container(
+                    height: imageHeight,
+                    width: imageWidth,
+                    child: Image.asset("assets/images/pattern.png"),
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Log In',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: AppColors.primaryTextColor, // Using custom text color
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Username',
+                            style: TextStyle(fontSize: 17, color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          height: containerHeight,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xFFA6A6A6), // Set the border color
+                              width: 1.0, // Set the border width
+                            ),
+                            borderRadius: BorderRadius.circular(8.0), // Optional: Add rounded corners
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _usernameController,
+                              focusNode: _usernameFocusNode,
+                              style: TextStyle(color: Colors.black), // Set text color to black
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Your Phone Number/ Username',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your username';
+                                }
+                                return null;
+                              },
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) {
+                                FocusScope.of(context).requestFocus(_passwordFocusNode);
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Password',
+                            style: TextStyle(fontSize: 17, color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          height: containerHeight,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xFFA6A6A6),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _passwordController,
+                              focusNode: _passwordFocusNode,
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Your Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                ),
+                              ),
+                              obscureText: _obscureText,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                return null;
+                              },
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (_) {
+                                login(context);
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'Forget Password?',
+                            style: TextStyle(fontSize: 17, color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        InkWell(
+                          onTap: (){
+                            login(context);
+                          },
+                          child: Container(
+                            height: buttonHeight,
+                            width: buttonWidth,
+                            decoration: BoxDecoration(
+                              color: AppColors.buttonColor,
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Login',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignupScreen()),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'First time here?',
+                                style: TextStyle(fontSize: 17.0, color: Colors.black),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Sign Up for the Accounts',
+                                style: TextStyle(fontSize: 17.0, color: AppColors.primaryTextColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
