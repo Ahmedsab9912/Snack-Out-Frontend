@@ -75,7 +75,7 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
 
-    final url = 'http://192.168.10.25:8000/otp-verification/email?userId=$userId';
+    final url = 'http://192.168.0.102/otp-verification/email?userId=$userId';
 
     try {
       final response = await http.post(

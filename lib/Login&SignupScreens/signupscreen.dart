@@ -58,7 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<int> submitSignup(BuildContext context) async {
-    const url = 'http://192.168.10.25:8000/auth/register';
+    const url = 'http://192.168.0.102:8000/auth/register';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {

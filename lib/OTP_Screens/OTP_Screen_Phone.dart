@@ -76,7 +76,7 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
 
-    final url = 'http://192.168.10.25:8000/otp-verification/phone?userId=$userId';
+    final url = 'http://192.168.0.102/otp-verification/phone?userId=$userId';
 
     try {
       final response = await http.post(

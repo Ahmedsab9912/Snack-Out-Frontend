@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> login() async {
     // const url = 'http://10.0.2.2:8000/auth/login';
-    const url = 'http://192.168.10.25:8000/auth/login';
+    const url = 'http://192.168.0.102/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
