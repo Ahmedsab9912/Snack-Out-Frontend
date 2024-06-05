@@ -7,7 +7,6 @@ class SavedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
         // Wrap the SingleChildScrollView with a Center widget
         child: Column(

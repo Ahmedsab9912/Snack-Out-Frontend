@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:eataly/Dashboard/HomeScreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 
-import 'Login&SignupScreens/otpscreen.dart';
+
 import 'OTP_Screens/OTP_Screen_Phone.dart';
+import 'OTP_Screens/VerifiedAccout.dart';
 import 'app_theme/app_colors.dart';
 
 void main() {
