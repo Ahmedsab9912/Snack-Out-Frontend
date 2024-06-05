@@ -3,11 +3,11 @@
 
 class SignupModel {
   SignupModel({
-      String? message, 
-      Data? data,}){
+    String? message,
+    Data? data,}){
     _message = message;
     _data = data;
-}
+  }
 
   SignupModel.fromJson(dynamic json) {
     _message = json['message'];
@@ -15,11 +15,11 @@ class SignupModel {
   }
   String? _message;
   Data? _data;
-SignupModel copyWith({  String? message,
-  Data? data,
-}) => SignupModel(  message: message ?? _message,
-  data: data ?? _data,
-);
+  SignupModel copyWith({  String? message,
+    Data? data,
+  }) => SignupModel(  message: message ?? _message,
+    data: data ?? _data,
+  );
   String? get message => _message;
   Data? get data => _data;
 
@@ -38,17 +38,17 @@ SignupModel copyWith({  String? message,
 
 class Data {
   Data({
-      NewUser? newUser,}){
+    NewUser? newUser,}){
     _newUser = newUser;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _newUser = json['newUser'] != null ? NewUser.fromJson(json['newUser']) : null;
   }
   NewUser? _newUser;
-Data copyWith({  NewUser? newUser,
-}) => Data(  newUser: newUser ?? _newUser,
-);
+  Data copyWith({  NewUser? newUser,
+  }) => Data(  newUser: newUser ?? _newUser,
+  );
   NewUser? get newUser => _newUser;
 
   Map<String, dynamic> toJson() {
@@ -75,17 +75,17 @@ Data copyWith({  NewUser? newUser,
 
 class NewUser {
   NewUser({
-      num? id, 
-      String? username, 
-      String? name, 
-      String? email, 
-      String? password, 
-      String? phoneNumber, 
-      bool? phoneNumberVerification, 
-      List<dynamic>? roles, 
-      String? createdAt, 
-      String? updatedAt, 
-      bool? emailVerification,}){
+    num? id,
+    String? username,
+    String? name,
+    String? email,
+    String? password,
+    String? phoneNumber,
+    bool? phoneNumberVerification,
+    List<dynamic>? roles,
+    String? createdAt,
+    String? updatedAt,
+    bool? emailVerification,}){
     _id = id;
     _username = username;
     _name = name;
@@ -97,7 +97,7 @@ class NewUser {
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _emailVerification = emailVerification;
-}
+  }
 
   NewUser.fromJson(dynamic json) {
     _id = json['id'];
@@ -128,29 +128,29 @@ class NewUser {
   String? _createdAt;
   String? _updatedAt;
   bool? _emailVerification;
-NewUser copyWith({  num? id,
-  String? username,
-  String? name,
-  String? email,
-  String? password,
-  String? phoneNumber,
-  bool? phoneNumberVerification,
-  List<dynamic>? roles,
-  String? createdAt,
-  String? updatedAt,
-  bool? emailVerification,
-}) => NewUser(  id: id ?? _id,
-  username: username ?? _username,
-  name: name ?? _name,
-  email: email ?? _email,
-  password: password ?? _password,
-  phoneNumber: phoneNumber ?? _phoneNumber,
-  phoneNumberVerification: phoneNumberVerification ?? _phoneNumberVerification,
-  roles: roles ?? _roles,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-  emailVerification: emailVerification ?? _emailVerification,
-);
+  NewUser copyWith({  num? id,
+    String? username,
+    String? name,
+    String? email,
+    String? password,
+    String? phoneNumber,
+    bool? phoneNumberVerification,
+    List<dynamic>? roles,
+    String? createdAt,
+    String? updatedAt,
+    bool? emailVerification,
+  }) => NewUser(  id: id ?? _id,
+    username: username ?? _username,
+    name: name ?? _name,
+    email: email ?? _email,
+    password: password ?? _password,
+    phoneNumber: phoneNumber ?? _phoneNumber,
+    phoneNumberVerification: phoneNumberVerification ?? _phoneNumberVerification,
+    roles: roles ?? _roles,
+    createdAt: createdAt ?? _createdAt,
+    updatedAt: updatedAt ?? _updatedAt,
+    emailVerification: emailVerification ?? _emailVerification,
+  );
   num? get id => _id;
   String? get username => _username;
   String? get name => _name;

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../Login&SignupScreens/loginscreen.dart';
 import '../Shared_Preferences/shared_preferences_page.dart';
 import '../app_theme/app_theme.dart';
+import 'VerifiedAccout.dart';
 
 class OPT_Screen_Email extends StatefulWidget {
   final String email;
@@ -75,7 +76,7 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
 
-    final url = 'http://192.168.10.25:8000/otp-verification/email?userId=$userId';
+    final url = 'http://10.0.2.2:8000/otp-verification/email?userId=$userId';
 
     try {
       final response = await http.post(
@@ -101,7 +102,7 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
     final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    final url = 'http://192.168.10.25:8000/otp-verification/email?userId=${userId}Id&otp=${otp}';
+    final url = 'http://10.0.2.2:8000/otp-verification/email?userId=${userId}Id&otp=${otp}';
 
     try {
       final response = await http.patch(
@@ -117,7 +118,7 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => LoginPage())
+                builder: (context) => VerifiedAccount())
         );
         print(otp);
         print('OTP verified successfully');
