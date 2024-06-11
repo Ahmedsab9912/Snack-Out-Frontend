@@ -76,11 +76,11 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
 
-    final url = 'http://192.168.10.10:8000/otp-verification/phone?userId=$userId';
+    final url = 'http://192.168.10.20:8000/otp-verification/phone?userId=$userId';
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/otp-verification/phone?userId=$userId'),
+        Uri.parse('http://192.168.10.20:8000/otp-verification/phone?userId=$userId'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -101,7 +101,7 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
     final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    final url = 'http://192.168.10.10:8000/otp-verification/phone?userId=${userId}Id&otp=${otp}';
+    final url = 'http://192.168.10.20:8000/otp-verification/phone?userId=${userId}Id&otp=${otp}';
 
     try {
       final response = await http.patch(

@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<int> login(BuildContext context) async {
-    const url = 'http://192.168.10.10:8000/auth/login';
+    final url = 'http://192.168.10.20:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         final response = await http.post(
-          Uri.parse(login as String),
+          Uri.parse(url),
           headers: {
             'Content-Type': 'application/json',
           },

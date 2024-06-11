@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../MyFunctions/Funtions.dart';
-import '../app_theme/app_theme.dart'; // Importing the Data From Custom Directory
-import 'Phone_Otp_Verification.dart'; // Importing Phone_Otp_Verification.dart
+import 'Phone_Otp_Verification.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -21,10 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   Future<void> requestOTP(BuildContext context) async {
-    // Your API endpoint for sending OTP
-    const url = 'http://192.168.10.10:8000/users/request-otp';
-
-    // Constructing the phone number
+    const url = 'http://192.168.10.20:8000/otp-verification/request-otp';
     final phoneNumber = '+92' + _phoneNumberController.text;
 
     if (_formKey.currentState?.validate() ?? false) {
@@ -44,9 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
         if (response.statusCode == 200) {
           print('OTP sent to $phoneNumber');
-          My_Funtions.f_toast(context, 'OTP sent to $phoneNumber', Colors.green);
           // Navigate to OTP verification screen
-          // You need to create PhoneOtpVerificationScreen for this navigation
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -54,11 +47,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
           );
         } else {
-          My_Funtions.f_toast(context, 'Failed to send OTP', Colors.red);
           print('Failed to send OTP: ${response.reasonPhrase}');
         }
       } catch (e) {
-        My_Funtions.f_toast(context, 'An error occurred: $e', Colors.red);
         print('An error occurred: $e');
       }
     }
@@ -79,7 +70,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Phone number label
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -88,7 +78,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               ),
               SizedBox(height: 5),
-              // Phone number field
               Container(
                 height: screenSize.height * 0.065,
                 width: screenSize.width * 0.85,
@@ -104,7 +93,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: screenSize.width * 0.2, // Adjusted width
+                        width: screenSize.width * 0.2,
                         child: Padding(
                           padding: EdgeInsets.only(right: 10),
                           child: Row(
@@ -112,8 +101,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             children: [
                               Image.asset(
                                 'assets/images/pakistan_flag.png',
-                                width: screenSize.width * 0.09, // Adjusted width
-                                height: screenSize.width * 0.09, // Adjusted height
+                                width: screenSize.width * 0.09,
+                                height: screenSize.width * 0.09,
                               ),
                               Text(
                                 '+92',
@@ -136,7 +125,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your phone number';
                             }
-                            // You can add more validation logic here if needed
                             return null;
                           },
                         ),
@@ -151,7 +139,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   requestOTP(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryTextColor,
+                  backgroundColor: Colors.blue, // Adjust this to your theme color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -174,4 +162,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: ForgotPasswordScreen(),
+  ));
 }
