@@ -17,7 +17,7 @@ class _EditEmailState extends State<EditEmail> {
   final TextEditingController _newEmailController = TextEditingController();
 
   Future<void> changeEmail() async {
-    final Uri url = Uri.parse('http://192.168.10.5:8000/users/change-email');
+    final Uri url = Uri.parse('http://192.168.10.6:8000/otp-verification/change-email');
     final String? accessToken = await getAccessToken();
 
     print(await getAccessToken());
@@ -100,7 +100,7 @@ class _EditEmailState extends State<EditEmail> {
                     ),
                   ),
                   Container(
-                    height: containerHeight,
+                    height: 50,
                     width: containerWidth,
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -141,7 +141,7 @@ class _EditEmailState extends State<EditEmail> {
                     ),
                   ),
                   Container(
-                    height: containerHeight,
+                    height: 50,
                     width: containerWidth,
                     decoration: BoxDecoration(
                       border: Border.all(

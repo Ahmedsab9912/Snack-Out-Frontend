@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:eataly/Profile/EditProfileScreen/phone-verified-page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme/app_theme.dart';
+import '../../components/bottomNavigatorBar.dart';
 import '../Profile.dart';
 
 class VerifyPhone extends StatefulWidget {
@@ -72,7 +74,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
   Future<void> verifyOtp() async {
     final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    const url = 'http://192.168.10.5:8000/users/verify-change-phone';
+    const url = 'http://192.168.10.6:8000/otp-verification/verify-change-phone';
     final accessToken = await getAccessToken();
     try {
       final body = jsonEncode({'otp': otp}); // Encode the OTP as JSON
@@ -87,19 +89,13 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
       if (response.statusCode == 200) {
         print(otp);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Profile(),
+            builder: (context) => Phone_Verified_Page(),
           ),
         );
         print('OTP verified successfully');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Profile(),
-          ),
-        );
       } else {
         print(otp);
         print('Failed to verify OTP');

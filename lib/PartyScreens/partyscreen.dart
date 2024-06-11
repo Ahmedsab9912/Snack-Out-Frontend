@@ -1,4 +1,5 @@
 import 'package:eataly/PartyScreens/StartPartyScreen.dart';
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class PartyScreen extends StatelessWidget {
@@ -62,7 +63,7 @@ class PartyScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF00B288),
+                        color:AppColors.buttonColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: InkWell(
@@ -149,11 +150,10 @@ class PartyScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(15),
                                           border: Border.all(
-                                            color: const Color(0xFF00B288),
+                                            color: AppColors.buttonColor,
                                             width: 1.5,
                                           ),
-                                          color: Color.fromARGB(
-                                              255, 221, 240, 236),
+                                          color:AppColors.buttonTextColor,
                                         ),
                                         child: const Center(
                                           child: Text(
@@ -164,7 +164,7 @@ class PartyScreen extends StatelessWidget {
                                               fontWeight: FontWeight.w500,
                                               height: 1,
                                               letterSpacing: 0.0,
-                                              color: Color(0xFF00B288),
+                                              color: AppColors.buttonColor,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -191,7 +191,7 @@ class PartyScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(12),
-                                            color: const Color(0xFF00B288),
+                                            color: AppColors.buttonColor,
                                           ),
                                           padding: const EdgeInsets.fromLTRB(
                                               16, 12, 16, 12),
@@ -238,7 +238,7 @@ class PartyScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(12),
-                                            color: const Color(0xFF00B288),
+                                            color: AppColors.buttonColor,
                                           ),
                                           padding: const EdgeInsets.fromLTRB(
                                               16, 12, 16, 12),
@@ -282,7 +282,7 @@ class PartyScreen extends StatelessWidget {
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: const Color(0xFF00B288),
+                            color:AppColors.primaryTextColor,
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -292,7 +292,7 @@ class PartyScreen extends StatelessWidget {
                             Text(
                               'Join a Party Through Code',
                               style: TextStyle(
-                                color: Color(0xFF00B288),
+                                color: AppColors.primaryTextColor,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
