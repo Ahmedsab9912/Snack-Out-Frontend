@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 
+import '../app_theme/app_theme.dart';
+
 class Booking extends StatelessWidget {
   const Booking({Key? key}) : super(key: key);
 
@@ -17,7 +19,7 @@ class Booking extends StatelessWidget {
               child: const Text(
                 'Ongoing Bookings',
                 style: TextStyle(
-                  color: Colors.teal,
+                  color: AppColors.buttonColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -52,7 +54,7 @@ class Booking extends StatelessWidget {
                               const Text(
                                 'Junoon Heritage - Pure Desi Experience',
                                 style: TextStyle(
-                                  color: Colors.teal,
+                                  color: AppColors.buttonColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -86,7 +88,7 @@ class Booking extends StatelessWidget {
                       height: 44, // Logical pixels, not actual device pixels.
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.teal,
+                          foregroundColor: AppColors.buttonColor,
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             // Define the button's shape
@@ -127,7 +129,7 @@ class Booking extends StatelessWidget {
               child: const Text(
                 'Past Bookings',
                 style: TextStyle(
-                  color: Colors.teal,
+                  color: AppColors.buttonColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -162,7 +164,7 @@ class Booking extends StatelessWidget {
                               const Text(
                                 'Junoon Heritage - Pure Desi Experience',
                                 style: TextStyle(
-                                  color: Colors.teal,
+                                  color: AppColors.buttonColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -198,7 +200,7 @@ class Booking extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor:
-                              Colors.teal, // Text Color (Foreground color)
+                          AppColors.buttonColor,
                           shape: RoundedRectangleBorder(
                             // Define the button's shape
                             borderRadius: BorderRadius.circular(
@@ -259,7 +261,7 @@ class Booking extends StatelessWidget {
                               const Text(
                                 'Daily Deli Co',
                                 style: TextStyle(
-                                  color: Colors.teal,
+                                  color: AppColors.buttonColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -294,7 +296,7 @@ class Booking extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.teal,
+                          backgroundColor: AppColors.buttonColor,
                           shape: RoundedRectangleBorder(
                             // Define the button's shape
                             borderRadius: BorderRadius.circular(
@@ -355,7 +357,7 @@ class Booking extends StatelessWidget {
                               const Text(
                                 'MONAL',
                                 style: TextStyle(
-                                  color: Colors.teal,
+                                  color: AppColors.buttonColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -390,7 +392,7 @@ class Booking extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.teal,
+                          backgroundColor:  AppColors.buttonColor,
                           shape: RoundedRectangleBorder(
                             // Define the button's shape
                             borderRadius: BorderRadius.circular(
@@ -451,7 +453,7 @@ class Booking extends StatelessWidget {
                               const Text(
                                 'The Theatre Cafe',
                                 style: TextStyle(
-                                  color: Colors.teal,
+                                  color: AppColors.buttonColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -486,7 +488,7 @@ class Booking extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.teal,
+                          backgroundColor:  AppColors.buttonColor,
                           shape: RoundedRectangleBorder(
                             // Define the button's shape
                             borderRadius: BorderRadius.circular(
@@ -547,7 +549,7 @@ class Booking extends StatelessWidget {
                               const Text(
                                 'Smash Burgers',
                                 style: TextStyle(
-                                  color: Colors.teal,
+                                  color: AppColors.buttonColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -582,7 +584,7 @@ class Booking extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.teal,
+                          backgroundColor: AppColors.buttonColor,
                           shape: RoundedRectangleBorder(
                             // Define the button's shape
                             borderRadius: BorderRadius.circular(
