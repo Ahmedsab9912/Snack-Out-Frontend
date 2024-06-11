@@ -41,9 +41,8 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      var pendingFriends = (data as List)
-          .map((i) => PendingFriendsModel.fromJson(i))
-          .toList();
+      var pendingFriends =
+          (data as List).map((i) => PendingFriendsModel.fromJson(i)).toList();
       setState(() {
         pendingListModel = pendingFriends;
         searchListModel = pendingFriends;
@@ -58,9 +57,11 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
     setState(() {
       searchListModel = pendingListModel
           .where((pendingFriend) =>
-      pendingFriend.user != null &&
-          pendingFriend.user!.name != null &&
-          pendingFriend.user!.name!.toLowerCase().contains(searchKey.toLowerCase()))
+              pendingFriend.user != null &&
+              pendingFriend.user!.name != null &&
+              pendingFriend.user!.name!
+                  .toLowerCase()
+                  .contains(searchKey.toLowerCase()))
           .toList();
     });
   }
@@ -133,91 +134,107 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
             child: searchListModel.isEmpty
                 ? Center(child: CircularProgressIndicator())
                 : ListView.builder(
-              itemCount: searchListModel.length,
-              itemBuilder: (context, index) {
-                final friend = searchListModel[index].user;
-                return friend != null
-                    ? Container(
-                  margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0), // Set border radius to 10
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: friend.profileImage != null
-                          ? NetworkImage(friend.profileImage!)
-                          : null,
-                      child: friend.profileImage == null
-                          ? Icon(Icons.person)
-                          : null,
-                    ),
-                    title: Text(friend.name ?? 'Unknown',style: TextStyle(fontSize: 17),),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // Handle accept action
-                          },
-                          child: Container(
-                            height: 38,
-                            width: 79,
-                            decoration: BoxDecoration(
-                              color: AppColors.buttonColor, // button color
-                              borderRadius: BorderRadius.circular(10.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2), // changes position of shadow
+                    itemCount: searchListModel.length,
+                    itemBuilder: (context, index) {
+                      final friend = searchListModel[index].user;
+                      return friend != null
+                          ? Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 8.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Set border radius to 10
+                              ),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: friend.profileImage != null
+                                      ? NetworkImage(friend.profileImage!)
+                                      : null,
+                                  child: friend.profileImage == null
+                                      ? Icon(Icons.person)
+                                      : null,
                                 ),
-                              ],
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                            child: Text(
-                              'Accept',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () {
-                            // Handle decline action
-                          },
-                          child: Container(
-                            height: 38,
-                            width: 82,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.red), // border color
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                            child: Text(
-                              'Decline',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                                title: Text(
+                                  friend.name ?? 'Unknown',
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        // Handle accept action
+                                      },
+                                      child: Container(
+                                        height: 38,
+                                        width: 79,
+                                        decoration: BoxDecoration(
+                                          color: AppColors
+                                              .buttonColor, // button color
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 4,
+                                              offset: Offset(0,
+                                                  2), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 20),
+                                        child: Text(
+                                          'Accept',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    GestureDetector(
+                                      onTap: () {
+                                        // Handle decline action
+                                      },
+                                      child: Container(
+                                        height: 38,
+                                        width: 82,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color:
+                                                  Colors.red), // border color
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 20),
+                                        child: Text(
+                                          'Decline',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Container(
+                              height: 90,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 28.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Set border radius to 10
+                              ),
+                              child: ListTile(
+                                title: Text('Unknown User'),
+                              ),
+                            );
+                    },
                   ),
-                )
-                    : Container(
-                  height: 90,
-                  margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 28.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0), // Set border radius to 10
-                  ),
-                  child: ListTile(
-                    title: Text('Unknown User'),
-                  ),
-                );
-              },
-            ),
           ),
         ],
       ),

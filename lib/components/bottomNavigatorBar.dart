@@ -8,6 +8,7 @@ import 'package:eataly/SavedScreen/savedscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../PartyScreens/partydemoscreen.dart';
+import '../app_theme/app_theme.dart';
 
 class BottomNavigationBarMenu extends StatefulWidget {
   const BottomNavigationBarMenu({super.key});
@@ -36,7 +37,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
 
   int _selectedIndex = 0; // Keeps track of the selected tab index
   // Define your custom color
-  final Color _selectedColor = const Color(0xFF00B288);
+  final Color _selectedColor = AppColors.buttonColor;
 
   // Paths for the unselected icons
   final List<String> _iconPaths = [
@@ -49,8 +50,8 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
 
   // Paths for the selected icons
   final List<String> _selectedIconPaths = [
-    'assets/images/homeGreen.png',
-    'assets/images/savedGreen.png',
+    'assets/images/homepurple.png',
+    'assets/images/savedpurple.png',
     'assets/images/partyGreen.png',
     'assets/images/bookingsGreen.png',
     'assets/images/profileGreen.png',
@@ -68,14 +69,70 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
       length: 5,
       child: Scaffold(
         // TOP APP BAR
-        appBar: AppBar(
+        appBar: _appBar(),
+        body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            Homescreen(),
+            SavedScreen(),
+            PartyDemoScreen(),
+            Booking(), // Make sure this matches the class name from your import
+            Profile(),
+          ],
+        ),
+        bottomNavigationBar: TabBar(
+          onTap: (index) {
+            // Update the selected index on tap
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          indicatorColor: AppColors.buttonColor,
+          tabs: List.generate(
+            5,
+                (index) {
+              return Tab(
+                icon: ImageIcon(
+                  AssetImage(
+                    _selectedIndex == index
+                        ? _selectedIconPaths[index]
+                        : _iconPaths[index],
+                  ),
+                  color: _selectedIndex == index
+                      ? _selectedColor
+                      : Colors.grey, // Apply color to icons if needed
+                ),
+                child: Text(
+                  _tabTitles[index],
+                  style: TextStyle(
+                    color:
+                    _selectedIndex == index ? _selectedColor : Colors.grey,
+                    fontSize: 10,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w400,
+                    height: 0.17, // Custom selected text color
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+
+      ),
+    );
+  }
+
+  _appBar() {
+    if (_selectedIndex != 4) {
+      return
+        AppBar(
           automaticallyImplyLeading: false,
           toolbarHeight: 2, // Ensuring the AppBar is transparent and elevated
           backgroundColor: Colors.transparent,
           elevation: 0,
           bottom: PreferredSize(
             preferredSize:
-                Size.fromHeight(80), // Adjust the preferred size as needed
+            Size.fromHeight(80), // Adjust the preferred size as needed
             child: Container(
               padding: EdgeInsets.only(
                 top: 0,
@@ -134,22 +191,22 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                         ),
                         Row(
                           children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Notificationpage(),
-                                  ),
-                                );
-                              },
-                              child: Image(
-                                width: 34,
-                                height: 34,
-                                image: AssetImage(
-                                    'assets/images/shoppingcart.png'),
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (context) => Notificationpage(),
+                            //       ),
+                            //     );
+                            //   },
+                            //   child: Image(
+                            //     width: 34,
+                            //     height: 34,
+                            //     image: AssetImage(
+                            //         'assets/images/shoppingcart.png'),
+                            //   ),
+                            // ),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -175,55 +232,9 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
               ),
             ),
           ),
-        ),
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            Homescreen(),
-            SavedScreen(),
-            PartyDemoScreen(),
-            Booking(), // Make sure this matches the class name from your import
-            Profile(),
-          ],
-        ),
-        bottomNavigationBar: TabBar(
-          onTap: (index) {
-            // Update the selected index on tap
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          indicatorColor: Color(0xFF00B288),
-          tabs: List.generate(
-            5,
-            (index) {
-              return Tab(
-                icon: ImageIcon(
-                  AssetImage(
-                    _selectedIndex == index
-                        ? _selectedIconPaths[index]
-                        : _iconPaths[index],
-                  ),
-                  color: _selectedIndex == index
-                      ? _selectedColor
-                      : Colors.grey, // Apply color to icons if needed
-                ),
-                child: Text(
-                  _tabTitles[index],
-                  style: TextStyle(
-                    color:
-                        _selectedIndex == index ? _selectedColor : Colors.grey,
-                    fontSize: 10,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
-                    height: 0.17, // Custom selected text color
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
+        );
+    } else {
+      return null; // Return an empty container to hide the AppBar
+    }
   }
 }
