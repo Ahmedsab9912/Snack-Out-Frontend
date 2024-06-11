@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../Shared_Preferences/shared_preferences_page.dart';
-import '../app_theme/app_theme.dart';
 import 'New_Password.dart';
 
 class PhoneOtpVerification extends StatefulWidget {
@@ -12,10 +10,10 @@ class PhoneOtpVerification extends StatefulWidget {
   const PhoneOtpVerification({Key? key, required this.phoneNumber}) : super(key: key);
 
   @override
-  State<PhoneOtpVerification> createState() => _OTP_Screen_PhoneState();
+  State<PhoneOtpVerification> createState() => _PhoneOtpVerificationState();
 }
 
-class _OTP_Screen_PhoneState extends State<PhoneOtpVerification> {
+class _PhoneOtpVerificationState extends State<PhoneOtpVerification> {
   final TextEditingController otpController1 = TextEditingController();
   final TextEditingController otpController2 = TextEditingController();
   final TextEditingController otpController3 = TextEditingController();
@@ -32,9 +30,6 @@ class _OTP_Screen_PhoneState extends State<PhoneOtpVerification> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      sendOtp(context);
-    });
     startTimer();
   }
 
@@ -70,40 +65,12 @@ class _OTP_Screen_PhoneState extends State<PhoneOtpVerification> {
     );
   }
 
-  // sendOtp function
-  Future<void> sendOtp(BuildContext context) async {
-    final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
-    final int userId = await sharedPreferences.getUserId() ?? 0;
-
-    final url = 'http://192.168.10.7/otp-verification/phone?userId=$userId';
+  Future<void> verifyOtp(BuildContext context) async {
+    final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
+    final url = 'http://192.168.10.20:8000/otp-verification/verify-otp';
 
     try {
       final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 201) {
-        print('OTP sent successfully');
-      } else {
-        print('Failed to send OTP');
-      }
-    } catch (e) {
-      print('Failed to send OTP: $e');
-    }
-  }
-
-  // PATCH API for OTP verification
-  Future<void> verifyOtp() async {
-    final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
-    final int userId = await sharedPreferences.getUserId() ?? 0;
-    final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    final url = 'http://192.168.10.7:8000/users/verify-otp';
-
-    try {
-      final response = await http.patch(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +80,7 @@ class _OTP_Screen_PhoneState extends State<PhoneOtpVerification> {
         }),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         // OTP verification successful, navigate to NewPasswordScreen
         Navigator.push(
           context,
@@ -121,10 +88,8 @@ class _OTP_Screen_PhoneState extends State<PhoneOtpVerification> {
             builder: (context) => NewPasswordScreen(otp: otp),
           ),
         );
-        print(otp);
         print('OTP verified successfully');
       } else {
-        print(otp);
         print('Failed to verify OTP');
       }
     } catch (e) {
@@ -139,14 +104,82 @@ class _OTP_Screen_PhoneState extends State<PhoneOtpVerification> {
     final containerWidth = screenSize.width * 0.18;
 
     return Scaffold(
-      body: SingleChildScrollView(
+      appBar: AppBar(
+        title: Text('OTP Verification'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Widgets for OTP input
-            // Add your UI widgets here
+            Text(
+              'Enter the OTP sent to ${widget.phoneNumber}',
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _otpTextField(otpController1, otpFocusNode1, otpFocusNode2),
+                _otpTextField(otpController2, otpFocusNode2, otpFocusNode3),
+                _otpTextField(otpController3, otpFocusNode3, otpFocusNode4),
+                _otpTextField(otpController4, otpFocusNode4, null),
+              ],
+            ),
+            SizedBox(height: 25),
+            ElevatedButton(
+              onPressed: () {
+                verifyOtp(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Adjust this to your theme color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                child: Text(
+                  'Verify',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Resend OTP in $_start seconds',
+              style: TextStyle(color: Colors.grey),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _otpTextField(TextEditingController controller, FocusNode focusNode, FocusNode? nextFocusNode) {
+    return SizedBox(
+      width: 50,
+      child: TextField(
+        controller: controller,
+        focusNode: focusNode,
+        keyboardType: TextInputType.number,
+        textAlign: TextAlign.center,
+        maxLength: 1,
+        onChanged: (value) {
+          if (value.length == 1 && nextFocusNode != null) {
+            nextFocusNode.requestFocus();
+          }
+        },
+        decoration: InputDecoration(
+          counterText: '',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
         ),
       ),
     );

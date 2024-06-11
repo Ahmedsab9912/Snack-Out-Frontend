@@ -35,7 +35,7 @@ class _ToggleIconState extends State<ToggleIcon> {
       return;
     }
 
-    const url = 'http://192.168.10.10:8000/users/favorites';
+    const url = 'http://192.168.10.20:8000/users/favorites';
     final body = jsonEncode({'restaurantId': widget.restaurant.id});
 
     final response = _isFilled
@@ -111,7 +111,7 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<void> fetchRestaurants() async {
-    var response = await http.get(Uri.parse('http://192.168.10.10:8000/restaurants'));
+    var response = await http.get(Uri.parse('http://192.168.10.20:8000/restaurants'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       var restaurants = AllRestaurantsApi.fromJson(data);
@@ -136,7 +136,7 @@ class _HomescreenState extends State<Homescreen> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.10.10:8000/users/favorites'),
+      Uri.parse('http://192.168.10.20:8000/users/favorites'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',

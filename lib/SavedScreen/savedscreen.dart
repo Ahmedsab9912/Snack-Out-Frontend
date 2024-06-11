@@ -34,7 +34,7 @@ class _SavedScreenState extends State<SavedScreen> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.10.10:8000/users/favorites'),
+      Uri.parse('http://192.168.10.20:8000/users/favorites'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
