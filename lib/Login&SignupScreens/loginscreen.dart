@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import '../API/api.dart';
 import '../Models/LoginModel.dart';
 import '../MyFunctions/Funtions.dart';
 import '../Shared_Preferences/shared_preferences_page.dart';
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         final response = await http.post(
-          Uri.parse(url),
+          Uri.parse(login as String),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -158,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 5),
                         Container(
-                          height: containerHeight,
+                          height: 50,
                           width: containerWidth,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -200,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 5),
                         Container(
-                          height: containerHeight,
+                          height: 50,
                           width: containerWidth,
                           decoration: BoxDecoration(
                             border: Border.all(

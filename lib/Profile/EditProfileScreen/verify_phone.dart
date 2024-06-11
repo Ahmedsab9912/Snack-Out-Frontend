@@ -1,22 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../Shared_Preferences/shared_preferences_page.dart';
-import '../app_theme/app_theme.dart';
-import 'OTP_Screen_Email.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OTP_Screen_Phone extends StatefulWidget {
-  final String email;
-  final String phoneNumber;
+import '../../app_theme/app_theme.dart';
+import '../Profile.dart';
 
-  const OTP_Screen_Phone({Key? key, required this.email, required this.phoneNumber}) : super(key: key);
+class VerifyPhone extends StatefulWidget {
+  const VerifyPhone({super.key});
 
   @override
-  State<OTP_Screen_Phone> createState() => _OTP_Screen_PhoneState();
+  State<VerifyPhone> createState() => _VerifyPhoneState();
 }
 
-class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
+class _VerifyPhoneState extends State<VerifyPhone> {
+
   final TextEditingController otpController1 = TextEditingController();
   final TextEditingController otpController2 = TextEditingController();
   final TextEditingController otpController3 = TextEditingController();
@@ -34,7 +33,7 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      sendOtp(context);
+      // sendOtp(context);
     });
     startTimer();
   }
@@ -71,60 +70,36 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     );
   }
 
-  // sendOtp function
-  Future<void> sendOtp(BuildContext context) async {
-    final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
-    final int userId = await sharedPreferences.getUserId() ?? 0;
-
-    final url = 'http://192.168.10.10:8000/otp-verification/phone?userId=$userId';
-
-    try {
-      final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/otp-verification/phone?userId=$userId'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 201) {
-        print('OTP sent successfully');
-      } else {
-        print('Failed to send OTP');
-      }
-    } catch (e) {
-      print('Failed to send OTP: $e');
-    }
-  }
-
-  // PATCH API
   Future<void> verifyOtp() async {
-    final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
-    final int userId = await sharedPreferences.getUserId() ?? 0;
     final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    final url = 'http://192.168.10.10:8000/otp-verification/phone?userId=${userId}Id&otp=${otp}';
-
+    const url = 'http://192.168.10.5:8000/users/verify-change-phone';
+    final accessToken = await getAccessToken();
     try {
-      final response = await http.patch(
+      final body = jsonEncode({'otp': otp}); // Encode the OTP as JSON
+      final response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
         },
+        body: body, // Add the body to the request
       );
 
-      if (response.statusCode == 201) {
-
-        // Navigate to OTP page
+      if (response.statusCode == 200) {
+        print(otp);
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OPT_Screen_Email(
-              email: widget.email,
-            ),
+            builder: (context) => Profile(),
           ),
         );
-
-        print(otp);
         print('OTP verified successfully');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Profile(),
+          ),
+        );
       } else {
         print(otp);
         print('Failed to verify OTP');
@@ -134,8 +109,14 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     }
   }
 
+  Future<String?> getAccessToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('accessToken');
+  }
+
   @override
   Widget build(BuildContext context) {
+
     final screenSize = MediaQuery.of(context).size;
     final containerHeight = screenSize.height * 0.085;
     final containerWidth = screenSize.width * 0.18;
@@ -146,6 +127,9 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     final containerPadding = screenSize.height * 0.02;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Verify Phone'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -156,22 +140,14 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
               width: imageWidth,
               child: Image.asset("assets/images/pattern.png"),
             ),
-            Center(
-              child: Text(
-                'Phone Number Verification',
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 5.0),
-            Text('Enter Your Verification Code', style: TextStyle(fontSize: 22)),
-            SizedBox(height: 5.0),
-            Text('OTP has been sent to your registered', style: TextStyle(fontSize: 13.5)),
-            SizedBox(height: 5.0),
-            Text('mobile number ending with *****${widget.phoneNumber.substring(widget.phoneNumber.length - 4)}',
-                style: TextStyle(fontSize: 13.5)),
-            SizedBox(height: 35.0),
+            Center(child: Text('Phone Verification',style: TextStyle(fontSize: 27,fontWeight: FontWeight.bold),)),
+            SizedBox(height: 5.0,),
+            Text('Enter Your Verification Code',style: TextStyle(fontSize: 22),),
+            SizedBox(height: 15.0,),
+            Text('OTP has been sent to your New Email',style: TextStyle(fontSize: 13.5),),
+            SizedBox(height: 35.0,),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 35.0),
+              padding:  EdgeInsets.symmetric(horizontal: 35.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -310,37 +286,15 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
                 ],
               ),
             ),
-            SizedBox(height: 35.0),
+            SizedBox(height: 35.0,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Didn't receive a code.",
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(width: 10.0),
-                _start == 0
-                    ? InkWell(
-                  onTap: () {
-                    setState(() {
-                      _start = 60;
-                      startTimer();
-                      sendOtp(context);
-                    });
-                  },
-                  child: Text(
-                    "Resend",
-                    style: TextStyle(fontSize: 20, color: AppColors.primaryTextColor, fontWeight: FontWeight.bold),
-                  ),
-                )
-                    : Text(
-                  "Resend",
-                  style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
-                ),
+                Text("Didn't receive a code.",style: TextStyle(fontSize: 20),),
+                SizedBox(width: 10.0,),
+                Text("Resend",style: TextStyle(fontSize: 20,color: AppColors.primaryTextColor,fontWeight: FontWeight.bold),),
               ],
             ),
-            SizedBox(height: 10),
-            Text("Timer: $_start", style: TextStyle(fontSize: 20)),
             SizedBox(height: 40),
             InkWell(
               onTap: () {
@@ -354,11 +308,13 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Center(
-                  child: Text(
-                    'Verify',
-                    style: TextStyle(color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                    child: Text(
+                      'Verify',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold),
+                    )),
               ),
             ),
           ],
@@ -367,6 +323,3 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     );
   }
 }
-
-
-

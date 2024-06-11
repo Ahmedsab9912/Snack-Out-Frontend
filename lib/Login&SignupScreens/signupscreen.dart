@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../API/api.dart';
 import '../Models/SignupModel.dart';
 import '../MyFunctions/Funtions.dart';
 import '../OTP_Screens/OTP_Screen_Phone.dart';
@@ -85,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       try {
         final response = await http.post(
-          Uri.parse(url),
+          Uri.parse(signup),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -141,7 +142,6 @@ class _SignupScreenState extends State<SignupScreen> {
           final buttonHeight = screenSize.height * 0.07;
           final buttonWidth = screenSize.width * 0.8;
           final containerPadding = screenSize.height * 0.02;
-
           return SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
