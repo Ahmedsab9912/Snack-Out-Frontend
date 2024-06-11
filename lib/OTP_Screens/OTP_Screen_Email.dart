@@ -57,7 +57,7 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             timer.cancel();
@@ -76,7 +76,8 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
 
-    final url = 'http://192.168.0.102/otp-verification/email?userId=$userId';
+    final url =
+        'http://192.168.10.10:8000/otp-verification/email?userId=$userId';
 
     try {
       final response = await http.post(
@@ -87,7 +88,6 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
       );
 
       if (response.statusCode == 201) {
-
         print('OTP sent successfully');
       } else {
         print('Failed to send OTP');
@@ -101,8 +101,12 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
   Future<void> verifyOtp() async {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
-    final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    final url = 'http://10.0.2.2:8000/otp-verification/email?userId=${userId}Id&otp=${otp}';
+    final otp = otpController1.text +
+        otpController2.text +
+        otpController3.text +
+        otpController4.text;
+    final url =
+        'http://192.168.10.10:8000/otp-verification/email?userId=${userId}Id&otp=${otp}';
 
     try {
       final response = await http.patch(
@@ -113,13 +117,9 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
       );
 
       if (response.statusCode == 201) {
-
         // Navigate to OTP page
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => VerifiedAccount())
-        );
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => VerifiedAccount()));
         print(otp);
         print('OTP verified successfully');
       } else {
@@ -142,7 +142,7 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
     final buttonWidth = screenSize.width * 0.8;
     final containerPadding = screenSize.height * 0.02;
 
-    return  Scaffold(
+    return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -153,16 +153,37 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
               width: imageWidth,
               child: Image.asset("assets/images/pattern.png"),
             ),
-            Center(child: Text('Email Verification',style: TextStyle(fontSize: 27,fontWeight: FontWeight.bold),)),
-            SizedBox(height: 5.0,),
-            Text('Enter Your Verification Code',style: TextStyle(fontSize: 22),),
-            SizedBox(height: 5.0,),
-            Text('OTP has been sent to your registered',style: TextStyle(fontSize: 13.5),),
-            SizedBox(height: 5.0,),
-            Text('Email address ending with ${widget.email} ',style: TextStyle(fontSize: 13.5),),
-            SizedBox(height: 35.0,),
+            Center(
+                child: Text(
+              'Email Verification',
+              style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+            )),
+            SizedBox(
+              height: 5.0,
+            ),
+            Text(
+              'Enter Your Verification Code',
+              style: TextStyle(fontSize: 22),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            Text(
+              'OTP has been sent to your registered',
+              style: TextStyle(fontSize: 13.5),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            Text(
+              'Email address ending with ${widget.email} ',
+              style: TextStyle(fontSize: 13.5),
+            ),
+            SizedBox(
+              height: 35.0,
+            ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 35.0),
+              padding: EdgeInsets.symmetric(horizontal: 35.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -182,13 +203,17 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                         textAlign: TextAlign.center,
                         controller: otpController1,
                         focusNode: otpFocusNode1,
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', // Hide the counter
                         ),
                         textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.number, // Only allow numbers
+                        keyboardType:
+                            TextInputType.number, // Only allow numbers
                         maxLength: 1, // Only allow a single digit
                         onChanged: (value) {
                           if (value.length == 1) {
@@ -214,13 +239,17 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                         textAlign: TextAlign.center,
                         controller: otpController2,
                         focusNode: otpFocusNode2,
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', // Hide the counter
                         ),
                         textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.number, // Only allow numbers
+                        keyboardType:
+                            TextInputType.number, // Only allow numbers
                         maxLength: 1, // Only allow a single digit
                         onChanged: (value) {
                           if (value.length == 1) {
@@ -248,13 +277,17 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                         textAlign: TextAlign.center,
                         controller: otpController3,
                         focusNode: otpFocusNode3,
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', // Hide the counter
                         ),
                         textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.number, // Only allow numbers
+                        keyboardType:
+                            TextInputType.number, // Only allow numbers
                         maxLength: 1, // Only allow a single digit
                         onChanged: (value) {
                           if (value.length == 1) {
@@ -282,13 +315,17 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                         textAlign: TextAlign.center,
                         controller: otpController4,
                         focusNode: otpFocusNode4,
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', // Hide the counter
                         ),
                         textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.number, // Only allow numbers
+                        keyboardType:
+                            TextInputType.number, // Only allow numbers
                         maxLength: 1, // Only allow a single digit
                         onChanged: (value) {
                           if (value.isEmpty) {
@@ -301,13 +338,26 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                 ],
               ),
             ),
-            SizedBox(height: 35.0,),
+            SizedBox(
+              height: 35.0,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Didn't receive a code.",style: TextStyle(fontSize: 20),),
-                SizedBox(width: 10.0,),
-                Text("Resend",style: TextStyle(fontSize: 20,color: AppColors.primaryTextColor,fontWeight: FontWeight.bold),),
+                Text(
+                  "Didn't receive a code.",
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Text(
+                  "Resend",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.primaryTextColor,
+                      fontWeight: FontWeight.bold),
+                ),
               ],
             ),
             SizedBox(height: 40),
@@ -324,12 +374,12 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                 ),
                 child: Center(
                     child: Text(
-                      'Verify',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.bold),
-                    )),
+                  'Verify',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19.0,
+                      fontWeight: FontWeight.bold),
+                )),
               ),
             ),
           ],

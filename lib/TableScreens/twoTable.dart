@@ -89,7 +89,7 @@ class _TwoTableState extends State<TwoTable> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102/reservations'),
+        Uri.parse('http://192.168.10.10:8000/reservations'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -121,7 +121,8 @@ class _TwoTableState extends State<TwoTable> {
           ),
         );
       } else {
-        print('Failed to create a reservation. Status code: ${response.statusCode}');
+        print(
+            'Failed to create a reservation. Status code: ${response.statusCode}');
         print('Response body: ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -170,7 +171,7 @@ class _TwoTableState extends State<TwoTable> {
                   icon: const Icon(Icons.add),
                   onPressed: () {
                     setState(
-                          () {
+                      () {
                         if (_numberOfSeats < 50) {
                           _numberOfSeats++;
                         } else {
@@ -270,19 +271,19 @@ class _TwoTableState extends State<TwoTable> {
                 child: Center(
                   child: _isLoading
                       ? CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Color.fromARGB(255, 255, 255, 255)),
-                  )
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Color.fromARGB(255, 255, 255, 255)),
+                        )
                       : Text(
-                    'Confirm Booking',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 16,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w700,
-                      height: 0,
-                    ),
-                  ),
+                          'Confirm Booking',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 16,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w700,
+                            height: 0,
+                          ),
+                        ),
                 ),
               ),
             ),
