@@ -10,7 +10,8 @@ class ToggleIcon extends StatefulWidget {
   final Data restaurant;
   final bool isInitiallyFilled;
 
-  const ToggleIcon({super.key, required this.restaurant, required this.isInitiallyFilled});
+  const ToggleIcon(
+      {super.key, required this.restaurant, required this.isInitiallyFilled});
 
   @override
   _ToggleIconState createState() => _ToggleIconState();
@@ -62,7 +63,8 @@ class _ToggleIconState extends State<ToggleIcon> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_isFilled ? 'Added to favorites' : 'Removed from favorites'),
+          content:
+              Text(_isFilled ? 'Added to favorites' : 'Removed from favorites'),
         ),
       );
       // Optionally update the saved screen here
@@ -111,7 +113,10 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<void> fetchRestaurants() async {
-    var response = await http.get(Uri.parse('http://192.168.10.10:8000/restaurants'));
+    var response =
+        // ALWAYS UPDATE YOUR IP ADDRESS TO RUN THE API FROM BACKEND
+        await http.get(Uri.parse('http://192.168.10.6:8000/restaurants'));
+    // await http.get(Uri.parse('http://192.168.100.136:8000/restaurants'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       var restaurants = AllRestaurantsApi.fromJson(data);
@@ -146,7 +151,8 @@ class _HomescreenState extends State<Homescreen> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       setState(() {
-        favoriteRestaurantIds = (data as List).map((json) => (json['id'] as num).toInt()).toList();
+        favoriteRestaurantIds =
+            (data as List).map((json) => (json['id'] as num).toInt()).toList();
       });
     } else {
       print('Failed to fetch favorite restaurants: ${response.statusCode}');
@@ -220,7 +226,8 @@ class _HomescreenState extends State<Homescreen> {
                             );
                           },
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10, left: 10, top: 10),
+                            padding:
+                                EdgeInsets.only(right: 10, left: 10, top: 10),
                             child: Card(
                               elevation: 3,
                               child: Padding(
@@ -236,27 +243,40 @@ class _HomescreenState extends State<Homescreen> {
                                           height: 220,
                                           width: 350,
                                           fit: BoxFit.cover,
-                                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
                                             if (loadingProgress == null) {
                                               return child;
                                             }
                                             return Center(
                                               child: CircularProgressIndicator(
-                                                value: loadingProgress.expectedTotalBytes != null
-                                                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        (loadingProgress
+                                                                .expectedTotalBytes ??
+                                                            1)
                                                     : null,
                                               ),
                                             );
                                           },
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Center(child: Text('Failed to load image'));
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Center(
+                                                child: Text(
+                                                    'Failed to load image'));
                                           },
                                         ),
                                       ),
                                     ),
                                     SizedBox(height: 10),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           restaurant.name ?? "No Name",
@@ -267,7 +287,9 @@ class _HomescreenState extends State<Homescreen> {
                                         ),
                                         ToggleIcon(
                                           restaurant: restaurant,
-                                          isInitiallyFilled: favoriteRestaurantIds.contains(restaurant.id),
+                                          isInitiallyFilled:
+                                              favoriteRestaurantIds
+                                                  .contains(restaurant.id),
                                         ),
                                       ],
                                     ),
@@ -286,14 +308,18 @@ class _HomescreenState extends State<Homescreen> {
                                       children: [
                                         Text(
                                           "4.5",
-                                          style: TextStyle(fontSize: 14, color: Colors.black),
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black),
                                         ),
                                         SizedBox(width: 5.0),
                                         Row(
                                           children: List.generate(5, (index) {
                                             return Icon(
                                               Icons.star,
-                                              color: index < 4 ? Colors.amber : Colors.grey,
+                                              color: index < 4
+                                                  ? Colors.amber
+                                                  : Colors.grey,
                                               size: 20,
                                             );
                                           }),
@@ -304,7 +330,9 @@ class _HomescreenState extends State<Homescreen> {
                                     Text(
                                       "Chinese food",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.grey),
                                     ),
                                     SizedBox(height: 10),
                                   ],

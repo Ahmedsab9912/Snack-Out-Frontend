@@ -1,56 +1,58 @@
+import 'package:eataly/Profile/Profile.dart';
 import 'package:flutter/material.dart';
 
-import '../Login&SignupScreens/loginscreen.dart';
+import '../../components/bottomNavigatorBar.dart';
 
-class VerifiedAccount extends StatefulWidget {
-  const VerifiedAccount({Key? key}) : super(key: key);
+class Verified_Email_Page extends StatefulWidget {
+  const Verified_Email_Page({super.key});
 
   @override
-  State<VerifiedAccount> createState() => _VerifiedAccountState();
+  State<Verified_Email_Page> createState() => _Verified_Email_PageState();
 }
 
-class _VerifiedAccountState extends State<VerifiedAccount>
-    with SingleTickerProviderStateMixin {
+class _Verified_Email_PageState extends State<Verified_Email_Page>
+  with SingleTickerProviderStateMixin {
 
-  late AnimationController _animationController;
-  late Animation<double> _animation;
+    late AnimationController _animationController;
+    late Animation<double> _animation;
 
-  @override
-  void initState() {
-    super.initState();
+    @override
+    void initState() {
+      super.initState();
 
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-
-    _animation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.bounceOut,
-    );
-
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    Future.delayed(const Duration(seconds: 5), () {
-
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+      _animationController = AnimationController(
+        duration: const Duration(seconds: 2),
+        vsync: this,
       );
-    });
 
-    return Scaffold(
+      _animation = CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.bounceOut,
+      );
+
+      _animationController.forward();
+    }
+
+    @override
+    void dispose() {
+      _animationController.dispose();
+      super.dispose();
+    }
+
+    @override
+    Widget build(BuildContext context) {
+
+      Future.delayed(const Duration(seconds: 5), () {
+
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavigationBarMenu()),
+        );
+      });
+
+
+      return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
           // THESE TERMS ARE USED TO RESPONSIVENESS OF CODE
@@ -78,7 +80,7 @@ class _VerifiedAccountState extends State<VerifiedAccount>
                       ),
                     ),
                     Text(
-                      'Your Account has been Verified',
+                      'Your Email has been Verified',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../PartyScreens/partydemoscreen.dart';
+import '../PartyScreens/Party-Screen.dart';
 import '../app_theme/app_theme.dart';
 
 class BottomNavigationBarMenu extends StatefulWidget {

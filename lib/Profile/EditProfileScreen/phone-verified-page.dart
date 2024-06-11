@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../Login&SignupScreens/loginscreen.dart';
+import '../../components/bottomNavigatorBar.dart';
+import '../Profile.dart';
 
-class VerifiedAccount extends StatefulWidget {
-  const VerifiedAccount({Key? key}) : super(key: key);
+class Phone_Verified_Page extends StatefulWidget {
+  const Phone_Verified_Page({super.key});
 
   @override
-  State<VerifiedAccount> createState() => _VerifiedAccountState();
+  State<Phone_Verified_Page> createState() => _Phone_Verified_PageState();
 }
 
-class _VerifiedAccountState extends State<VerifiedAccount>
-    with SingleTickerProviderStateMixin {
+class _Phone_Verified_PageState extends State<Phone_Verified_Page>
+  with SingleTickerProviderStateMixin {
 
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -41,14 +42,15 @@ class _VerifiedAccountState extends State<VerifiedAccount>
   @override
   Widget build(BuildContext context) {
 
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 8), () {
 
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => BottomNavigationBarMenu()),
       );
     });
+
 
     return Scaffold(
       body: LayoutBuilder(
@@ -78,7 +80,7 @@ class _VerifiedAccountState extends State<VerifiedAccount>
                       ),
                     ),
                     Text(
-                      'Your Account has been Verified',
+                      'Your Phone has been Verified',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
