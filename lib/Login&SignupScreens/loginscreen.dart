@@ -1,5 +1,6 @@
 import 'package:eataly/Login&SignupScreens/signupscreen.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
+import 'package:eataly/PasswordResetScreens/forgot_password.dart'; // Import Forgot Password Screen
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,8 +49,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<int> login1(BuildContext context) async {
-
+  Future<int> login(BuildContext context) async {
+    const url = 'http://192.168.10.10:8000/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         final response = await http.post(
-          Uri.parse(login),
+          Uri.parse(login as String),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -238,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (_) {
-                                login1(context);
+                                login(context);
                               },
                             ),
                           ),
@@ -246,15 +247,25 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 4),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: Text(
-                            'Forget Password?',
-                            style: TextStyle(fontSize: 17, color: Colors.black),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ForgotPasswordScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Forget Password?',
+                              style: TextStyle(fontSize: 17, color: Colors.black),
+                            ),
                           ),
                         ),
                         SizedBox(height: 20),
                         InkWell(
-                          onTap: (){
-                            login1(context);
+                          onTap: () {
+                            login(context);
                           },
                           child: Container(
                             height: buttonHeight,
