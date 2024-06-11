@@ -1,4 +1,5 @@
 import 'package:eataly/PartyScreens/AddFriendsScreen.dart';
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -41,7 +42,7 @@ class _StartPartyScreenState extends State<StartPartyScreen> {
               Text(
                 '123456',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Color(0xFF00C572)),
+                    fontWeight: FontWeight.bold, color: AppColors.primaryTextColor),
               ),
             ],
           ),
@@ -93,7 +94,7 @@ class _StartPartyScreenState extends State<StartPartyScreen> {
               style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF00C572)),
+                  color: AppColors.primaryTextColor),
             ),
           ),
           SizedBox(
@@ -114,7 +115,7 @@ class _StartPartyScreenState extends State<StartPartyScreen> {
                     onChanged: (value) {
                       // Handle radio button selection
                     },
-                    activeColor: Color(0xFF00C572),
+                    activeColor:AppColors.primaryTextColor,
                   ),
                 ]),
           ),
@@ -133,7 +134,7 @@ class _StartPartyScreenState extends State<StartPartyScreen> {
                     onChanged: (value) {
                       // Handle radio button selection
                     },
-                    activeColor: Color(0xFF00C572),
+                    activeColor:AppColors.primaryTextColor,
                   ),
                 ]),
           ),
@@ -151,7 +152,7 @@ class _StartPartyScreenState extends State<StartPartyScreen> {
             height: 40,
             width: 280,
             decoration: BoxDecoration(
-                color: Color(0xFF00B288),
+                color: AppColors.primaryTextColor,
                 borderRadius: BorderRadius.circular(10)),
             child: Center(
               child: Text('Make a Booking',
@@ -503,7 +504,7 @@ void _showBottomSheet(BuildContext context) {
                   ),
                   Icon(
                     Icons.arrow_drop_down,
-                    color: Colors.green[800],
+                    color:AppColors.primaryTextColor,
                   ),
                 ],
               ),

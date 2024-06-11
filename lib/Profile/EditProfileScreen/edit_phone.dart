@@ -19,7 +19,7 @@ class _EditPhoneState extends State<EditPhone> {
   final TextEditingController _newPhoneController = TextEditingController();
 
   Future<void> changePhone() async {
-    final Uri url = Uri.parse('http://192.168.10.5:8000/users/change-phone');
+    final Uri url = Uri.parse('http://192.168.10.6:8000/otp-verification/change-phone');
     final String? accessToken = await getAccessToken();
 
     print(await getAccessToken());
@@ -103,7 +103,7 @@ class _EditPhoneState extends State<EditPhone> {
                     ),
                   ),
                   Container(
-                    height: containerHeight,
+                    height: 50,
                     width: containerWidth,
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -147,7 +147,7 @@ class _EditPhoneState extends State<EditPhone> {
                     children: [
                       Expanded(
                         child: Container(
-                          height: 55,
+                          height: 50,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Color(0xFFA6A6A6),

@@ -4,8 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../OTP_Screens/VerifiedAccout.dart';
 import '../../app_theme/app_theme.dart';
+import '../../components/bottomNavigatorBar.dart';
 import '../Profile.dart';
+import 'email-verified-page.dart';
 
 class VerifyEmailOTP extends StatefulWidget {
   const VerifyEmailOTP({super.key});
@@ -75,7 +78,7 @@ class _VerifyEmailOTPState extends State<VerifyEmailOTP> {
         otpController3.text +
         otpController4.text;
     final accessToken = await getAccessToken();
-    const url = 'http://192.168.10.5:8000/users/verify-change-email';
+    const url = 'http://192.168.10.6:8000/otp-verification/verify-change-email';
 
     try {
       final body = jsonEncode({'otp': otp});
@@ -91,10 +94,10 @@ class _VerifyEmailOTPState extends State<VerifyEmailOTP> {
       if (response.statusCode == 200) {
         print(otp);
         print('OTP verified successfully');
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Profile(),
+            builder: (context) => Verified_Email_Page(),
           ),
         );
       } else {
