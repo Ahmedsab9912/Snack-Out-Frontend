@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'New_Password.dart';
+import '../../app_theme/app_theme.dart';
 
 class PhoneOtpVerification extends StatefulWidget {
   final String phoneNumber;
@@ -102,84 +103,228 @@ class _PhoneOtpVerificationState extends State<PhoneOtpVerification> {
     final screenSize = MediaQuery.of(context).size;
     final containerHeight = screenSize.height * 0.085;
     final containerWidth = screenSize.width * 0.18;
+    final imageHeight = screenSize.height * 0.33;
+    final imageWidth = screenSize.width * 1;
+    final buttonHeight = screenSize.height * 0.07;
+    final buttonWidth = screenSize.width * 0.8;
+    final containerPadding = screenSize.height * 0.02;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('OTP Verification'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Enter the OTP sent to ${widget.phoneNumber}',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+            Container(
+              height: imageHeight,
+              width: imageWidth,
+              child: Image.asset("assets/images/pattern.png"),
             ),
-            SizedBox(height: 20),
+            Center(
+              child: Text(
+                'Phone Number Verification',
+                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 5.0),
+            Text('Enter Your Verification Code', style: TextStyle(fontSize: 22)),
+            SizedBox(height: 5.0),
+            Text('OTP has been sent to your registered', style: TextStyle(fontSize: 13.5)),
+            SizedBox(height: 5.0),
+            Text('mobile number ending with *****${widget.phoneNumber.substring(widget.phoneNumber.length - 4)}',
+                style: TextStyle(fontSize: 13.5)),
+            SizedBox(height: 35.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 35.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: containerHeight,
+                    width: containerWidth,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: otpController1,
+                        focusNode: otpFocusNode1,
+                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', // Hide the counter
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number, // Only allow numbers
+                        maxLength: 1, // Only allow a single digit
+                        onChanged: (value) {
+                          if (value.length == 1) {
+                            otpFocusNode2.requestFocus();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: containerHeight,
+                    width: containerWidth,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: otpController2,
+                        focusNode: otpFocusNode2,
+                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', // Hide the counter
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number, // Only allow numbers
+                        maxLength: 1, // Only allow a single digit
+                        onChanged: (value) {
+                          if (value.length == 1) {
+                            otpFocusNode3.requestFocus();
+                          } else if (value.isEmpty) {
+                            otpFocusNode1.requestFocus();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: containerHeight,
+                    width: containerWidth,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: otpController3,
+                        focusNode: otpFocusNode3,
+                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', // Hide the counter
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number, // Only allow numbers
+                        maxLength: 1, // Only allow a single digit
+                        onChanged: (value) {
+                          if (value.length == 1) {
+                            otpFocusNode4.requestFocus();
+                          } else if (value.isEmpty) {
+                            otpFocusNode2.requestFocus();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: containerHeight,
+                    width: containerWidth,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: otpController4,
+                        focusNode: otpFocusNode4,
+                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', // Hide the counter
+                        ),
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.number, // Only allow numbers
+                        maxLength: 1, // Only allow a single digit
+                        onChanged: (value) {
+                          if (value.isEmpty) {
+                            otpFocusNode3.requestFocus();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 35.0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _otpTextField(otpController1, otpFocusNode1, otpFocusNode2),
-                _otpTextField(otpController2, otpFocusNode2, otpFocusNode3),
-                _otpTextField(otpController3, otpFocusNode3, otpFocusNode4),
-                _otpTextField(otpController4, otpFocusNode4, null),
+                Text(
+                  "Didn't receive a code.",
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(width: 10.0),
+                _start == 0
+                    ? InkWell(
+                        onTap: () {
+                          setState(() {
+                            _start = 60;
+                            startTimer();
+                          });
+                        },
+                        child: Text(
+                          "Resend",
+                          style: TextStyle(fontSize: 20, color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    : Text(
+                        "Resend",
+                        style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
+                      ),
               ],
             ),
-            SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: () {
+            SizedBox(height: 10),
+            Text("Timer: $_start", style: TextStyle(fontSize: 20)),
+            SizedBox(height: 40),
+            InkWell(
+              onTap: () {
                 verifyOtp(context);
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Adjust this to your theme color
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                height: buttonHeight,
+                width: buttonWidth,
+                decoration: BoxDecoration(
+                  color: AppColors.buttonColor,
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
-                child: Text(
-                  'Verify',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                child: Center(
+                  child: Text(
+                    'Verify',
+                    style: TextStyle(color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Text(
-              'Resend OTP in $_start seconds',
-              style: TextStyle(color: Colors.grey),
-            ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _otpTextField(TextEditingController controller, FocusNode focusNode, FocusNode? nextFocusNode) {
-    return SizedBox(
-      width: 50,
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        maxLength: 1,
-        onChanged: (value) {
-          if (value.length == 1 && nextFocusNode != null) {
-            nextFocusNode.requestFocus();
-          }
-        },
-        decoration: InputDecoration(
-          counterText: '',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
         ),
       ),
     );
