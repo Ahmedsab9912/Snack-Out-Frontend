@@ -1,4 +1,5 @@
 import 'package:eataly/BookingScreens/ConformBooking.dart';
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class Bookings extends StatelessWidget {
@@ -19,7 +20,7 @@ class Bookings extends StatelessWidget {
               child: Text(
                 'Available Seats',
                 style: TextStyle(
-                  color: Color(0xFF00C572),
+                  color: AppColors.primaryTextColor,
                   fontSize: 16,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w700,
@@ -692,7 +693,7 @@ class Bookings extends StatelessWidget {
             height: 44,
             width: 326,
             decoration: BoxDecoration(
-              color: Color(0xFF00B286),
+              color:AppColors.buttonColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(

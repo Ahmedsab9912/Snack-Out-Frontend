@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../API/api.dart';
 import '../Models/AllRestaurantsAPI.dart';
 import 'package:http/http.dart' as http;
 import '../Shared_Preferences/shared_preferences_page.dart';
@@ -34,7 +35,7 @@ class _SavedScreenState extends State<SavedScreen> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.10.20:8000/users/favorites'),
+      Uri.parse('http://192.168.10.11:8000/users/favorites'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
@@ -61,7 +62,7 @@ class _SavedScreenState extends State<SavedScreen> {
       return;
     }
 
-    final url = 'http://192.168.10.10:8000/users/favorites';
+    final url = '$baseURL:8000/users/favorites';
     final body = jsonEncode({'restaurantId': restaurant.id});
 
     final response = await http.delete(
@@ -90,7 +91,7 @@ class _SavedScreenState extends State<SavedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Saved Restaurants")),
+      // appBar: AppBar(title: Text("Saved Restaurants")),
       body: favoriteRestaurants.isEmpty
           ? Center(
               child: Column(

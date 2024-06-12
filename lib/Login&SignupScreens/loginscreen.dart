@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<int> login(BuildContext context) async {
-    final url = 'http://192.168.10.20:8000/auth/login';
+    final login = '$baseURL/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         final response = await http.post(
-          Uri.parse(url),
+          Uri.parse(login),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
           My_Funtions.f_toast(context, 'Login successful', Colors.green);
 
           // Navigate to home page
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => BottomNavigationBarMenu(),
@@ -244,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 4),
+                        SizedBox(height: 7),
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                             login(context);
                           },
                           child: Container(
-                            height: buttonHeight,
+                            height: 60,
                             width: buttonWidth,
                             decoration: BoxDecoration(
                               color: AppColors.buttonColor,

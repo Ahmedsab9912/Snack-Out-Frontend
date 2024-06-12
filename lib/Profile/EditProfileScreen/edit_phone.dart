@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../API/api.dart';
 import '../../app_theme/app_theme.dart';
 
 class EditPhone extends StatefulWidget {
@@ -19,7 +20,7 @@ class _EditPhoneState extends State<EditPhone> {
   final TextEditingController _newPhoneController = TextEditingController();
 
   Future<void> changePhone() async {
-    final Uri url = Uri.parse('http://192.168.10.6:8000/otp-verification/change-phone');
+    final Uri url = Uri.parse('$baseURL/otp-verification/change-phone');
     final String? accessToken = await getAccessToken();
 
     print(await getAccessToken());
