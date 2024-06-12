@@ -70,7 +70,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _obscureText = true;
 
   Future<int> submitSignup(BuildContext context) async {
-    const url = 'http://192.168.10.20:8000/auth/register';
+    final url = '$baseURL/auth/register';
 
     if (_formKey.currentState?.validate() ?? false) {
       final body = {
@@ -86,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       try {
         final response = await http.post(
-          Uri.parse(signup),
+          Uri.parse(url),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -179,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 5),
                         Container(
-                          height: containerHeight,
+                          height: 50,
                           width: containerWidth,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -222,7 +222,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 5),
                         Container(
-                          height: containerHeight,
+                          height: 50,
                           width: containerWidth,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -266,7 +266,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 5),
                         Container(
-                          height: containerHeight,
+                          height: 55,
                           width: containerWidth,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -312,7 +312,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 5),
                         Container(
-                          height: containerHeight,
+                          height: 55,
                           width: containerWidth,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -369,7 +369,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         Row(
                           children: [
                             Container(
-                              height: containerHeight,
+                              height: 55,
                               width: screenSize.width * 0.88, // Adjusted width based on screen size
                               decoration: BoxDecoration(
                                 border: Border.all(

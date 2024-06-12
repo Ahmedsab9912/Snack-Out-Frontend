@@ -3,6 +3,7 @@ import 'package:eataly/Profile/EditProfileScreen/verify_email.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../../API/api.dart';
 import '../../app_theme/app_theme.dart';
 
 class EditEmail extends StatefulWidget {
@@ -17,7 +18,7 @@ class _EditEmailState extends State<EditEmail> {
   final TextEditingController _newEmailController = TextEditingController();
 
   Future<void> changeEmail() async {
-    final Uri url = Uri.parse('http://192.168.10.6:8000/otp-verification/change-email');
+    final Uri url = Uri.parse('$baseURL/otp-verification/change-email');
     final String? accessToken = await getAccessToken();
 
     print(await getAccessToken());

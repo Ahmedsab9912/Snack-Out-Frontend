@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:eataly/Models/AllRestaurantsAPI.dart';
 
+import '../app_theme/app_theme.dart';
+
 class Details extends StatelessWidget {
   final Data restaurant;
 
@@ -25,7 +27,7 @@ class Details extends StatelessWidget {
                   child: Text(
                     'Details',
                     style: TextStyle(
-                      color: Color(0xFF00B288),
+                      color: AppColors.buttonColor,
                       fontSize: 16,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w700,
@@ -54,7 +56,7 @@ class Details extends StatelessWidget {
                       const Text(
                         'Address',
                         style: TextStyle(
-                          color: Color(0xFF00B288),
+                          color: AppColors.buttonColor,
                           fontSize: 14,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w700,
@@ -165,7 +167,7 @@ class Details extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
+                 SizedBox(
                   width: 16,
                   height: 16,
                   child: Row(
@@ -205,7 +207,7 @@ class Details extends StatelessWidget {
                            Text(
                             restaurant.phoneNumber ?? 'No Address',
                             style: TextStyle(
-                              color: Color(0xFF00B288),
+                              color: AppColors.buttonColor,
                               fontSize: 16,
                               fontFamily: 'Lato',
                               fontWeight: FontWeight.w600,
@@ -245,7 +247,7 @@ class Details extends StatelessWidget {
                                 TextSpan(
                                   text: ' \$30, ',
                                   style: TextStyle(
-                                    color: Color(0xFF00B288),
+                                    color: AppColors.buttonColor,
                                     fontSize: 16,
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.w600,
@@ -265,7 +267,7 @@ class Details extends StatelessWidget {
                                 TextSpan(
                                   text: '\$500',
                                   style: TextStyle(
-                                    color: Color(0xFF00B288),
+                                    color: AppColors.buttonColor,
                                     fontSize: 16,
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.w600,
@@ -353,7 +355,7 @@ class Details extends StatelessWidget {
                               Text(
                                 'Restaurant Availability Time',
                                 style: TextStyle(
-                                  color: Color(0xFF00B288),
+                                  color: AppColors.buttonColor,
                                   fontSize: 16,
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.w600,
@@ -393,7 +395,6 @@ class Details extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -490,7 +491,7 @@ class Details extends StatelessWidget {
                                   Text(
                                     'Details',
                                     style: TextStyle(
-                                      color: Color(0xFF00B288),
+                                      color:AppColors.buttonColor,
                                       fontSize: 16,
                                       fontFamily: 'Lato',
                                       fontWeight: FontWeight.w600,
@@ -528,7 +529,7 @@ class Details extends StatelessWidget {
             height: 44,
             width: 326,
             decoration: BoxDecoration(
-              color: Color(0xFF00B286),
+              color: AppColors.buttonColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(

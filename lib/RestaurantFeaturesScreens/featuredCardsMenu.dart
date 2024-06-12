@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:eataly/API/api.dart';
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -92,7 +94,7 @@ class MenuItemCard extends StatelessWidget {
 
 Future<List<CreateMenuItemDto>> fetchMenuItems(int restaurantId) async {
   final response = await http
-      .get(Uri.parse('http://192.168.100.137:8000/menu-items/$restaurantId'));
+      .get(Uri.parse('$baseURL/menu-items/$restaurantId'));
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
@@ -160,7 +162,7 @@ class _MenuListWidgetState extends State<MenuListWidget> {
             height: 44,
             width: 326,
             decoration: BoxDecoration(
-              color: Color(0xFF00B286),
+              color:AppColors.buttonColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(

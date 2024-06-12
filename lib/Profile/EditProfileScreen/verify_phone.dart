@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../API/api.dart';
 import '../../app_theme/app_theme.dart';
 import '../../components/bottomNavigatorBar.dart';
 import '../Profile.dart';
@@ -74,7 +75,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
   Future<void> verifyOtp() async {
     final otp = otpController1.text + otpController2.text + otpController3.text + otpController4.text;
-    const url = 'http://192.168.10.6:8000/otp-verification/verify-change-phone';
+    final url = '$baseURL/otp-verification/verify-change-phone';
     final accessToken = await getAccessToken();
     try {
       final body = jsonEncode({'otp': otp}); // Encode the OTP as JSON

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../API/api.dart';
 import '../Models/PendingFriendsModel.dart';
 import '../app_theme/app_theme.dart';
 
@@ -41,7 +42,7 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
     };
 
     final response = await http.get(
-      Uri.parse('http://192.168.10.6:8000/users/friends/pending'),
+      Uri.parse('$baseURL:8000/users/friends/pending'),
       headers: headers,
     );
 
@@ -87,7 +88,7 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
     final body = jsonEncode({"status": status});
 
     final response = await http.patch(
-      Uri.parse('http://192.168.10.6:8000/users/friends/$friendshipId'),
+      Uri.parse('$baseURL:8000/users/friends/$friendshipId'),
       headers: headers,
       body: body,
     );
