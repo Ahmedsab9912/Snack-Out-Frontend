@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../API/api.dart';
 import '../../OTP_Screens/VerifiedAccout.dart';
 import '../../app_theme/app_theme.dart';
 import '../../components/bottomNavigatorBar.dart';
@@ -78,7 +79,7 @@ class _VerifyEmailOTPState extends State<VerifyEmailOTP> {
         otpController3.text +
         otpController4.text;
     final accessToken = await getAccessToken();
-    const url = 'http://192.168.10.6:8000/otp-verification/verify-change-email';
+    final url = '$baseURL/otp-verification/verify-change-email';
 
     try {
       final body = jsonEncode({'otp': otp});

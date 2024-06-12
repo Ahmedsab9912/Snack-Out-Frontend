@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../API/api.dart';
 import '../Shared_Preferences/shared_preferences_page.dart';
 import '../app_theme/app_theme.dart';
 import 'OTP_Screen_Email.dart';
@@ -76,11 +77,11 @@ class _OTP_Screen_PhoneState extends State<OTP_Screen_Phone> {
     final SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
     final int userId = await sharedPreferences.getUserId() ?? 0;
 
-    final url = 'http://192.168.10.20:8000/otp-verification/phone?userId=$userId';
+    final url = '$baseURL/otp-verification/phone?userId=$userId';
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.10.20:8000/otp-verification/phone?userId=$userId'),
+        Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
         },
