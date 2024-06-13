@@ -1,3 +1,4 @@
+import 'package:eataly/API/api.dart';
 import 'package:eataly/Login&SignupScreens/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   Future<void> requestOTP(BuildContext context) async {
-  const url = 'http://192.168.10.20:8000/otp-verification/request-otp';
+  final url = '$baseURL/otp-verification/request-otp';
   final input = isEmail ? _inputController.text : '+92' + _inputController.text;
 
   if (_formKey.currentState?.validate() ?? false) {
@@ -139,9 +140,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(vertical:2), // Center the hint text vertically
                                 hintText: isEmail ? 'Enter Your Email' : 'Enter Your Phone Number',
                                 hintStyle: TextStyle(fontSize: 14), // Adjust the font size here
-                                contentPadding: EdgeInsets.symmetric(vertical: 10), // Center the hint text vertically
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -182,7 +183,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 90.0),
+                      padding:  EdgeInsets.symmetric(vertical: 12.0, horizontal: 90.0),
                       child: Text(
                         'Send',
                         style: TextStyle(
@@ -247,7 +248,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     child: Padding(
                      
-padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 80.0),
+padding:  EdgeInsets.symmetric(vertical: 12.0, horizontal: 80.0),
                       child: Text(
                         'Sign Up',
                         style: TextStyle(

@@ -7,8 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Login&SignupScreens/loginscreen.dart';
 import '../PartyScreens/Party-Screen.dart';
+import '../Profile/AddFriends.dart';
+import '../Profile/Edit-Profile.dart';
 import '../app_theme/app_theme.dart';
+import '../PartyScreens/AddFriendsScreen.dart';
 
 class BottomNavigationBarMenu extends StatefulWidget {
   const BottomNavigationBarMenu({super.key});
@@ -19,7 +23,29 @@ class BottomNavigationBarMenu extends StatefulWidget {
 }
 
 class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
-  //THIS IS THE SHAREDPREFENCES
+
+  Future<void> _showLoadingDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 10),
+                Text("Please Wait"),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   String name = '';
 
   @override
@@ -35,11 +61,9 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
     });
   }
 
-  int _selectedIndex = 0; // Keeps track of the selected tab index
-  // Define your custom color
+  int _selectedIndex = 0;
   final Color _selectedColor = AppColors.buttonColor;
 
-  // Paths for the unselected icons
   final List<String> _iconPaths = [
     'assets/images/home.png',
     'assets/images/saved.png',
@@ -48,7 +72,6 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
     'assets/images/profile.png',
   ];
 
-  // Paths for the selected icons
   final List<String> _selectedIconPaths = [
     'assets/images/homepurple.png',
     'assets/images/savedpurple.png',
@@ -56,6 +79,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
     'assets/images/bookingsGreen.png',
     'assets/images/profileGreen.png',
   ];
+
   final List<String> _tabTitles = [
     'Home',
     'Saved',
@@ -63,6 +87,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
     'Booking',
     'Profile'
   ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -70,19 +95,19 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
       child: Scaffold(
         // TOP APP BAR
         appBar: _appBar(),
+        drawer: _drawer(),
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
             Homescreen(),
             SavedScreen(),
             PartyDemoScreen(),
-            Booking(), // Make sure this matches the class name from your import
+            Booking(),
             Profile(),
           ],
         ),
         bottomNavigationBar: TabBar(
           onTap: (index) {
-            // Update the selected index on tap
             setState(() {
               _selectedIndex = index;
             });
@@ -100,141 +125,170 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                   ),
                   color: _selectedIndex == index
                       ? _selectedColor
-                      : Colors.grey, // Apply color to icons if needed
+                      : Colors.grey,
                 ),
                 child: Text(
                   _tabTitles[index],
                   style: TextStyle(
-                    color:
-                    _selectedIndex == index ? _selectedColor : Colors.grey,
+                    color: _selectedIndex == index ? _selectedColor : Colors.grey,
                     fontSize: 10,
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w400,
-                    height: 0.17, // Custom selected text color
+                    height: 0.17,
                   ),
                 ),
               );
             },
           ),
         ),
-
       ),
     );
   }
 
-  _appBar() {
+  AppBar? _appBar() {
     if (_selectedIndex != 4) {
-      return
-        AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 2, // Ensuring the AppBar is transparent and elevated
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          bottom: PreferredSize(
-            preferredSize:
-            Size.fromHeight(80), // Adjust the preferred size as needed
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 0,
-                left: 20,
-                right: 20,
-                bottom: 0,
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    style: BorderStyle.solid,
-                    color: Colors.grey, // Change the color of the border
-                    width: 1.0, // Change the width of the border
-                  ),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Good Morning',
-                                style: TextStyle(
-                                  color: Color(0xFF222222),
-                                  fontSize: 14,
-                                  fontFamily: 'Lato',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0,
-                                ),
-                              ),
-                              Text(
-                                name ?? 'User',
-                                style: TextStyle(
-                                  color: Color(0xFF222222),
-                                  fontSize: 22,
-                                  fontFamily: 'Lato',
-                                  fontWeight: FontWeight.w600,
-                                  height: 0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            // InkWell(
-                            //   onTap: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => Notificationpage(),
-                            //       ),
-                            //     );
-                            //   },
-                            //   child: Image(
-                            //     width: 34,
-                            //     height: 34,
-                            //     image: AssetImage(
-                            //         'assets/images/shoppingcart.png'),
-                            //   ),
-                            // ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Notificationpage(),
-                                  ),
-                                );
-                              },
-                              child: Image(
-                                width: 34,
-                                height: 34,
-                                image: AssetImage(
-                                    'assets/images/notification.png'),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+      return AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        actions: [
+          Padding(
+            padding:  EdgeInsets.only(right: 200.0),
+            child: Text(
+              name,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-        );
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Notificationpage(),
+                  ),
+                );
+              },
+              child: Image.asset(
+                'assets/images/notificationpurple.png',
+                width: 34,
+                height: 34,
+              ),
+            ),
+          ),
+        ],
+      );
     } else {
-      return null; // Return an empty container to hide the AppBar
+      return AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        flexibleSpace: Image(
+          // color: Colors.white.withOpacity(0.9), // Set the opacity here
+          image: AssetImage('assets/images/bg.png'),
+          fit: BoxFit.fitWidth,
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(top: 5.0, right: 5.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddFriendsProfile(),
+                  ),
+                );
+              },
+              child: Image.asset(
+                'assets/images/addfriend.png',
+                width: 50,
+                height: 50,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 10.0, top: 20),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(),
+                  ),
+                );
+              },
+              child: Image.asset(
+                'assets/images/settings.png',
+                width: 50,
+                height: 50,
+              ),
+            ),
+          ),
+        ],
+      );
     }
+  }
+
+  Drawer _drawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            child: Text(
+              'Hello, $name',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.purple[300],
+            ),
+          ),
+          // ListTile(
+          //   title: Text('Item 1'),
+          // ),
+          // ListTile(
+          //   title: Text('Item 2'),
+          // ),
+          // Add other items here
+          Divider(), // Add a divider before logout
+          InkWell(
+            onTap: (){
+              // // Show loading dialog
+              // _showLoadingDialog(context);
+            },
+            child: ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('isLoggedIn', false); // Log the user out
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                      (Route<dynamic> route) => false,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

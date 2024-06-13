@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:eataly/components/bottomNavigatorBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -139,7 +140,7 @@ class _SavedScreenState extends State<SavedScreen> {
                       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF00B288),
+                        color: AppColors.buttonColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Center(
