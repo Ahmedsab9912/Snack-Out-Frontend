@@ -1,4 +1,4 @@
-String baseURL = 'http://192.168.10.11:8000';
+String baseURL = 'https://snack-mate-backend-production.up.railway.app';
 
 // LOGIN AND SIGNUP API'S
 String login = '$baseURL/auth/login';

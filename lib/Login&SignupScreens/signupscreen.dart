@@ -137,8 +137,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
           final containerHeight = screenSize.height * 0.065;
           final containerWidth = screenSize.width * 0.85;
-          final imageHeight = screenSize.height * 0.33;
-          final imageWidth = screenSize.width * 1;
+          final imageHeight = screenSize.height * 0.20;
+          final imageWidth = screenSize.width * 4;
           final buttonHeight = screenSize.height * 0.07;
           final buttonWidth = screenSize.width * 0.8;
           final containerPadding = screenSize.height * 0.02;
@@ -276,7 +276,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: TextFormField(
                               controller: _emailController,
                               focusNode: _emailFocusNode,

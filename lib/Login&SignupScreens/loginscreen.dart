@@ -49,10 +49,35 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Future<void> _showLoadingDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 10),
+                Text("Please Wait"),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<int> login(BuildContext context) async {
     final login = '$baseURL/auth/login';
 
     if (_formKey.currentState?.validate() ?? false) {
+      // Show loading dialog
+      _showLoadingDialog(context);
+
       final body = {
         'username': _usernameController.text,
         'password': _passwordController.text,
@@ -66,6 +91,8 @@ class _LoginPageState extends State<LoginPage> {
           },
           body: jsonEncode(body),
         );
+        Navigator.of(context).pop(); // Close loading dialog
+
         if (response.statusCode == 200) {
           final loginResponse = LoginModel.fromJson(jsonDecode(response.body));
           // Save username, accessToken, and userId in shared preferences
@@ -77,9 +104,10 @@ class _LoginPageState extends State<LoginPage> {
           await prefs.setString('email', loginResponse.data!.user!.email.toString());
           await prefs.setString('phoneNumber', loginResponse.data!.user!.phoneNumber.toString());
           await prefs.setString('profileImage', loginResponse.data!.user!.profileImage.toString());
+          await prefs.setBool('isLoggedIn', true); // Save isLoggedIn status
 
           print('Login successful');
-          My_Funtions.f_toast(context, 'Login successful', Colors.green);
+          // My_Funtions.f_toast(context, 'Login successful', Colors.green);
 
           // Navigate to home page
           Navigator.pushReplacement(
@@ -90,12 +118,12 @@ class _LoginPageState extends State<LoginPage> {
           );
 
           return loginResponse.data!.user!.id!.toInt() ?? 0;
-        }
-        else {
+        } else {
           My_Funtions.f_toast(context, 'Login failed', Colors.red);
           print('Login failed');
         }
       } catch (e) {
+        Navigator.of(context).pop(); // Close loading dialog
         My_Funtions.f_toast(context, 'An error occurred', Colors.red);
       }
     }
@@ -238,9 +266,6 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                               textInputAction: TextInputAction.done,
-                              onFieldSubmitted: (_) {
-                                login(context);
-                              },
                             ),
                           ),
                         ),

@@ -1,6 +1,17 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesPage {
+
+  static Future<void> setLoggedIn(bool isLoggedIn) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  static Future<bool> getLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
+
   // Save Username
   Future<void> saveUsername(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
