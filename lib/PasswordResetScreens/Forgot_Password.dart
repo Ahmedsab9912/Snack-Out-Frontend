@@ -1,3 +1,4 @@
+import 'package:eataly/Login&SignupScreens/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -161,7 +162,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     },
                     child: Text(

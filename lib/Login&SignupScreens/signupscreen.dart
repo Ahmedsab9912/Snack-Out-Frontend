@@ -276,7 +276,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: TextFormField(
                               controller: _emailController,
                               focusNode: _emailFocusNode,
