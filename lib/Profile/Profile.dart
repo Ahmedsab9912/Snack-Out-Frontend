@@ -1,29 +1,56 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../PartyScreens/AddFriendsScreen.dart';
-import '../addfriendsscreen.dart';
-import '../app_theme/app_theme.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../API/api.dart';
 import '../giftVouchersScreen.dart';
 import '../loyaltyRewardsScreen.dart';
 import '../BookingScreens/bookingRewardsScreen.dart';
-import 'AddFriends.dart';
-import 'Edit-Profile.dart';
+import '../models/users_model.dart'; // Import the UsersModel
 
-class Profile extends StatelessWidget {
-  Profile({Key? key}) : super(key: key);
+class UserProfile extends StatefulWidget {
+  UserProfile({Key? key}) : super(key: key);
 
-  Future<String> _getProfileImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('profileImage') ?? ''; // Default image if not found
+  @override
+  _UserProfileState createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  UsersModel? _userData;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
   }
 
-  //THIS IS THE SHAREDPREFENCES
-  String name = '';
-
-  Future<String> _getProfileName() async {
+  Future<void> _fetchUserData() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('name') ?? 'User'; // Default name if not found
+    final String? accessToken = prefs.getString('accessToken');
+
+    if (accessToken == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Access token is missing")),
+      );
+      return;
+    }
+
+    final url = Uri.parse("$baseURL/users/me");
+    final response = await http.get(url, headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        _userData = UsersModel.fromJson(data);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to fetch user data")),
+      );
+    }
   }
 
   @override
@@ -36,76 +63,21 @@ class Profile extends StatelessWidget {
               // Container at the top with background image
               Stack(
                 alignment: Alignment.center,
-                clipBehavior: Clip
-                    .none, // Allow the overlapped part to be visible outside the stack
+                clipBehavior: Clip.none,
                 children: [
                   // Background image container
                   Container(
                     height: 120,
-                    width: MediaQuery.of(context)
-                        .size
-                        .width, // Make width equal to the screen width
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                            "assets/images/bg.png"), // Replace with your image path
-                        fit: BoxFit.cover, // Cover the container bounds
+                        image: AssetImage("assets/images/bg.png"),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  // // Images positioned on the top right
-                  // Padding(
-                  //   padding: EdgeInsets.only(bottom: 150, left: 280),
-                  //   child: Row(
-                  //     children: [
-                  //       InkWell(
-                  //         onTap: () {
-                  //           Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //               builder: (context) => AddFriendsProfile(),
-                  //             ),
-                  //           );
-                  //         },
-                  //         child: Positioned(
-                  //           top:
-                  //               10, // Adjust the top position to give some space between images and top edge
-                  //           right:
-                  //               50, // Adjust the right position to give some space between images and right edge
-                  //           child: Image.asset(
-                  //             'assets/images/addfriend.png', // Replace with your image asset path
-                  //             width: 50, // Adjust the width as needed
-                  //             height: 50, // Adjust the height as needed
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       InkWell(
-                  //         onTap: () {
-                  //           Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //               builder: (context) => EditProfile(),
-                  //             ),
-                  //           );
-                  //         },
-                  //         child: Positioned(
-                  //           bottom: 50,
-                  //           right:
-                  //               10, // Adjust the right position to give some space between images and right edge
-                  //           child: Image.asset(
-                  //             'assets/images/settings.png', // Replace with your image asset path
-                  //             width: 50, // Adjust the width as needed
-                  //             height: 50, // Adjust the height as needed
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Avatar container
                   Positioned(
-                    top:
-                        30, // Adjust this value to correctly position the avatar
+                    top: 30,
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -118,94 +90,39 @@ class Profile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: FutureBuilder<String>(
-                        future: _getProfileImage(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircleAvatar(
-                              radius: 77,
-                              backgroundColor: Colors.white,
-                              child: CircleAvatar(
-                                radius: 75,
-                                backgroundImage: AssetImage(
-                                    'assets/images/default_avatar.png'), // Placeholder image
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return CircleAvatar(
-                              radius: 77,
-                              backgroundColor: Colors.white,
-                              child: CircleAvatar(
-                                radius: 75,
-                                backgroundImage: AssetImage(
-                                    'assets/images/error_avatar.png'), // Error image
-                              ),
-                            );
-                          } else {
-                            return CircleAvatar(
-                              radius: 77,
-                              backgroundColor: Colors.yellow[300],
-                              child: CircleAvatar(
-                                radius: 75,
-                                backgroundImage:
-                                    snapshot.data!.startsWith('http')
-                                        ? NetworkImage(snapshot.data!)
-                                        : AssetImage(snapshot.data!)
-                                            as ImageProvider,
-                              ),
-                            );
-                          }
-                        },
+                      child: CircleAvatar(
+                        radius: 77,
+                        backgroundColor: Colors.yellow[300],
+                        child: CircleAvatar(
+                          radius: 75,
+                          backgroundImage: _userData?.profileImage != null &&
+                                  _userData!.profileImage!.startsWith('http')
+                              ? NetworkImage(_userData!.profileImage!)
+                              : AssetImage('assets/default_avatar.png')
+                                  as ImageProvider,
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 88),
-              FutureBuilder<String>(
-                future: _getProfileName(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text(
-                      '...',
+              _userData == null
+                  ? Text("")
+                  : Text(
+                      _userData!.username!,
                       style: TextStyle(
                         fontFamily: 'Lato',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      'Error',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    );
-                  } else {
-                    return Text(
-                      snapshot.data ?? '',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    );
-                  }
-                },
-              ),
+                    ),
               // A row with three gift voucher containers
               Padding(
-                // Wrap the Row with Padding for spacing from the image container
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                padding: EdgeInsets.symmetric(vertical: 20.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment
-                      .spaceEvenly, // Even spacing for the containers
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -216,23 +133,18 @@ class Profile extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: 103.0, // width in logical pixels
-                        height: 116.0, // height in logical pixels
-                        padding:
-                            const EdgeInsets.all(10), // padding for inner space
+                        width: 103.0,
+                        height: 116.0,
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(
-                              0xFFF8BBD0), // Light pink color from the Material color palette
-                          borderRadius:
-                              BorderRadius.circular(8), // Rounded corners
+                          color: Color(0xFFF8BBD0),
+                          borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.1), // Shadow color
+                              color: Colors.black.withOpacity(0.1),
                               spreadRadius: 1,
                               blurRadius: 3,
-                              offset: const Offset(
-                                  0, 1), // changes position of shadow
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),
@@ -240,32 +152,27 @@ class Profile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // Replace this with your image asset
                             Image.asset(
                               'assets/images/gift.png',
-                              width: 24.0, // Image width
-                              height: 24.0, // Image height
-                              color: Colors
-                                  .black54, // If you want to apply a color filter to the image
+                              width: 24.0,
+                              height: 24.0,
+                              color: Colors.black54,
                             ),
-                            const SizedBox(
-                                height: 24), // Space between image and text
+                            SizedBox(height: 24),
                             Text(
                               'Gift',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14.0, // Font size for the text
+                                fontSize: 14.0,
                               ),
                             ),
-                            // const SizedBox(
-                            //     height: 8), // Space between image and text
                             Text(
                               'Vouchers',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14.0, // Font size for the text
+                                fontSize: 14.0,
                               ),
                             ),
                           ],
@@ -281,23 +188,18 @@ class Profile extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: 103.0, // width in logical pixels
-                        height: 116.0, // height in logical pixels
-                        padding:
-                            const EdgeInsets.all(10), // padding for inner space
+                        width: 103.0,
+                        height: 116.0,
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(
-                              0xFFF8BBD0), // Light pink color from the Material color palette
-                          borderRadius:
-                              BorderRadius.circular(8), // Rounded corners
+                          color: Color(0xFFF8BBD0),
+                          borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.1), // Shadow color
+                              color: Colors.black.withOpacity(0.1),
                               spreadRadius: 1,
                               blurRadius: 3,
-                              offset: const Offset(
-                                  0, 1), // changes position of shadow
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),
@@ -305,32 +207,27 @@ class Profile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // Replace this with your image asset
                             Image.asset(
                               'assets/images/loyalty.png',
-                              width: 24.0, // Image width
-                              height: 24.0, // Image height
-                              color: Colors
-                                  .black54, // If you want to apply a color filter to the image
+                              width: 24.0,
+                              height: 24.0,
+                              color: Colors.black54,
                             ),
-                            const SizedBox(
-                                height: 24), // Space between image and text
+                            SizedBox(height: 24),
                             Text(
                               'Loyalty',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14.0, // Font size for the text
+                                fontSize: 14.0,
                               ),
                             ),
-                            // const SizedBox(
-                            //     height: 8), // Space between image and text
                             Text(
                               'Rewards',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14.0, // Font size for the text
+                                fontSize: 14.0,
                               ),
                             ),
                           ],
@@ -346,23 +243,18 @@ class Profile extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: 103.0, // width in logical pixels
-                        height: 116.0, // height in logical pixels
-                        padding:
-                            const EdgeInsets.all(10), // padding for inner space
+                        width: 103.0,
+                        height: 116.0,
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(
-                              0xFFFFE4B0), // Light pink color from the Material color palette
-                          borderRadius:
-                              BorderRadius.circular(8), // Rounded corners
+                          color: Color(0xFFFFE4B0),
+                          borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.1), // Shadow color
+                              color: Colors.black.withOpacity(0.1),
                               spreadRadius: 1,
                               blurRadius: 3,
-                              offset: const Offset(
-                                  0, 1), // changes position of shadow
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),
@@ -370,135 +262,24 @@ class Profile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // Replace this with your image asset
                             Image.asset(
                               'assets/images/booking.png',
-                              width: 24.0, // Image width
-                              height: 24.0, // Image height
-                              color: Colors
-                                  .black54, // If you want to apply a color filter to the image
+                              width: 24.0,
+                              height: 24.0,
+                              color: Colors.black54,
                             ),
-                            const SizedBox(
-                                height: 24), // Space between image and text
-                            const Text(
+                            SizedBox(height: 24),
+                            Text(
                               'Booking Rewards',
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14.0, // Font size for the text
+                                fontSize: 14.0,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0), // Adjust padding as necessary for alignment
-                child: const Text(
-                  'Booking History',
-                  style: TextStyle(
-                    color: AppColors.buttonColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left, // Align text to the left
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 350,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey, width: 1),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                            'assets/images/junoon.png'), // Replace with your asset image
-                        const SizedBox(width: 8),
-                        Expanded(
-                          // Use Expanded to take the remaining space for the text column
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Junoon Heritage - Pure Desi Experience',
-                                style: TextStyle(
-                                  color: AppColors.buttonColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              RichText(
-                                text: const TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Booked on 31 Jan\nPaid ',
-                                      style: TextStyle(
-                                          color: Colors
-                                              .grey), // Grey color for the initial part
-                                    ),
-                                    TextSpan(
-                                      text: '\$200',
-                                      style: TextStyle(
-                                          color: Colors
-                                              .black), // Black color for the price
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: 318, // Logical pixels, not actual device pixels.
-                      height: 44, // Logical pixels, not actual device pixels.
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: AppColors
-                              .buttonColor, // Text Color (Foreground color)
-                          shape: RoundedRectangleBorder(
-                            // Define the button's shape
-                            borderRadius: BorderRadius.circular(
-                                8), // Reduced corner radius
-                          ),
-                        ),
-                        onPressed: () {
-                          // Handle Re-Book action
-                        },
-                        child: const Text('Re-Book'),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          '4.5',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(width: 4),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star_half, color: Colors.amber, size: 20),
-                      ],
                     ),
                   ],
                 ),

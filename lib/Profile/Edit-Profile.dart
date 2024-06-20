@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'dart:convert';
 
-import '../app_theme/app_theme.dart';
+import '../API/api.dart';
+import '../components/bottomNavigatorBar.dart';
 import 'EditProfileScreen/edit_email.dart';
 import 'EditProfileScreen/edit_phone.dart';
+import '../models/users_model.dart';
+import 'Profile.dart'; // Import the model
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -15,21 +21,56 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
 
-  final FocusNode _usernameFocusNode = FocusNode();
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
 
   File? _imageFile;
+  final picker = ImagePicker();
+  UsersModel? _userData;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? accessToken = prefs.getString('accessToken');
+
+    if (accessToken == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Access token is missing")),
+      );
+      return;
+    }
+
+    final url = Uri.parse("$baseURL/users/me");
+    final response = await http.get(url, headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        _userData = UsersModel.fromJson(data);
+        _usernameController.text = _userData!.username!;
+        _nameController.text = _userData!.username!;
+        _emailController.text = _userData!.email!;
+        _phoneNumberController.text = _userData!.phoneNumber!;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to fetch user data")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,42 +104,19 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ],
                   ),
-                  child: FutureBuilder<String>(
-                    future: _getProfileImage(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircleAvatar(
-                          radius: avatarSize / 3,
-                          backgroundColor: Colors.purple,
-                          child: CircleAvatar(
-                            radius: avatarSize / 2 - 2,
-                            backgroundImage: AssetImage('assets/images/default_avatar.png'),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return CircleAvatar(
-                          radius: avatarSize / 2,
-                          backgroundColor: Colors.purple,
-                          child: CircleAvatar(
-                            radius: avatarSize / 2 - 2,
-                            backgroundImage: AssetImage('assets/images/error_avatar.png'),
-                          ),
-                        );
-                      } else {
-                        return CircleAvatar(
-                          radius: avatarSize / 2,
-                          backgroundColor: Colors.purple,
-                          child: CircleAvatar(
-                            radius: avatarSize / 2 - 2,
-                            backgroundImage: _imageFile != null
-                                ? FileImage(_imageFile!)
-                                : snapshot.data!.startsWith('http')
-                                ? NetworkImage(snapshot.data!)
-                                : AssetImage(snapshot.data!) as ImageProvider,
-                          ),
-                        );
-                      }
-                    },
+                  child: CircleAvatar(
+                    radius: avatarSize / 2,
+                    backgroundColor: Colors.purple,
+                    child: CircleAvatar(
+                      radius: avatarSize / 2 - 2,
+                      backgroundImage: _imageFile != null
+                          ? FileImage(_imageFile!)
+                          : _userData?.profileImage != null &&
+                                  _userData!.profileImage!.startsWith('http')
+                              ? NetworkImage(_userData!.profileImage!)
+                              : AssetImage('assets/images/default.png')
+                                  as ImageProvider,
+                    ),
                   ),
                 ),
               ),
@@ -115,221 +133,16 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
             SizedBox(height: paddingSize / 2),
-            Padding(
-              padding: EdgeInsets.only(right: containerWidth * 0.80),
-              child: Text(
-                'Username',
-                style: TextStyle(fontSize: 17, color: Colors.black),
-              ),
-            ),
-            SizedBox(height: 8),
-            Container(
-              height: containerHeight,
-              width: containerWidth,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFFA6A6A6),
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: FutureBuilder<String>(
-                  future: _getUsername(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      _usernameController.text = snapshot.data!;
-                      return TextFormField(
-                        controller: _usernameController,
-                        style: TextStyle(color: Colors.grey),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        enabled: false,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_nameFocusNode);
-                        },
-                      );
-                    } else {
-                      return Text(''); // Show a loading indicator while waiting for the data
-                    }
-                  },
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: containerWidth * 0.90),
-              child: Text(
-                'Name',
-                style: TextStyle(fontSize: 17, color: Colors.black),
-              ),
-            ),
-            SizedBox(height: 8),
-            Container(
-              height: containerHeight,
-              width: containerWidth,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFFA6A6A6),
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: FutureBuilder<String>(
-                  future: _getname(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      _nameController.text = snapshot.data!;
-                      return TextFormField(
-                        controller: _nameController,
-                        style: TextStyle(color: Colors.grey),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_emailFocusNode);
-                        },
-                      );
-                    } else {
-                      return Text(''); // Show a loading indicator while waiting for the data
-                    }
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: 8),
-            Padding(
-              padding: EdgeInsets.only(right: containerWidth * 0.90),
-              child: Text(
-                'Email',
-                style: TextStyle(fontSize: 17, color: Colors.black),
-              ),
-            ),
-            SizedBox(height: 8),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditEmail(),
-                  ),
-                );
-              },
-              child: Container(
-                height: containerHeight,
-                width: containerWidth,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xFFA6A6A6),
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: FutureBuilder<String>(
-                    future: _getemail(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        _emailController.text = snapshot.data!;
-                        return TextFormField(
-                          controller: _emailController,
-                          focusNode: _emailFocusNode,
-                          style: TextStyle(color: Colors.grey),
-                          decoration: InputDecoration(
-                            enabled: false,
-                            border: InputBorder.none,
-                            suffixIcon: Image.asset(
-                              'assets/images/edit.png',
-                              width: 50,
-                              height: 70,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) {
-                            FocusScope.of(context).requestFocus(_emailFocusNode);
-                          },
-                        );
-                      } else {
-                        return Text(''); // Show a loading indicator while waiting for the data
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: EdgeInsets.only(right: containerWidth * 0.68),
-              child: Text(
-                'Phone Number',
-                style: TextStyle(fontSize: 17, color: Colors.black),
-              ),
-            ),
-            SizedBox(height: 5),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditPhone(),
-                  ),
-                );
-              },
-              child: Container(
-                height: containerHeight,
-                width: containerWidth,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xFFA6A6A6),
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: FutureBuilder<String>(
-                          future: _getphone(), // Note the correct method name
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              _phoneNumberController.text = snapshot.data!;
-                              return TextFormField(
-                                enabled: false,
-                                controller: _phoneNumberController,
-                                focusNode: _phoneNumberFocusNode,
-                                keyboardType: TextInputType.phone,
-                                style: TextStyle(color: Colors.grey),
-                                decoration: InputDecoration(
-                                  suffixIcon: Image.asset(
-                                    'assets/images/edit.png',
-                                    width: 50,
-                                    height: 70,
-                                  ),
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(left: 5, bottom: 3),
-                                ),
-                              );
-                            } else {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            _buildProfileField("Username", _usernameController, containerWidth,
+                containerHeight, _nameFocusNode, false),
+            _buildProfileField("Name", _nameController, containerWidth,
+                containerHeight, _emailFocusNode, false),
+            _buildProfileField("Email", _emailController, containerWidth,
+                containerHeight, _phoneNumberFocusNode, true,
+                navigateTo: EditEmail()),
+            _buildProfileField("Phone Number", _phoneNumberController,
+                containerWidth, containerHeight, null, true,
+                navigateTo: EditPhone()),
             SizedBox(height: 30),
             Container(
               height: containerHeight,
@@ -337,7 +150,8 @@ class _EditProfileState extends State<EditProfile> {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryTextColor),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.purple),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -356,31 +170,76 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  bool _obscureText = true;
-
-  Future<String> _getProfileImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('profileImage') ?? ''; // Default image if not found
-  }
-
-  Future<String> _getUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('username') ?? ''; // Default image if not found
-  }
-
-  Future<String> _getname() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('name') ?? ''; // Default image if not found
-  }
-
-  Future<String> _getemail() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('email') ?? ''; // Default image if not found
-  }
-
-  Future<String> _getphone() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('phoneNumber') ?? ''; // Default image if not found
+  Widget _buildProfileField(
+      String label,
+      TextEditingController controller,
+      double containerWidth,
+      double containerHeight,
+      FocusNode? nextFocusNode,
+      bool isNavigable,
+      {Widget? navigateTo}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+              right: containerWidth * (1 - (label.length * 0.05))),
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 17, color: Colors.black),
+          ),
+        ),
+        SizedBox(height: 8),
+        InkWell(
+          onTap: isNavigable && navigateTo != null
+              ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => navigateTo,
+                    ),
+                  );
+                }
+              : null,
+          child: Container(
+            height: containerHeight,
+            width: containerWidth,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Color(0xFFA6A6A6),
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controller,
+                style: TextStyle(color: Colors.grey),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  suffixIcon: isNavigable
+                      ? Image.asset(
+                          'assets/images/edit.png',
+                          width: 50,
+                          height: 70,
+                        )
+                      : null,
+                ),
+                enabled: !isNavigable,
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) {
+                  if (nextFocusNode != null) {
+                    FocusScope.of(context).requestFocus(nextFocusNode);
+                  }
+                },
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+      ],
+    );
   }
 
   void _showEditPictureBottomSheet(BuildContext context) {
@@ -390,23 +249,28 @@ class _EditProfileState extends State<EditProfile> {
         return Container(
           decoration: BoxDecoration(
               color: Color(0xFFA796E4),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10))),
           height: 155,
           child: Padding(
             padding: EdgeInsets.only(top: 15),
             child: Column(
               children: [
                 ListTile(
-                  leading: Image.asset('assets/images/gallery.png', width: 30, height: 30),
-                  title: Text('Choose from Gallery', style: TextStyle(color: Colors.white)),
+                  leading: Image.asset('assets/images/gallery.png',
+                      width: 30, height: 30),
+                  title: Text('Choose from Gallery',
+                      style: TextStyle(color: Colors.white)),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.gallery);
                   },
                 ),
                 ListTile(
-                  leading: Image.asset('assets/images/camera.png', width: 30, height: 30),
-                  title: Text('Take Picture', style: TextStyle(color: Colors.white)),
+                  leading: Image.asset('assets/images/camera.png',
+                      width: 30, height: 30),
+                  title: Text('Take Picture',
+                      style: TextStyle(color: Colors.white)),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.camera);
@@ -420,14 +284,81 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
+  Future<void> _uploadProfileImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? accessToken = prefs.getString('accessToken');
 
+    if (accessToken == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Access token is missing")),
+      );
+      return;
+    }
+
+    if (_imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Image file is missing")),
+      );
+      return;
+    }
+
+    final url = Uri.parse("$baseURL/users/change-profile-picture");
+    final request = http.MultipartRequest('POST', url)
+      ..headers['Authorization'] = 'Bearer $accessToken';
+
+    final mimeType = _getMimeType(_imageFile!.path);
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      _imageFile!.path,
+      contentType: MediaType(mimeType[0], mimeType[1]),
+    ));
+
+    try {
+      final response = await request.send();
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Upload successful')),
+        );
+        // Navigate to OTP page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavigationBarMenu(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Upload failed')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Upload failed: $e')),
+      );
+    }
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
+    }
+  }
+
+  List<String> _getMimeType(String filePath) {
+    final extension = filePath.split('.').last;
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return ['image', 'jpeg'];
+      case 'png':
+        return ['image', 'png'];
+      case 'gif':
+        return ['image', 'gif'];
+      default:
+        return ['application', 'octet-stream'];
     }
   }
 }

@@ -244,40 +244,96 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
 
   Drawer _drawer() {
     return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Text(
-              'Hello, $name',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+      backgroundColor: AppColors.buttonColor,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 25),
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  // color: Colors.purple[300],
+                ),
+                child: Text(
+                  'Hello , $name',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
-            decoration: BoxDecoration(
-              color: Colors.purple[300],
+            // Add other items here
+            Expanded(
+              child: ListView(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      // // Show loading dialog
+                      // _showLoadingDialog(context);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.map, color: Colors.white,),
+                      title: Text('Addresses', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
+                    ),
+                  ),
+                  Divider(),
+                  InkWell(
+                    onTap: () {
+                      // // Show loading dialog
+                      // _showLoadingDialog(context);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.shop, color: Colors.white,),
+                      title: Text('Orders', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
+                    ),
+                  ),
+                  Divider(),
+                  InkWell(
+                    onTap: () {
+                      // // Show loading dialog
+                      // _showLoadingDialog(context);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.label, color: Colors.white,),
+                      title: Text('Offer & promo', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
+                    ),
+                  ),
+                  Divider(),
+                  InkWell(
+                    onTap: () {
+                      // // Show loading dialog
+                      // _showLoadingDialog(context);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.edit_note_sharp, color: Colors.white,),
+                      title: Text('Privacy policy', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
+                    ),
+                  ),
+                  Divider(),
+                ],
+              ),
             ),
-          ),
-          // ListTile(
-          //   title: Text('Item 1'),
-          // ),
-          // ListTile(
-          //   title: Text('Item 2'),
-          // ),
-          // Add other items here
-          Divider(), // Add a divider before logout
-          InkWell(
-            onTap: (){
-              // // Show loading dialog
-              // _showLoadingDialog(context);
-            },
-            child: ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool('isLoggedIn', false); // Log the user out
+            Divider(),
+            InkWell(
+              onTap: () {
+                // // Show loading dialog
+                // _showLoadingDialog(context);
+              },
+              child: ListTile(
+
+                title: Row(
+                  children: [
+                    Text('Logout', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
+                    SizedBox(width: 10.0,),
+                    Icon(Icons.logout, color: Colors.white,)
+                  ],
+                ),
+                onTap: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('isLoggedIn', false); // Log the user out
 
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -291,4 +347,6 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
       ),
     );
   }
+
+
 }

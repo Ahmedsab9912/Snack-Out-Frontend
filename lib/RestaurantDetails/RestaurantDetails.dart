@@ -17,7 +17,7 @@ class TopNavigationBarManu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 40,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: Text(restaurant.name ?? "Restaurant Details"),
