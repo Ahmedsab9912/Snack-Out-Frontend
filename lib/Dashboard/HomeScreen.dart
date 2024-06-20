@@ -37,7 +37,7 @@ class _ToggleIconState extends State<ToggleIcon> {
       return;
     }
 
-    const url = 'http://192.168.10.11:8000/users/favorites';
+    final url = '$baseURL/users/favorites';
     final body = jsonEncode({'restaurantId': widget.restaurant.id});
 
     final response = _isFilled
@@ -139,7 +139,7 @@ class _HomescreenState extends State<Homescreen> {
     }
 
     final response = await http.get(
-      Uri.parse('$baseURL:8000/users/favorites'),
+      Uri.parse('$baseURL/users/favorites'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',

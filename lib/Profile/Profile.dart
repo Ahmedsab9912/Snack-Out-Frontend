@@ -98,7 +98,7 @@ class _UserProfileState extends State<UserProfile> {
                           backgroundImage: _userData?.profileImage != null &&
                                   _userData!.profileImage!.startsWith('http')
                               ? NetworkImage(_userData!.profileImage!)
-                              : AssetImage('assets/default_avatar.png')
+                              : AssetImage('assets/images/default.png')
                                   as ImageProvider,
                         ),
                       ),

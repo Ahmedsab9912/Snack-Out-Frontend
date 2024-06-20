@@ -103,7 +103,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
             SavedScreen(),
             PartyDemoScreen(),
             Booking(),
-            Profile(),
+            UserProfile(),
           ],
         ),
         bottomNavigationBar: TabBar(
@@ -345,7 +345,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
           ),
         ],
       ),
-    );
+    ));
   }
 
 

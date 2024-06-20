@@ -148,11 +148,13 @@ class _EditProfileState extends State<EditProfile> {
               height: containerHeight,
               width: containerWidth,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  _uploadProfileImage();
+                },
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.purple),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      WidgetStateProperty.all<Color>(Colors.purple),
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),

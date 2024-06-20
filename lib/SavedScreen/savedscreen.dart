@@ -36,7 +36,7 @@ class _SavedScreenState extends State<SavedScreen> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.10.11:8000/users/favorites'),
+      Uri.parse('$baseURL/users/favorites'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
@@ -63,7 +63,7 @@ class _SavedScreenState extends State<SavedScreen> {
       return;
     }
 
-    final url = '$baseURL:8000/users/favorites';
+    final url = '$baseURL/users/favorites';
     final body = jsonEncode({'restaurantId': restaurant.id});
 
     final response = await http.delete(
