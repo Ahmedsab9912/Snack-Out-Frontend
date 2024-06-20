@@ -141,7 +141,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
             SizedBox(height: 5.0,),
             Text('Enter Your Verification Code',style: TextStyle(fontSize: 22),),
             SizedBox(height: 15.0,),
-            Text('OTP has been sent to your New Email',style: TextStyle(fontSize: 13.5),),
+            Text('OTP has been sent to your New Phone',style: TextStyle(fontSize: 13.5),),
             SizedBox(height: 35.0,),
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: 35.0),

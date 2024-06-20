@@ -352,12 +352,17 @@ class _OPT_Screen_EmailState extends State<OPT_Screen_Email> {
                 SizedBox(
                   width: 10.0,
                 ),
-                Text(
-                  "Resend",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: AppColors.primaryTextColor,
-                      fontWeight: FontWeight.bold),
+                InkWell(
+                  onTap: (){
+                    sendOtp(context);
+                  },
+                  child: Text(
+                    "Resend",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: AppColors.primaryTextColor,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),
