@@ -8,7 +8,7 @@ import 'package:eataly/SavedScreen/savedscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Login&SignupScreens/loginscreen.dart';
-import '../PartyScreens/Party-Screen.dart';
+import '../PartyScreens/Lets-Party-Screen.dart';
 import '../Profile/AddFriends.dart';
 import '../Profile/Edit-Profile.dart';
 import '../app_theme/app_theme.dart';
@@ -125,16 +125,18 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                   ),
                   color: _selectedIndex == index
                       ? _selectedColor
-                      : Colors.grey,
+                      : Colors.black,
                 ),
-                child: Text(
-                  _tabTitles[index],
-                  style: TextStyle(
-                    color: _selectedIndex == index ? _selectedColor : Colors.grey,
-                    fontSize: 10,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
-                    height: 0.17,
+                child: Padding(
+                  padding:  EdgeInsets.only(top: 8),
+                  child: Text(
+                    _tabTitles[index],
+                    style: TextStyle(
+                      color: _selectedIndex == index ? _selectedColor : Colors.black,
+                      fontSize: 13,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               );

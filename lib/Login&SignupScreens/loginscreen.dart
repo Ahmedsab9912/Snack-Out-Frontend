@@ -109,11 +109,11 @@ class _LoginPageState extends State<LoginPage> {
           print('Login successful');
           // My_Funtions.f_toast(context, 'Login successful', Colors.green);
 
-          // Navigate to home page
+          // Navigate to home page with fade transition
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavigationBarMenu(),
+            FadePageRoute(
+              page: BottomNavigationBarMenu(),
             ),
           );
 
@@ -345,4 +345,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+class FadePageRoute<T> extends PageRouteBuilder<T> {
+  final Widget page;
+  FadePageRoute({required this.page})
+      : super(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  );
 }
