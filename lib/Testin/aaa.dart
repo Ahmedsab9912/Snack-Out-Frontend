@@ -1,47 +1,64 @@
 // import 'package:flutter/material.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:socket_io_client/socket_io_client.dart' as IO;
 //
-// class PartyMembersDisplay extends StatefulWidget {
+// class Socket1 extends StatefulWidget {
+//   const Socket1({super.key});
+//
 //   @override
-//   _PartyMembersDisplayState createState() => _PartyMembersDisplayState();
+//   State<Socket1> createState() => _Socket1State();
 // }
 //
-// class _PartyMembersDisplayState extends State<PartyMembersDisplay> {
-//   late Future<List<PartyMembersModel>> _futurePartyMembers;
+// class _Socket1State extends State<Socket1> {
+//   late IO.Socket socket;
 //
 //   @override
 //   void initState() {
 //     super.initState();
-//     _futurePartyMembers = fetchPartyMembers();
+//     _initializeSocket();
+//   }
+//
+//   Future<void> _initializeSocket() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String? accessToken = prefs.getString('accessToken');
+//
+//     socket = IO.io(
+//       'wss://snack-mate-backend-production.up.railway.app',
+//       IO.OptionBuilder()
+//           .setTransports(['websocket'])
+//           .setExtraHeaders({'Authorization': 'Bearer $accessToken'})
+//           .build(),
+//     );
+//
+//     socket.onConnect((_) {
+//       print('Connected');
+//       socket.emit('msg', 'test');
+//     });
+//
+//     socket.onConnectError((data) {
+//       print('Connection Error: $data');
+//     });
+//
+//     socket.onDisconnect((_) {
+//       print('Disconnected');
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     socket.dispose();
+//     super.dispose();
 //   }
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return FutureBuilder<List<PartyMembersModel>>(
-//       future: _futurePartyMembers,
-//       builder: (context, snapshot) {
-//         if (snapshot.hasData) {
-//           return ListView.builder(
-//             scrollDirection: Axis.horizontal, // Horizontal scrolling list
-//             itemCount: snapshot.data!.length,
-//             itemBuilder: (context, index) {
-//               final member = snapshot.data![index];
-//               return Column(
-//                 children: [
-//                   CircleAvatar(
-//                     radius: 30,
-//                     backgroundImage: NetworkImage(member.imageUrl),
-//                   ),
-//                   SizedBox(height: 8),
-//                   Text(member.username),
-//                 ],
-//               );
-//             },
-//           );
-//         } else if (snapshot.hasError) {
-//           return Text('${snapshot.error}');
-//         }
-//         return CircularProgressIndicator();
-//       },
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Sockets Testing'),
+//       ),
+//       body: Center(
+//         child: const Text('Check console for socket connection logs.'),
+//       ),
 //     );
 //   }
 // }

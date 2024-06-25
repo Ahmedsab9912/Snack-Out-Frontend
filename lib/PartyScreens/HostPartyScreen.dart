@@ -14,14 +14,15 @@ import '../components/bottomNavigatorBar.dart';
 
 class HostPartyScreen extends StatefulWidget {
   final String inviteCode;
-  const HostPartyScreen(
-      {required this.inviteCode, super.key});
+  const HostPartyScreen({required this.inviteCode, super.key});
 
   @override
   State<HostPartyScreen> createState() => _HostPartyScreenState();
 }
 
 class _HostPartyScreenState extends State<HostPartyScreen> {
+
+  // SHOW DELETE DIALOG
   Future<void> _showDeleteDialogHost(BuildContext context) {
     return showDialog(
       context: context,
@@ -97,7 +98,6 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
     }
   }
 
-
 //PARTY-MEMBERS API
   Future<PartyMembersModel> fetchPartyMembers() async {
     final headers = {
@@ -105,7 +105,9 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
       'Authorization': 'Bearer $accessToken',
     };
 
-    final response = await http.get(Uri.parse('$baseURL/parties/${widget.inviteCode}'), headers: headers);
+    final response = await http.get(
+        Uri.parse('$baseURL/parties/${widget.inviteCode}'),
+        headers: headers);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return PartyMembersModel.fromJson(data);
@@ -180,7 +182,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                 );
               },
               child:
-                  Icon(Icons.delete_forever_outlined, color: Colors.redAccent),
+              Icon(Icons.delete_forever_outlined, color: Colors.redAccent),
             ),
           ),
         ],
@@ -221,7 +223,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                       scrollDirection: Axis.horizontal,
                       itemCount: snapshot.data!.data?.partyMembers?.length,
                       itemBuilder: (context, index) {
-                        final member = snapshot.data!.data!.partyMembers?[index];
+                        final member =
+                        snapshot.data!.data!.partyMembers?[index];
                         return Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Row(
@@ -230,7 +233,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                                 children: [
                                   CircleAvatar(
                                     radius: 30,
-                                    backgroundImage: NetworkImage(member!.profileImage),
+                                    backgroundImage:
+                                    NetworkImage(member!.profileImage),
                                   ),
                                   Text(member.username.toString()),
                                 ],
@@ -328,7 +332,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               ),
             ),
             const SizedBox(
-              height: 20.0,
+              height: 40.0,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -385,7 +389,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                 ),
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 30.0,
             ),
             Padding(
@@ -394,8 +398,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      _showBottomSheet(
-                          context); // Show the bottom sheet when clicked
+                      _showChatModalBottomSheet(context);
                     },
                     child: Row(
                       children: [
@@ -424,6 +427,65 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
       ),
     );
   }
+
+  Future<String?> _loadUserImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('profileImage'); // Replace 'userImageUrl' with the actual key
+  }
+
+
+  void _showChatModalBottomSheet(BuildContext context) async {
+    String? userImageUrl = await _loadUserImage(); // Load user image URL from SharedPreferences
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16.0),
+                height: 95, // Adjust height as needed
+                width: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    // Add your chat UI components here
+                    SizedBox(height: 10),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Enter your message',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 45,
+                width: 45,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: userImageUrl != null
+                      ? NetworkImage(userImageUrl)
+                      : AssetImage('assets/images/you.png') as ImageProvider<Object>, // Fallback to a local image if no URL
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+
 
   Widget _buildFriendAvatar(
       BuildContext context, String imagePath, String name) {
@@ -474,144 +536,4 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
       ],
     );
   }
-}
-
-// FUNCTION USED FOR BOTTOM SHEET
-void _showBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      final size = MediaQuery.of(context).size;
-
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 90),
-              child: Row(
-                children: [
-                  const Text(
-                    '5 Friends Joined the Party',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(width: 50.0),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: AppColors.primaryTextColor,
-                  ),
-                ],
-              ),
-            ),
-            const Center(child: Text('Naveed Joined')),
-            const SizedBox(height: 0.0),
-            _buildBottomSheetRow(context, 'assets/images/eddie.png', 'Eddie', [
-              'Hey Everyone!',
-              'Whats the Plan?',
-              'Any updates?',
-            ]),
-            const SizedBox(height: 10),
-          ],
-        ),
-      );
-    },
-  );
-}
-
-Widget _buildBottomSheetRow(BuildContext context, String imagePath, String name,
-    List<String> messages) {
-  final size = MediaQuery.of(context).size;
-
-  return Column(
-    children: [
-      Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ClipOval(
-              child: Container(
-                width: size.width * 0.13,
-                height: size.width * 0.13,
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4),
-              for (String message in messages)
-                Text(
-                  message,
-                  style: TextStyle(fontSize: 14),
-                ),
-            ],
-          ),
-        ],
-      ),
-      Padding(
-        padding: EdgeInsets.only(left: 40),
-        child: Row(
-          children: [
-            Container(
-              width: 300,
-              height: 70, // Increase the height as needed
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  // validator: (formValidate) {
-                  //   if (formValidate.toString().isEmpty) {
-                  //     return 'Please enter some text';
-                  //   }
-                  //   return null;
-                  // },
-                  // focusNode: foucusEmail,
-                  // onFieldSubmitted: (_) {
-                  //   FocusScope.of(context).requestFocus(focusPassword);
-                  // },
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: 'Type Message Here',
-                    hintStyle: TextStyle(color: Colors.black54, fontSize: 15.0),
-                    fillColor: Colors.grey[200],
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white12,
-                      ),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                        horizontal: 10.0), // Adjust the padding as needed
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            ClipOval(
-              child: Container(
-                width: 60,
-                height: 60,
-                child: Image.asset(
-                  'assets/images/you.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
 }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:eataly/yourpartyscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../API/api.dart';
+import '../Models/PartyMembersModel.dart';
 import '../app_theme/app_theme.dart';
 import '../components/bottomNavigatorBar.dart';
 
@@ -97,6 +99,26 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
     }
   }
 
+  //PARTY-MEMBERS API
+  Future<PartyMembersModel> fetchPartyMembers() async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    final response = await http.get(
+        Uri.parse('$baseURL/parties/${widget.inviteCode}'),
+        headers: headers);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return PartyMembersModel.fromJson(data);
+    } else {
+      print('Error fetching party members: ${response.body}');
+      throw Exception('Failed to load party members');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -112,6 +134,14 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
             padding: EdgeInsets.only(right: 10.0),
             child: Image.asset(
               'assets/images/notificationpurple.png',
+              width: 30,
+              height: 30,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 10.0),
+            child: Image.asset(
+              'assets/images/settingspurple.png',
               width: 30,
               height: 30,
             ),
@@ -142,23 +172,48 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
               ],
             ),
             const SizedBox(
-              height: 5.0,
+              height: 25.0,
             ),
-            Center(
-              child: Container(
-                child: Image.asset(
-                  'assets/images/allfriends.png',
-                  width: size.width * 0.5,
-                  height: size.height * 0.1,
-                ),
-              ),
+            FutureBuilder<PartyMembersModel>(
+              future: fetchPartyMembers(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    height: size.height * 0.120,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.data?.partyMembers?.length,
+                      itemBuilder: (context, index) {
+                        final member =
+                        snapshot.data!.data!.partyMembers?[index];
+                        return Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Row(
+                            children: [
+                              Column(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage:
+                                    NetworkImage(member!.profileImage),
+                                  ),
+                                  Text(member.username.toString()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return CircularProgressIndicator();
+              },
             ),
             const SizedBox(
               height: 5.0,
-            ),
-            const Text(
-              '5 Friends Joined the Party',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
@@ -240,7 +295,7 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
               ),
             ),
             SizedBox(
-              height: 25.0,
+              height: 35.0,
             ),
             InkWell(
               onTap:(){
@@ -249,105 +304,77 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text("Leave Party"),
-                      content: Text("Are you sure you want to leave the party?"),
+                      content: Text("Are you sure you want to leave the party?",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
                       actions: <Widget>[
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(width: 1, color: AppColors.buttonColor),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
+                        SizedBox(
+                          height: 31,
+                          width: 83,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              leaveParty();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(width: 1, color: AppColors.alert),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
                             ),
+                            child: Text("Leave", style: TextStyle(color: AppColors.alert),),
                           ),
-                          child: Text("No", style: TextStyle(color: AppColors.buttonColor),),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            leaveParty();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.buttonColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
+                        SizedBox(
+                          height: 31,
+                          width: 75,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.buttonColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
                             ),
+                            child: Text("Stay", style: TextStyle(color: Colors.white),),
                           ),
-                          child: Text("Confirm", style: TextStyle(color: Colors.white),),
-                        ),
+                        )
                       ],
                     );
                   },
                 );
               },
-              child: Container(
-                  height: 40,
-                  width: 250,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: AppColors.buttonColor),
-                  child: Center(
-                      child: Text(
-                        "Leave Party",
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ))),
+              child:Container(
+                height: 44,
+                width: 342,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.alert, // Outline color
+                    width: 1.0, // Outline width
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Leave Party",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.alert,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 30),
-            //   child: SingleChildScrollView(
-            //     scrollDirection: Axis.horizontal,
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         _buildFriendAvatar(context, 'assets/images/you.png', 'You'),
-            //         SizedBox(width: 15,),
-            //         _buildFriendAvatar(context, 'assets/images/eddie.png', 'Eddie'),
-            //         SizedBox(width: 15,),
-            //         _buildFriendAvatar(context, 'assets/images/audrey.png', 'Audrey'),
-            //         SizedBox(width: 15,),
-            //         _buildFriendAvatar(context, 'assets/images/romanov.png', 'Romanov'),
-            //         SizedBox(width: 15,),
-            //         _buildFriendAvatar(context, 'assets/images/person4.png', 'Jack'),
-            //         SizedBox(width: 15,),
-            //         InkWell(
-            //           onTap: () {
-            //             // Navigator.push(
-            //             //   context,
-            //             //   MaterialPageRoute(
-            //             //     builder: (context) => AddFriendsPage(),
-            //             //   ),
-            //             // );
-            //           },
-            //           child: ClipOval(
-            //             child: Container(
-            //               width: size.width * 0.15,
-            //               height: size.width * 0.15,
-            //               child: Image.asset(
-            //                 'assets/images/Avatars.png',
-            //                 fit: BoxFit.cover,
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            const SizedBox(
-              height: 30.0,
+             SizedBox(
+              height: size.height * 0.15,
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: size.width * 0.65, top: size.height * 0.16),
+              padding: EdgeInsets.only(left: size.width * 0.65),
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () {
-                      _showBottomSheet(
-                          context); // Show the bottom sheet when clicked
+                      _showChatModalBottomSheet(context);
                     },
                     child: Row(
                       children: [
@@ -430,37 +457,54 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
 }
 
 // FUNCTION USED FOR BOTTOM SHEET
-void _showBottomSheet(BuildContext context) {
+
+Future<String?> _loadUserImage() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('profileImage'); // Replace 'userImageUrl' with the actual key
+}
+
+
+void _showChatModalBottomSheet(BuildContext context) async {
+  String? userImageUrl = await _loadUserImage(); // Load user image URL from SharedPreferences
+
   showModalBottomSheet(
     context: context,
+    isScrollControlled: true,
     builder: (BuildContext context) {
-      return SingleChildScrollView(
-        child: Column(
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 90),
-              child: Row(
-                children: [
-                  const Text(
-                    '5 Friends Joined the Party',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(width: 50.0),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: AppColors.primaryTextColor,
+            Container(
+              padding: EdgeInsets.all(16.0),
+              height: 95, // Adjust height as needed
+              width: 350,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // Add your chat UI components here
+                  SizedBox(height: 10),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter your message',
+                    ),
                   ),
                 ],
               ),
             ),
-            const Center(child: Text('Naveed Joined')),
-            const SizedBox(height: 0.0),
-            _buildBottomSheetRow(context, 'assets/images/eddie.png', 'Eddie', [
-              'Hey Everyone!',
-              'Whats the Plan?',
-              'Any updates?',
-            ]),
-            const SizedBox(height: 10),
+            Container(
+              height: 45,
+              width: 45,
+              child: CircleAvatar(
+                radius: 20,
+                backgroundImage: userImageUrl != null
+                    ? NetworkImage(userImageUrl)
+                    : AssetImage('assets/images/you.png') as ImageProvider<Object>, // Fallback to a local image if no URL
+              ),
+            ),
           ],
         ),
       );
@@ -468,101 +512,4 @@ void _showBottomSheet(BuildContext context) {
   );
 }
 
-Widget _buildBottomSheetRow(BuildContext context, String imagePath, String name,
-    List<String> messages) {
-  final size = MediaQuery.of(context).size;
 
-  return Column(
-    children: [
-      Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ClipOval(
-              child: Container(
-                width: size.width * 0.13,
-                height: size.width * 0.13,
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4),
-              for (String message in messages)
-                Text(
-                  message,
-                  style: TextStyle(fontSize: 14),
-                ),
-            ],
-          ),
-        ],
-      ),
-      Padding(
-        padding: EdgeInsets.only(left: 40),
-        child: Row(
-          children: [
-            Container(
-              width: 300,
-              height: 70, // Increase the height as needed
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  // validator: (formValidate) {
-                  //   if (formValidate.toString().isEmpty) {
-                  //     return 'Please enter some text';
-                  //   }
-                  //   return null;
-                  // },
-                  // focusNode: foucusEmail,
-                  // onFieldSubmitted: (_) {
-                  //   FocusScope.of(context).requestFocus(focusPassword);
-                  // },
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: 'Type Message Here',
-                    hintStyle: TextStyle(color: Colors.black54, fontSize: 15.0),
-                    fillColor: Colors.grey[200],
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white12,
-                      ),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                        horizontal: 10.0), // Adjust the padding as needed
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            ClipOval(
-              child: Container(
-                width: 60,
-                height: 60,
-                child: Image.asset(
-                  'assets/images/you.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}

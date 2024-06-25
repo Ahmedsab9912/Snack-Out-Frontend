@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppTheme.themeData,
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: SplashScreen(), 
       //home: TopNavigationBarManu(),
       //routes: {'/': (context) => const SplashScreen();}
     );

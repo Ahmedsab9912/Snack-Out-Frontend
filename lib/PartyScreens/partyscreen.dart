@@ -286,218 +286,208 @@ class _PartyScreenState extends State<PartyScreen> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return SingleChildScrollView(
-                              child: Center(
-                                child: AlertDialog(
-                                  title: Column(
+                            return AlertDialog(
+                              title: Column(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding:  EdgeInsets.only(left: 220),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                // Navigate to PartyScreen when cross is tapped
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                     PartyScreen(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Image.asset(
-                                                'assets/images/Cross.png',
-                                                width: 85,
-                                                height: 85,
-                                              ),
-                                            ),
+                                      Padding(
+                                        padding:  EdgeInsets.only(left: 220),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            // Navigate to PartyScreen when cross is tapped
+                                            Navigator.pop(context);
+                                          },
+                                          child: Image.asset(
+                                            'assets/images/Cross.png',
+                                            width: 45,
+                                            height: 45,
                                           ),
-                                          SizedBox(
-                                            width: 280,
-                                            height: 39,
-                                            child: Text(
-                                              'Send this link to your Friends and \nFamily to Add them in the Party.',
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          'Join Party by 8 Digit Code.',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      SizedBox(
+                                        width: 280,
+                                        height: 70,
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(8, 7, 8, 7),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            border: Border.all(
+                                              color: AppColors.buttonColor,
+                                              width: 1.5,
+                                            ),
+                                            color: AppColors.buttonTextColor,
+                                          ),
+                                          child: Center(
+                                            child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              maxLength: 8,
+                                              controller: joinCodeController,
                                               style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Lato',
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700,
+                                                height: 1,
+                                                letterSpacing: 0.0,
+                                                color: AppColors.buttonColor,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintStyle: TextStyle(color: AppColors.buttonColor),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          SizedBox(
-                                            width: 280,
-                                            height: 80,
-                                            child: Container(
-                                              padding: EdgeInsets.fromLTRB(8, 7, 8, 7),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15),
-                                                border: Border.all(
-                                                  color: AppColors.buttonColor,
-                                                  width: 1.5,
-                                                ),
-                                                color: AppColors.buttonTextColor,
-                                              ),
-                                              child: Center(
-                                                child: TextFormField(
-                                                  controller: joinCodeController,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      // InkWell(
+                                      //   onTap: () {
+                                      //     // // Navigate to PartyDemoScreen when Copy Link is pressed
+                                      //      // Navigator.push(
+                                      //     //   context,
+                                      //     //   MaterialPageRoute(
+                                      //     //     builder: (context) => const PartyDemoScreen(),
+                                      //     //   ),
+                                      //     // );
+                                      //   },
+                                      //   child: SizedBox(
+                                      //     width: 306,
+                                      //     height: 48,
+                                      //     child: Container(
+                                      //       decoration: BoxDecoration(
+                                      //         borderRadius:
+                                      //         BorderRadius.circular(12),
+                                      //         color: AppColors.buttonColor,
+                                      //       ),
+                                      //       padding:  EdgeInsets.fromLTRB(
+                                      //           16, 12, 16, 12),
+                                      //       child: Row(
+                                      //         mainAxisAlignment:
+                                      //         MainAxisAlignment.center,
+                                      //         children: [
+                                      //           Text(
+                                      //             'Share Link',
+                                      //             style: TextStyle(
+                                      //               color: Colors.white,
+                                      //               fontSize: 15,
+                                      //               fontWeight: FontWeight.bold,
+                                      //             ),
+                                      //           ),
+                                      //            SizedBox(width: 8),
+                                      //           Image.asset(
+                                      //             'assets/images/share.png',
+                                      //             width: 30,
+                                      //             height: 30,
+                                      //           ),
+                                      //         ],
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // SizedBox(
+                                      //   height: 10,
+                                      // ),
+                                      // InkWell(
+                                      //   onTap: () {
+                                      //     // // Navigate to PartyDemoScreen when Copy Link is pressed
+                                      //     // Navigator.push(
+                                      //     //   context,
+                                      //     //   MaterialPageRoute(
+                                      //     //     builder: (context) => const PartyDemoScreen(),
+                                      //     //   ),
+                                      //     // );
+                                      //   },
+                                      //   child: SizedBox(
+                                      //     width: 306,
+                                      //     height: 48,
+                                      //     child: Container(
+                                      //       decoration: BoxDecoration(
+                                      //         borderRadius:
+                                      //         BorderRadius.circular(12),
+                                      //         color: AppColors.buttonColor,
+                                      //       ),
+                                      //       padding:  EdgeInsets.fromLTRB(
+                                      //           16, 12, 16, 12),
+                                      //       child: Row(
+                                      //         mainAxisAlignment:
+                                      //         MainAxisAlignment.center,
+                                      //         children:  [
+                                      //           Text(
+                                      //             'Copy Code',
+                                      //             style: TextStyle(
+                                      //               color: Colors.white,
+                                      //               fontSize: 15,
+                                      //               fontWeight: FontWeight.bold,
+                                      //             ),
+                                      //           ),
+                                      //           SizedBox(width: 8),
+                                      //           Image.asset(
+                                      //             'assets/images/copylink.png',
+                                      //             width: 30,
+                                      //             height: 30,
+                                      //           ),
+                                      //         ],
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // SizedBox(
+                                      //   height: 10,
+                                      // ),
+                                      InkWell(
+                                        onTap: () {
+                                          joinParty();
+                                        },
+                                        child: SizedBox(
+                                          width: 306,
+                                          height: 48,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                              color: AppColors.buttonColor,
+                                            ),
+                                            padding:  EdgeInsets.fromLTRB(
+                                                16, 12, 16, 12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children:  [
+                                                Text(
+                                                  'Join Party',
                                                   style: TextStyle(
-                                                    fontFamily: 'Lato',
-                                                    fontSize: 25,
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 1,
-                                                    letterSpacing: 0.0,
-                                                    color: AppColors.buttonColor,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                  decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintStyle: TextStyle(color: AppColors.buttonColor),
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              // // Navigate to PartyDemoScreen when Copy Link is pressed
-                                               // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) => const PartyDemoScreen(),
-                                              //   ),
-                                              // );
-                                            },
-                                            child: SizedBox(
-                                              width: 306,
-                                              height: 48,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(12),
-                                                  color: AppColors.buttonColor,
-                                                ),
-                                                padding:  EdgeInsets.fromLTRB(
-                                                    16, 12, 16, 12),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      'Share Link',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                     SizedBox(width: 8),
-                                                    Image.asset(
-                                                      'assets/images/share.png',
-                                                      width: 30,
-                                                      height: 30,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              // // Navigate to PartyDemoScreen when Copy Link is pressed
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) => const PartyDemoScreen(),
-                                              //   ),
-                                              // );
-                                            },
-                                            child: SizedBox(
-                                              width: 306,
-                                              height: 48,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(12),
-                                                  color: AppColors.buttonColor,
-                                                ),
-                                                padding:  EdgeInsets.fromLTRB(
-                                                    16, 12, 16, 12),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children:  [
-                                                    Text(
-                                                      'Copy Code',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 8),
-                                                    Image.asset(
-                                                      'assets/images/copylink.png',
-                                                      width: 30,
-                                                      height: 30,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              joinParty();
-                                            },
-                                            child: SizedBox(
-                                              width: 306,
-                                              height: 48,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(12),
-                                                  color: AppColors.buttonColor,
-                                                ),
-                                                padding:  EdgeInsets.fromLTRB(
-                                                    16, 12, 16, 12),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children:  [
-                                                    Text(
-                                                      'Join Party',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                        ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
                                       ),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           },
