@@ -19,4 +19,5 @@ class AppColors {
   // Additional Colors
   static const Color accentColor = Color(0xFFB2B2B2); // Example: Pink
   static const Color dividerColor = Color(0xFFBDBDBD); // Example: Light Grey
+  static const Color alert = Color.fromRGBO(255, 84, 84, 1); // Example: Light Grey
 }

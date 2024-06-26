@@ -8,7 +8,6 @@ import 'dart:convert';
 import '../API/api.dart';
 import '../Models/LoginModel.dart';
 import '../MyFunctions/Funtions.dart';
-import '../Shared_Preferences/shared_preferences_page.dart';
 import '../app_theme/app_theme.dart'; // Importing the Data From Custom Directory
 
 void main() {
@@ -97,23 +96,30 @@ class _LoginPageState extends State<LoginPage> {
           final loginResponse = LoginModel.fromJson(jsonDecode(response.body));
           // Save username, accessToken, and userId in shared preferences
           final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('username', loginResponse.data!.user!.username.toString());
-          await prefs.setInt('userId', loginResponse.data!.user!.id!.toInt() ?? 0);
-          await prefs.setString('accessToken', loginResponse.data!.accessToken.toString());
-          await prefs.setString('name', loginResponse.data!.user!.name.toString());
-          await prefs.setString('email', loginResponse.data!.user!.email.toString());
-          await prefs.setString('phoneNumber', loginResponse.data!.user!.phoneNumber.toString());
-          await prefs.setString('profileImage', loginResponse.data!.user!.profileImage.toString());
+          await prefs.setString(
+              'username', loginResponse.data!.user!.username.toString());
+          await prefs.setInt(
+              'userId', loginResponse.data!.user!.id!.toInt() ?? 0);
+          await prefs.setString(
+              'accessToken', loginResponse.data!.accessToken.toString());
+          await prefs.setString(
+              'name', loginResponse.data!.user!.name.toString());
+          await prefs.setString(
+              'email', loginResponse.data!.user!.email.toString());
+          await prefs.setString(
+              'phoneNumber', loginResponse.data!.user!.phoneNumber.toString());
+          await prefs.setString('profileImage',
+              loginResponse.data!.user!.profileImage.toString());
           await prefs.setBool('isLoggedIn', true); // Save isLoggedIn status
 
           print('Login successful');
           // My_Funtions.f_toast(context, 'Login successful', Colors.green);
 
-          // Navigate to home page
+          // Navigate to home page with fade transition
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavigationBarMenu(),
+            FadePageRoute(
+              page: BottomNavigationBarMenu(),
             ),
           );
 
@@ -172,7 +178,8 @@ class _LoginPageState extends State<LoginPage> {
                             'Log In',
                             style: TextStyle(
                               fontSize: 25,
-                              color: AppColors.primaryTextColor, // Using custom text color
+                              color: AppColors
+                                  .primaryTextColor, // Using custom text color
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -194,14 +201,17 @@ class _LoginPageState extends State<LoginPage> {
                               color: Color(0xFFA6A6A6), // Set the border color
                               width: 1.0, // Set the border width
                             ),
-                            borderRadius: BorderRadius.circular(8.0), // Optional: Add rounded corners
+                            borderRadius: BorderRadius.circular(
+                                8.0), // Optional: Add rounded corners
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
                               controller: _usernameController,
                               focusNode: _usernameFocusNode,
-                              style: TextStyle(color: Colors.black), // Set text color to black
+                              style: TextStyle(
+                                  color:
+                                      Colors.black), // Set text color to black
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Your Phone Number/ Username',
@@ -214,7 +224,8 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
-                                FocusScope.of(context).requestFocus(_passwordFocusNode);
+                                FocusScope.of(context)
+                                    .requestFocus(_passwordFocusNode);
                               },
                             ),
                           ),
@@ -249,7 +260,9 @@ class _LoginPageState extends State<LoginPage> {
                                 hintText: 'Your Password',
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                                    _obscureText
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -283,7 +296,8 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: Text(
                               'Forget Password?',
-                              style: TextStyle(fontSize: 17, color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 17, color: Colors.black),
                             ),
                           ),
                         ),
@@ -316,7 +330,8 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => SignupScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) => SignupScreen()),
                             );
                           },
                           child: Row(
@@ -324,12 +339,15 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Text(
                                 'First time here?',
-                                style: TextStyle(fontSize: 17.0, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 17.0, color: Colors.black),
                               ),
                               SizedBox(width: 5),
                               Text(
                                 'Sign Up for the Accounts',
-                                style: TextStyle(fontSize: 17.0, color: AppColors.primaryTextColor),
+                                style: TextStyle(
+                                    fontSize: 17.0,
+                                    color: AppColors.primaryTextColor),
                               ),
                             ],
                           ),
@@ -345,4 +363,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+class FadePageRoute<T> extends PageRouteBuilder<T> {
+  final Widget page;
+  FadePageRoute({required this.page})
+      : super(
+          pageBuilder: (context, animation, secondaryAnimation) => page,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        );
 }

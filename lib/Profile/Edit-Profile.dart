@@ -11,7 +11,7 @@ import '../components/bottomNavigatorBar.dart';
 import 'EditProfileScreen/edit_email.dart';
 import 'EditProfileScreen/edit_phone.dart';
 import '../models/users_model.dart';
-import 'Profile.dart'; // Import the model
+
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
