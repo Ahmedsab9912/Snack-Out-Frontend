@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:eataly/yourpartyscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -132,16 +133,16 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10.0),
-            child: Image.asset(
-              'assets/images/notificationpurple.png',
+            child: SvgPicture.asset(
+              'assets/svgIcons/groups.svg',
               width: 30,
               height: 30,
             ),
           ),
           Padding(
             padding: EdgeInsets.only(right: 10.0),
-            child: Image.asset(
-              'assets/images/settingspurple.png',
+            child: SvgPicture.asset(
+              'assets/svgIcons/notifications.svg',
               width: 30,
               height: 30,
             ),
@@ -192,12 +193,12 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
                             children: [
                               Column(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                    NetworkImage(member!.profileImage),
-                                  ),
-                                  Text(member.username.toString()),
+                                  // CircleAvatar(
+                                  //   radius: 30,
+                                  //   backgroundImage:
+                                  //   NetworkImage(member!.profileImage),
+                                  // ),
+                                  // Text(member.username.toString()),
                                 ],
                               ),
                             ],
@@ -288,8 +289,8 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
             //   ),
             // ),
             Container(
-              child: Image.asset(
-                'assets/images/Group.png',
+              child: SvgPicture.asset(
+                'assets/svgIcons/partyGroup.svg',
                 width: size.width * 0.8,
                 height: size.height * 0.280,
               ),
@@ -387,8 +388,8 @@ class _JoineePartyScreenState extends State<JoineePartyScreen> {
                         Container(
                           width: size.width * 0.12,
                           height: size.width * 0.12,
-                          child: Image.asset(
-                            'assets/images/chat.png',
+                          child: SvgPicture.asset(
+                            'assets/svgIcons/chat.svg',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -466,46 +467,73 @@ Future<String?> _loadUserImage() async {
 
 void _showChatModalBottomSheet(BuildContext context) async {
   String? userImageUrl = await _loadUserImage(); // Load user image URL from SharedPreferences
+  final screensize = MediaQuery.of(context).size;
 
   showModalBottomSheet(
+    backgroundColor: Colors.transparent,
     context: context,
     isScrollControlled: true,
     builder: (BuildContext context) {
       return Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(16.0),
-              height: 95, // Adjust height as needed
-              width: 350,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  // Add your chat UI components here
-                  SizedBox(height: 10),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter your message',
+        padding: EdgeInsets.symmetric(horizontal: 24.0), // Adjust margin as needed
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: 12.0, // Added horizontal margin
+              right: 12.0, // Added horizontal margin
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 12.0),
+                    height: screensize.height * 0.10, // Adjust height as needed
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding:  EdgeInsets.only(top: 10,left: 24),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Enter your message',
+                              suffixIcon: Icon(
+                                Icons.send,
+                                color: AppColors.primaryTextColor,
+                              ),
+                            ),
+                            style: TextStyle(fontSize: 14), // Reduce font size if needed
+                            maxLines: 1, // Ensure single line height
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding:  EdgeInsets.only(bottom: 15),
+                  child: Container(
+                    height: 32,
+                    width: 32,
+                    margin: EdgeInsets.only(left: 8.0), // Optional margin for spacing
+                    child: CircleAvatar(
+                      backgroundImage: userImageUrl != null
+                          ? NetworkImage(userImageUrl)
+                          : AssetImage('assets/images/you.png') as ImageProvider<Object>, // Fallback to a local image if no URL
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Container(
-              height: 45,
-              width: 45,
-              child: CircleAvatar(
-                radius: 20,
-                backgroundImage: userImageUrl != null
-                    ? NetworkImage(userImageUrl)
-                    : AssetImage('assets/images/you.png') as ImageProvider<Object>, // Fallback to a local image if no URL
-              ),
-            ),
-          ],
+          ),
         ),
       );
     },

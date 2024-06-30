@@ -10,6 +10,7 @@ class Socket1 extends StatefulWidget {
 }
 
 class _Socket1State extends State<Socket1> {
+
   late IO.Socket socket;
 
   @override
@@ -26,13 +27,13 @@ class _Socket1State extends State<Socket1> {
       'wss://snack-mate-backend-production.up.railway.app',
       IO.OptionBuilder()
           .setTransports(['websocket'])
-          .setExtraHeaders({'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInZlbmRvciI6ZmFsc2UsImlhdCI6MTcxOTMxODMxOSwiZXhwIjoxNzE5MzIxOTE5fQ.wQpz_6OgXHEVQYWGaV1bKIhJiDYb1GYkcEF1WHdQZ2M'})
+          .setExtraHeaders({'access_token' : accessToken})
           .build(),
     );
 
     socket.onConnect((_) {
       print('Connected');
-      socket.emit('msg', 'test');
+      socket.emit('party/join', '6904f5da');
     });
 
     socket.onConnectError((data) {

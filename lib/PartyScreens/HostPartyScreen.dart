@@ -1,57 +1,86 @@
+
 import 'dart:async';
 import 'dart:convert';
-import 'package:eataly/API/api.dart';
-import 'package:eataly/PartyScreens/AddFriendsScreen.dart';
+
 import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../API/api.dart';
 import '../Models/PartyMembersModel.dart';
-import '../components/bottomNavigatorBar.dart';
+import '../components/BottomSheet.dart';
+import 'AddFriendsScreen.dart';
+import 'HostPartyFriendsPage.dart';
 
 class HostPartyScreen extends StatefulWidget {
   final String inviteCode;
-  const HostPartyScreen({required this.inviteCode, super.key});
+
+  const HostPartyScreen({required this.inviteCode, Key? key}) : super(key: key);
 
   @override
   State<HostPartyScreen> createState() => _HostPartyScreenState();
 }
 
 class _HostPartyScreenState extends State<HostPartyScreen> {
-
-  // SHOW DELETE DIALOG
-  Future<void> _showDeleteDialogHost(BuildContext context) {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(width: 10),
-                Text(" Deleting Party..."),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
+  late IO.Socket socket;
   String? accessToken;
 
   @override
   void initState() {
     super.initState();
+    _initializeSocket();
     _loadAccessToken();
     fetchPartyMembers();
+  }
+
+  @override
+  void dispose() {
+    socket.dispose();
+    socket.disconnect();
+    super.dispose();
+  }
+
+  Future<void> _initializeSocket() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    accessToken = prefs.getString('accessToken');
+
+    socket = IO.io(
+      'wss://snack-mate-backend-production.up.railway.app',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .setExtraHeaders({'access_token': accessToken ?? ''})
+          .build(),
+    );
+
+    socket.onConnect((_) {
+      print('Connected');
+      socket.emit('party/join', widget.inviteCode);
+    });
+
+    socket.on("party/info", (data) => print(jsonEncode(data)));
+
+    socket.onConnectError((data) {
+      print('Connection Error: ${data.toString()}'); // Or use a logging package
+    });
+
+    socket.on("party/new-message", (data) {
+      Map<String, dynamic> messageData = jsonDecode(data);
+      String sender = messageData['sender'];
+      String content = messageData['content'];
+      // ... (Update your chat UI)
+    });
+
+
+    socket.onConnectError((data) {
+      print('Connection Error: $data');
+    });
+
+    socket.onDisconnect((_) {
+      print('Disconnected');
+    });
   }
 
   Future<void> _loadAccessToken() async {
@@ -61,44 +90,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
     });
   }
 
-  // DELETE API
-  Future<void> deleteParty() async {
-    _showDeleteDialogHost(context);
-    final url = Uri.parse('$baseURL/parties/${widget.inviteCode}');
-
-    final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $accessToken',
-    };
-
-    final response = await http.delete(url, headers: headers);
-
-    if (response.statusCode == 204) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BottomNavigationBarMenu(),
-        ),
-      );
-      Fluttertoast.showToast(
-          msg: 'Party Deleted',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          backgroundColor: AppColors.buttonColor,
-          textColor: Colors.white);
-    } else {
-      print(response.statusCode);
-      print(response.body);
-      Fluttertoast.showToast(
-          msg: 'Failed to delete party',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          backgroundColor: Colors.red,
-          textColor: Colors.white);
-    }
-  }
-
-//PARTY-MEMBERS API
+  // PARTY-MEMBERS API
   Future<PartyMembersModel> fetchPartyMembers() async {
     final headers = {
       'Content-Type': 'application/json',
@@ -106,13 +98,14 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
     };
 
     final response = await http.get(
-        Uri.parse('$baseURL/parties/${widget.inviteCode}'),
-        headers: headers);
+      Uri.parse('$baseURL/parties/${widget.inviteCode}'),
+      headers: headers,
+    );
+
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return PartyMembersModel.fromJson(data);
     } else {
-      print('Error fetching party members: ${response.body}');
       throw Exception('Failed to load party members');
     }
   }
@@ -122,67 +115,37 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Your Party',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Image.asset(
-              'assets/images/notificationpurple.png',
-              width: 30,
-              height: 30,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      HostPartyfriendspage(inviteCode: widget.inviteCode),
+                ),
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: SvgPicture.asset(
+                'assets/svgIcons/groups.svg',
+                width: 30,
+                height: 30,
+              ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Delete Party"),
-                      content: Text("Do you really want to delete this party?"),
-                      actions: <Widget>[
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(width: 1, color: Colors.redAccent),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                          ),
-                          child: Text(
-                            "No",
-                            style: TextStyle(color: Colors.redAccent),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            deleteParty(); // call your delete party function here
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                          ),
-                          child: Text(
-                            "Confirm",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child:
-              Icon(Icons.delete_forever_outlined, color: Colors.redAccent),
+            padding: EdgeInsets.only(right: 10.0),
+            child: SvgPicture.asset(
+              'assets/svgIcons/notifications.svg',
+              width: 30,
+              height: 30,
             ),
           ),
         ],
@@ -205,7 +168,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                   widget.inviteCode,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryTextColor,
+                      color: Colors.black, // Example color, adjust as needed
                       fontSize: 17),
                 ),
               ],
@@ -213,68 +176,74 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
             SizedBox(
               height: 5.0,
             ),
-            FutureBuilder<PartyMembersModel>(
-              future: fetchPartyMembers(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Container(
-                    height: size.height * 0.120,
-                    child: ListView.builder(
+            Container(
+              height: 80,
+              child: FutureBuilder<PartyMembersModel>(
+                future: fetchPartyMembers(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    return ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data!.data?.partyMembers?.length,
+                      itemCount:
+                      snapshot.data!.data?.partyMembers?.length ?? 0,
                       itemBuilder: (context, index) {
                         final member =
                         snapshot.data!.data!.partyMembers?[index];
                         return Padding(
                           padding: EdgeInsets.only(left: 20),
-                          child: Row(
+                          child: Column(
                             children: [
-                              Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                    NetworkImage(member!.profileImage),
-                                  ),
-                                  Text(member.username.toString()),
-                                ],
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                    member!.profileImage.toString()),
                               ),
+                              Text(member.username.toString()),
                             ],
                           ),
                         );
                       },
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return CircularProgressIndicator();
-              },
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: size.width * 0.69),
-              child: Text(
-                'Host Controls',
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryTextColor),
+                    );
+                  } else {
+                    return Center(child: Text('No party members available'));
+                  }
+                },
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 5.0,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.only(left: 33),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Host Controls',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryTextColor,) // Example color, adjust as needed
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 33, right: 13),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Party on the Host',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style:
+                    TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                   Radio<String>(
                     value: 'on',
@@ -282,19 +251,20 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                     onChanged: (value) {
                       // Handle radio button selection
                     },
-                    activeColor: AppColors.primaryTextColor,
+                    activeColor: AppColors.primaryTextColor, // Example color, adjust as needed
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.only(left: 33, right: 13),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Go Dutch',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style:
+                    TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                   Radio<String>(
                     value: 'off',
@@ -302,16 +272,19 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                     onChanged: (value) {
                       // Handle radio button selection
                     },
-                    activeColor: AppColors.primaryTextColor,
+                    activeColor: Colors.black, // Example color, adjust as needed
                   ),
                 ],
               ),
             ),
+            SizedBox(
+              height: 16,
+            ),
             Container(
               child: Image.asset(
                 'assets/images/Group.png',
-                width: size.width * 0.95,
-                height: size.height * 0.230,
+                width: 250,
+                height: 250,
               ),
             ),
             const SizedBox(
@@ -321,7 +294,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               height: 48,
               width: 306,
               decoration: BoxDecoration(
-                  color: AppColors.primaryTextColor,
+                  color: AppColors.buttonColor, // Example color, adjust as needed
                   borderRadius: BorderRadius.circular(10)),
               child: const Center(
                 child: Text('Make a Booking',
@@ -331,11 +304,11 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                         color: Colors.white)),
               ),
             ),
-            const SizedBox(
-              height: 40.0,
+            SizedBox(
+              height: 33.0,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -393,12 +366,14 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               height: 30.0,
             ),
             Padding(
-              padding: EdgeInsets.only(left: size.width * 0.65),
+              padding: EdgeInsets.only(right: 15),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
-                      _showChatModalBottomSheet(context);
+                      showModalBottomSheet(
+                          context: context, builder: (context) => Bottomsheet());
                     },
                     child: Row(
                       children: [
@@ -428,67 +403,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
     );
   }
 
-  Future<String?> _loadUserImage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('profileImage'); // Replace 'userImageUrl' with the actual key
-  }
-
-
-  void _showChatModalBottomSheet(BuildContext context) async {
-    String? userImageUrl = await _loadUserImage(); // Load user image URL from SharedPreferences
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(16.0),
-                height: 95, // Adjust height as needed
-                width: 350,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    // Add your chat UI components here
-                    SizedBox(height: 10),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter your message',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 45,
-                width: 45,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: userImageUrl != null
-                      ? NetworkImage(userImageUrl)
-                      : AssetImage('assets/images/you.png') as ImageProvider<Object>, // Fallback to a local image if no URL
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-
-
-
-
-
-  Widget _buildFriendAvatar(
-      BuildContext context, String imagePath, String name) {
+  Widget _buildFriendAvatar(BuildContext context, String imagePath, String name) {
     final size = MediaQuery.of(context).size;
 
     return Stack(

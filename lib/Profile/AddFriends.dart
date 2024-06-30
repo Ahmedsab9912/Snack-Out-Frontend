@@ -42,7 +42,7 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
     };
 
     final response = await http.get(
-      Uri.parse('$baseURL:8000/users/friends/pending'),
+      Uri.parse('$baseURL/users/friends/pending'),
       headers: headers,
     );
 
@@ -88,7 +88,7 @@ class _AddFriendsProfileState extends State<AddFriendsProfile> {
     final body = jsonEncode({"status": status});
 
     final response = await http.patch(
-      Uri.parse('$baseURL:8000/users/friends/$friendshipId'),
+      Uri.parse('$baseURL/users/friends/$friendshipId'),
       headers: headers,
       body: body,
     );

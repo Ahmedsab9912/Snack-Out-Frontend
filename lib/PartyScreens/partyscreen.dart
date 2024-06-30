@@ -78,12 +78,14 @@ class _PartyScreenState extends State<PartyScreen> {
           ),
         );
       } else {
+        print(response.body);
         // Handle other status codes if needed
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to start party: ${response.statusCode}')),
         );
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error starting party: $e')),
       );
@@ -119,6 +121,7 @@ class _PartyScreenState extends State<PartyScreen> {
         ),
       );
     } else if (response.statusCode == 404) {
+      print(response.body);
       Fluttertoast.showToast(
           msg: 'Invalid code',
           toastLength: Toast.LENGTH_SHORT,
@@ -127,7 +130,7 @@ class _PartyScreenState extends State<PartyScreen> {
           textColor: Colors.white
       );
     } else {
-      print(response.statusCode);
+      print(response.body);
       Fluttertoast.showToast(
           msg: 'Joined Failed Invalid Code',
           toastLength: Toast.LENGTH_SHORT,
@@ -306,25 +309,39 @@ class _PartyScreenState extends State<PartyScreen> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        child: Text(
-                                          'Join Party by 8 Digit Code.',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      Text(
+                                        "Join Party",
+                                        style:  TextStyle(
+                                          fontFamily: "Lato",
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff333333),
+                                          height: 30/24,
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
                                       SizedBox(
-                                        height: 5,
+                                        height: 8,
                                       ),
+                                      Text(
+                                        "Add Party Code to Enter",
+                                        style:  TextStyle(
+                                          fontFamily: "Lato",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff999999),
+                                          height: 19/16,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 16,),
                                       SizedBox(
-                                        width: 280,
-                                        height: 70,
+                                        width: 294,
+                                        height: 40,
                                         child: Container(
                                           padding: EdgeInsets.fromLTRB(8, 7, 8, 7),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(15),
+                                            borderRadius: BorderRadius.circular(8),
                                             border: Border.all(
                                               color: AppColors.buttonColor,
                                               width: 1.5,
@@ -332,9 +349,9 @@ class _PartyScreenState extends State<PartyScreen> {
                                             color: AppColors.buttonTextColor,
                                           ),
                                           child: Center(
-                                            child: TextFormField(
+                                            child:TextFormField(
                                               keyboardType: TextInputType.text,
-                                              maxLength: 8,
+                                              maxLength: 8, // Still enforces the maxLength limit
                                               controller: joinCodeController,
                                               style: TextStyle(
                                                 fontFamily: 'Lato',
@@ -348,115 +365,23 @@ class _PartyScreenState extends State<PartyScreen> {
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
                                                 hintStyle: TextStyle(color: AppColors.buttonColor),
+                                                counterText: '', // Hide the maxLength indicator
                                               ),
-                                            ),
+                                            )
                                           ),
                                         ),
                                       ),
                                       SizedBox(
                                         height: 10,
                                       ),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     // // Navigate to PartyDemoScreen when Copy Link is pressed
-                                      //      // Navigator.push(
-                                      //     //   context,
-                                      //     //   MaterialPageRoute(
-                                      //     //     builder: (context) => const PartyDemoScreen(),
-                                      //     //   ),
-                                      //     // );
-                                      //   },
-                                      //   child: SizedBox(
-                                      //     width: 306,
-                                      //     height: 48,
-                                      //     child: Container(
-                                      //       decoration: BoxDecoration(
-                                      //         borderRadius:
-                                      //         BorderRadius.circular(12),
-                                      //         color: AppColors.buttonColor,
-                                      //       ),
-                                      //       padding:  EdgeInsets.fromLTRB(
-                                      //           16, 12, 16, 12),
-                                      //       child: Row(
-                                      //         mainAxisAlignment:
-                                      //         MainAxisAlignment.center,
-                                      //         children: [
-                                      //           Text(
-                                      //             'Share Link',
-                                      //             style: TextStyle(
-                                      //               color: Colors.white,
-                                      //               fontSize: 15,
-                                      //               fontWeight: FontWeight.bold,
-                                      //             ),
-                                      //           ),
-                                      //            SizedBox(width: 8),
-                                      //           Image.asset(
-                                      //             'assets/images/share.png',
-                                      //             width: 30,
-                                      //             height: 30,
-                                      //           ),
-                                      //         ],
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // SizedBox(
-                                      //   height: 10,
-                                      // ),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     // // Navigate to PartyDemoScreen when Copy Link is pressed
-                                      //     // Navigator.push(
-                                      //     //   context,
-                                      //     //   MaterialPageRoute(
-                                      //     //     builder: (context) => const PartyDemoScreen(),
-                                      //     //   ),
-                                      //     // );
-                                      //   },
-                                      //   child: SizedBox(
-                                      //     width: 306,
-                                      //     height: 48,
-                                      //     child: Container(
-                                      //       decoration: BoxDecoration(
-                                      //         borderRadius:
-                                      //         BorderRadius.circular(12),
-                                      //         color: AppColors.buttonColor,
-                                      //       ),
-                                      //       padding:  EdgeInsets.fromLTRB(
-                                      //           16, 12, 16, 12),
-                                      //       child: Row(
-                                      //         mainAxisAlignment:
-                                      //         MainAxisAlignment.center,
-                                      //         children:  [
-                                      //           Text(
-                                      //             'Copy Code',
-                                      //             style: TextStyle(
-                                      //               color: Colors.white,
-                                      //               fontSize: 15,
-                                      //               fontWeight: FontWeight.bold,
-                                      //             ),
-                                      //           ),
-                                      //           SizedBox(width: 8),
-                                      //           Image.asset(
-                                      //             'assets/images/copylink.png',
-                                      //             width: 30,
-                                      //             height: 30,
-                                      //           ),
-                                      //         ],
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // SizedBox(
-                                      //   height: 10,
-                                      // ),
+                                      SizedBox(height: 20,),
                                       InkWell(
                                         onTap: () {
                                           joinParty();
                                         },
                                         child: SizedBox(
-                                          width: 306,
-                                          height: 48,
+                                          width: 141,
+                                          height: 44,
                                           child: Container(
                                             decoration: BoxDecoration(
                                               borderRadius:

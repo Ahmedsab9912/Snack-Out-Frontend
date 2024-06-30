@@ -8,12 +8,11 @@ class AppTheme {
     return ThemeData(
       primaryColor: AppColors.appBarColor,
       hintColor: AppColors.accentColor,
-      scaffoldBackgroundColor: AppColors.backgroundColor,
+      scaffoldBackgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
         color: AppColors.appBarColor,
         titleTextStyle: TextStyle(
           color: AppColors.appBarTextColor,
-          fontSize: 20.0,
           fontWeight: FontWeight.bold,
         ),
         iconTheme: IconThemeData(

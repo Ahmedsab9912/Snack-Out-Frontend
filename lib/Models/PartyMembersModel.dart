@@ -1,5 +1,5 @@
 /// message : "Party found"
-/// data : {"id":52,"hostId":2,"inviteCode":"2e8a29c5","name":null,"description":null,"isHostPaying":true,"createdAt":"2024-06-24T11:17:00.165Z","updatedAt":"2024-06-24T11:17:00.165Z","partyMembers":[{"id":1,"email":"badrkmc@gmail.com","username":"badr","phoneNumber":"+923164715536","profileImage":null},{"id":2,"email":"ejazbaig700@gmail.com","username":"ahmed","phoneNumber":"+923200470838","profileImage":"https://s3.amazonaws.com/snakemate.user.image/profile-pictures/1719206219057_36d7a529-0e94-425a-92fc-a388c41d28e97340990561480456595.jpg"}]}
+/// data : {"id":125,"hostId":2,"inviteCode":"7cd65268","name":null,"description":null,"isHostPaying":true,"createdAt":"2024-06-28T10:48:26.793Z","updatedAt":"2024-06-28T10:48:26.793Z","partyMembers":[{"id":2,"email":"ejazbaig700@gmail.com","username":"ahmed","phoneNumber":"+923124989161","profileImage":"https://s3.amazonaws.com/snakemate.user.image/profile-pictures/1719315370802_FB_IMG_1715065409631.jpg"}]}
 
 class PartyMembersModel {
   PartyMembersModel({
@@ -34,15 +34,15 @@ PartyMembersModel copyWith({  String? message,
 
 }
 
-/// id : 52
+/// id : 125
 /// hostId : 2
-/// inviteCode : "2e8a29c5"
+/// inviteCode : "7cd65268"
 /// name : null
 /// description : null
 /// isHostPaying : true
-/// createdAt : "2024-06-24T11:17:00.165Z"
-/// updatedAt : "2024-06-24T11:17:00.165Z"
-/// partyMembers : [{"id":1,"email":"badrkmc@gmail.com","username":"badr","phoneNumber":"+923164715536","profileImage":null},{"id":2,"email":"ejazbaig700@gmail.com","username":"ahmed","phoneNumber":"+923200470838","profileImage":"https://s3.amazonaws.com/snakemate.user.image/profile-pictures/1719206219057_36d7a529-0e94-425a-92fc-a388c41d28e97340990561480456595.jpg"}]
+/// createdAt : "2024-06-28T10:48:26.793Z"
+/// updatedAt : "2024-06-28T10:48:26.793Z"
+/// partyMembers : [{"id":2,"email":"ejazbaig700@gmail.com","username":"ahmed","phoneNumber":"+923124989161","profileImage":"https://s3.amazonaws.com/snakemate.user.image/profile-pictures/1719315370802_FB_IMG_1715065409631.jpg"}]
 
 class Data {
   Data({
@@ -138,11 +138,11 @@ Data copyWith({  num? id,
 
 }
 
-/// id : 1
-/// email : "badrkmc@gmail.com"
-/// username : "badr"
-/// phoneNumber : "+923164715536"
-/// profileImage : null
+/// id : 2
+/// email : "ejazbaig700@gmail.com"
+/// username : "ahmed"
+/// phoneNumber : "+923124989161"
+/// profileImage : "https://s3.amazonaws.com/snakemate.user.image/profile-pictures/1719315370802_FB_IMG_1715065409631.jpg"
 
 class PartyMembers {
   PartyMembers({
@@ -150,7 +150,7 @@ class PartyMembers {
       String? email, 
       String? username, 
       String? phoneNumber, 
-      dynamic profileImage,}){
+      String? profileImage,}){
     _id = id;
     _email = email;
     _username = username;
@@ -169,12 +169,12 @@ class PartyMembers {
   String? _email;
   String? _username;
   String? _phoneNumber;
-  dynamic _profileImage;
+  String? _profileImage;
 PartyMembers copyWith({  num? id,
   String? email,
   String? username,
   String? phoneNumber,
-  dynamic profileImage,
+  String? profileImage,
 }) => PartyMembers(  id: id ?? _id,
   email: email ?? _email,
   username: username ?? _username,
@@ -185,7 +185,7 @@ PartyMembers copyWith({  num? id,
   String? get email => _email;
   String? get username => _username;
   String? get phoneNumber => _phoneNumber;
-  dynamic get profileImage => _profileImage;
+  String? get profileImage => _profileImage;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

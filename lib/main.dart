@@ -10,6 +10,7 @@ import 'package:eataly/components/bottomNavigatorBar.dart';
 
 import 'OTP_Screens/OTP_Screen_Phone.dart';
 import 'OTP_Screens/VerifiedAccout.dart';
+import 'Provider/ChatProvider.dart';
 import 'app_theme/app_colors.dart';
 
 void main() {
@@ -17,6 +18,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AddToCartProvider()),
+        ChangeNotifierProvider(create: (context) => ChatProvider()),
       ],
       child: MyApp(),
     ),

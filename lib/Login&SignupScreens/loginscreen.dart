@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
           await prefs.setInt(
               'userId', loginResponse.data!.user!.id!.toInt() ?? 0);
           await prefs.setString(
-              'accessToken', loginResponse.data!.accessToken.toString());
+              'accessToken', loginResponse.data!.refreshToken.toString()); //  USING TEMP FIX FOR ACCESS TOKEN
           await prefs.setString(
               'name', loginResponse.data!.user!.name.toString());
           await prefs.setString(
