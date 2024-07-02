@@ -67,6 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
     RegExp regex = RegExp(pattern);
     return regex.hasMatch(value);
   }
+
   bool _obscureText = true;
 
   Future<int> submitSignup(BuildContext context) async {
@@ -95,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
         if (response.statusCode == 200) {
           final signupResponse =
-          SignupModel.fromJson(jsonDecode(response.body));
+              SignupModel.fromJson(jsonDecode(response.body));
           // Save username, accessToken, and userId in shared preferences
           SharedPreferencesPage sharedPreferences = SharedPreferencesPage();
           await sharedPreferences.saveUsername(_usernameController.text);
@@ -171,7 +172,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(right: containerWidth * 0.80),
+                          padding:
+                              EdgeInsets.only(right: containerWidth * 0.80),
                           child: Text(
                             'Username',
                             style: TextStyle(fontSize: 17, color: Colors.black),
@@ -194,7 +196,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _usernameController,
                               focusNode: _usernameFocusNode,
                               style: TextStyle(
-                                  color: Colors.black), // Set text color to black
+                                  color:
+                                      Colors.black), // Set text color to black
                               decoration: InputDecoration(
                                 hintText: 'Your Username',
                                 border: InputBorder.none,
@@ -207,14 +210,16 @@ class _SignupScreenState extends State<SignupScreen> {
                               },
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
-                                FocusScope.of(context).requestFocus(_nameFocusNode);
+                                FocusScope.of(context)
+                                    .requestFocus(_nameFocusNode);
                               },
                             ),
                           ),
                         ),
                         SizedBox(height: 15),
                         Padding(
-                          padding: EdgeInsets.only(right: containerWidth * 0.90),
+                          padding:
+                              EdgeInsets.only(right: containerWidth * 0.90),
                           child: Text(
                             'Name',
                             style: TextStyle(fontSize: 17, color: Colors.black),
@@ -237,7 +242,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _nameController,
                               focusNode: _nameFocusNode,
                               style: TextStyle(
-                                  color: Colors.black), // Set text color to black
+                                  color:
+                                      Colors.black), // Set text color to black
                               decoration: InputDecoration(
                                 hintText: 'Your Name',
                                 border: InputBorder.none, // Remove underline
@@ -258,7 +264,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 15),
                         Padding(
-                          padding: EdgeInsets.only(right: containerWidth * 0.90),
+                          padding:
+                              EdgeInsets.only(right: containerWidth * 0.90),
                           child: Text(
                             'Email',
                             style: TextStyle(fontSize: 17, color: Colors.black),
@@ -281,7 +288,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _emailController,
                               focusNode: _emailFocusNode,
                               style: TextStyle(
-                                  color: Colors.black), // Set text color to black
+                                  color:
+                                      Colors.black), // Set text color to black
                               decoration: InputDecoration(
                                 hintText: 'Your Email',
                                 border: InputBorder.none,
@@ -304,7 +312,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 15),
                         Padding(
-                          padding: EdgeInsets.only(right: containerWidth * 0.80),
+                          padding:
+                              EdgeInsets.only(right: containerWidth * 0.80),
                           child: Text(
                             'Password',
                             style: TextStyle(fontSize: 17, color: Colors.black),
@@ -332,7 +341,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                 border: InputBorder.none,
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                                    _obscureText
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -352,14 +363,16 @@ class _SignupScreenState extends State<SignupScreen> {
                               obscureText: _obscureText,
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (_) {
-                                FocusScope.of(context).requestFocus(_phoneNumberFocusNode);
+                                FocusScope.of(context)
+                                    .requestFocus(_phoneNumberFocusNode);
                               },
                             ),
                           ),
                         ),
                         SizedBox(height: 15),
                         Padding(
-                          padding: EdgeInsets.only(right: containerWidth * 0.68),
+                          padding:
+                              EdgeInsets.only(right: containerWidth * 0.68),
                           child: Text(
                             'Phone Number',
                             style: TextStyle(fontSize: 17, color: Colors.black),
@@ -368,64 +381,83 @@ class _SignupScreenState extends State<SignupScreen> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Container(
-                              height: 55,
-                              width: screenSize.width * 0.88, // Adjusted width based on screen size
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xFFA6A6A6),
-                                  width: 1.0,
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Container(
+                                height: 55,
+                                width: screenSize.width *
+                                    0.85, // Adjusted width based on screen size
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFFA6A6A6),
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(screenSize.width * 0.02),
-                                child: TextFormField(
-                                  maxLength: 10,
-                                  controller: _phoneNumberController,
-                                  focusNode: _phoneNumberFocusNode,
-                                  keyboardType: TextInputType.phone,
-                                  textAlignVertical: TextAlignVertical.center, // Align text to the center vertically
-                                  textAlign: TextAlign.start, // Align text to the start horizontally
-                                  style: TextStyle(color: Colors.black, fontSize: 20), // Set text color to black
-                                  decoration: InputDecoration(
-                                    // hintText: 'Your Phone Number',
-                                    border: InputBorder.none, // Remove underline
-                                    contentPadding: EdgeInsets.only(top: 12), // Add padding to the top of the text
-                                    prefixIcon: SizedBox(
-                                      width: screenSize.width * 0.2, // Adjusted width
-                                      child: Padding(
-                                        padding: EdgeInsets.only(top:14,right: 10),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Image.asset(
-                                              'assets/images/pakistan_flag.png',
-                                              width: screenSize.width * 0.09, // Adjusted width
-                                              height: screenSize.width * 0.09, // Adjusted height
-                                            ),
-                                            Text(
-                                              '+92',
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                          ],
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.all(screenSize.width * 0.02),
+                                  child: TextFormField(
+                                    maxLength: 10,
+                                    controller: _phoneNumberController,
+                                    focusNode: _phoneNumberFocusNode,
+                                    keyboardType: TextInputType.phone,
+                                    textAlignVertical: TextAlignVertical
+                                        .center, // Align text to the center vertically
+                                    textAlign: TextAlign
+                                        .start, // Align text to the start horizontally
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize:
+                                            20), // Set text color to black
+                                    decoration: InputDecoration(
+                                      // hintText: 'Your Phone Number',
+                                      border:
+                                          InputBorder.none, // Remove underline
+                                      contentPadding: EdgeInsets.only(
+                                          top:
+                                              12), // Add padding to the top of the text
+                                      prefixIcon: SizedBox(
+                                        width: screenSize.width *
+                                            0.2, // Adjusted width
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 14, right: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/pakistan_flag.png',
+                                                width: screenSize.width *
+                                                    0.08, // Adjusted width
+                                                height: screenSize.width *
+                                                    0.08, // Adjusted height
+                                              ),
+                                              Text(
+                                                '+92',
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your phone number';
+                                      }
+                                      if (!RegExp(r'^[1-9]\d{9}$')
+                                          .hasMatch(value)) {
+                                        return 'Invalid phone number';
+                                      }
+                                      return null;
+                                    },
+                                    textInputAction: TextInputAction.next,
+                                    onFieldSubmitted: (_) {
+                                      FocusScope.of(context)
+                                          .requestFocus(_addressFocusNode);
+                                    },
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your phone number';
-                                    }
-                                    if (!RegExp(r'^[1-9]\d{9}$').hasMatch(value)) {
-                                      return 'Invalid phone number';
-                                    }
-                                    return null;
-                                  },
-                                  textInputAction: TextInputAction.next,
-                                  onFieldSubmitted: (_) {
-                                    FocusScope.of(context).requestFocus(_addressFocusNode);
-                                  },
                                 ),
                               ),
                             ),
@@ -478,8 +510,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: ElevatedButton(
                             onPressed: () => submitSignup(context),
                             style: ButtonStyle(
-                              backgroundColor:
-                              MaterialStateProperty.all<Color>(
+                              backgroundColor: MaterialStateProperty.all<Color>(
                                   AppColors.primaryTextColor),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
@@ -490,7 +521,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             child: Text(
                               'Sign Up',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
                         ),
