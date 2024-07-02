@@ -33,7 +33,6 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
     fetchFriends();
   }
 
-
   // SHOW DELETE DIALOG
   Future<void> _showDeleteDialogHost(BuildContext context) {
     return showDialog(
@@ -154,10 +153,19 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final screensize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Friends"),
+        title: Text(
+          "Add Friends",
+          style: const TextStyle(
+            fontFamily: "Lato",
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff222222),
+          ),
+          textAlign: TextAlign.left,
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -167,19 +175,12 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                 top: 24,
               ),
               child: Container(
-                width: 370,
-                height: 40,
+                width: screensize.width * 0.87,
+                height: 45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.5),
-                  //     spreadRadius: 1,
-                  //     blurRadius: 1,
-                  //     offset: Offset(0, 1),
-                  //   ),
-                  // ],
+                  border: Border.all(color: Colors.grey, width: 1.0),
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(left: 12),
@@ -230,19 +231,23 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.grey, width: 1.0),
                           ),
-                          width: 375,
-                          height: 90,
+                          width: screensize.width,
+                          height: 64,
                           child: Row(
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 12),
                                 child: Container(
-                                  height: 50,
-                                  width: 50,
+                                  height: 40,
+                                  width: 40,
                                   child: CircleAvatar(
-                                    backgroundImage: NetworkImage(snapshot.data!.data!.partyMembers!
-                                        .firstWhere((element) => element.id == snapshot.data!.data!.hostId)
-                                        .profileImage.toString()),
+                                    backgroundImage: NetworkImage(snapshot
+                                        .data!.data!.partyMembers!
+                                        .firstWhere((element) =>
+                                            element.id ==
+                                            snapshot.data!.data!.hostId)
+                                        .profileImage
+                                        .toString()),
                                   ),
                                 ),
                               ),
@@ -253,8 +258,11 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                 children: [
                                   Text(
                                     snapshot.data!.data!.partyMembers!
-                                        .firstWhere((element) => element.id == snapshot.data!.data!.hostId)
-                                        .username.toString(),
+                                        .firstWhere((element) =>
+                                            element.id ==
+                                            snapshot.data!.data!.hostId)
+                                        .username
+                                        .toString(),
                                     style: TextStyle(
                                       fontFamily: "Lato",
                                       fontSize: 20,
@@ -265,8 +273,15 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                   SizedBox(height: 5),
                                   Row(
                                     children: [
-
-                                      Text("Admin"),
+                                      SvgPicture.asset(
+                                        'assets/svgIcons/online.svg',
+                                        width: 12,
+                                        height: 12,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 4.0),
+                                        child: Text("Admin"),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -275,27 +290,32 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                 child: SizedBox(),
                               ),
                               InkWell(
-                                onTap: (){
+                                onTap: () {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: Text("Delete Party"),
-                                        content: Text("Do you really want to delete this party?"),
+                                        content: Text(
+                                            "Do you really want to delete this party?"),
                                         actions: <Widget>[
                                           OutlinedButton(
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
                                             style: OutlinedButton.styleFrom(
-                                              side: BorderSide(width: 1, color: Colors.redAccent),
+                                              side: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.redAccent),
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(18.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
                                               ),
                                             ),
                                             child: Text(
                                               "No",
-                                              style: TextStyle(color: Colors.redAccent),
+                                              style: TextStyle(
+                                                  color: Colors.redAccent),
                                             ),
                                           ),
                                           ElevatedButton(
@@ -305,12 +325,14 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Colors.redAccent,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(18.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
                                               ),
                                             ),
                                             child: Text(
                                               "Confirm",
-                                              style: TextStyle(color: Colors.white),
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
                                           ),
                                         ],
@@ -319,18 +341,19 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                   );
                                 },
                                 child: Padding(
-                                  padding:  EdgeInsets.only(right: 12),
+                                  padding: EdgeInsets.only(right: 12),
                                   child: Container(
                                     height: 39,
                                     width: 96,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(color: AppColors.alert,width: 1),
+                                      border: Border.all(
+                                          color: AppColors.alert, width: 1),
                                     ),
                                     child: Center(
                                       child: Text(
                                         "End Party",
-                                        style:  TextStyle(
+                                        style: TextStyle(
                                             fontFamily: "Lato",
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
@@ -353,20 +376,29 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                               margin: EdgeInsets.only(top: 5),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.grey, width: 1.0),
+                                border:
+                                    Border.all(color: Colors.grey, width: 1.0),
                               ),
-                              width: 375,
-                              height: 90,
+                              width: screensize.width,
+                              height: 64,
                               child: Row(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(member.profileImage.toString()),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 12),
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            member.profileImage.toString()),
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(width: 12),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         member.username.toString(),
@@ -378,11 +410,31 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                         ),
                                       ),
                                       SizedBox(height: 5),
-                                      Text('In Party'),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/svgIcons/online.svg',
+                                            width: 12,
+                                            height: 12,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 4.0),
+                                            child: Text("In Party"),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   Expanded(
                                     child: SizedBox(),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 15.0),
+                                    child: SvgPicture.asset(
+                                      'assets/svgIcons/minus1.svg',
+                                      width: 30,
+                                      height: 30,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -435,13 +487,13 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 24),
                         child: Container(
-                          margin: EdgeInsets.only(top: 5),
+                          margin: EdgeInsets.only(top: 8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.grey, width: 1.0),
                           ),
-                          width: 375,
-                          height: 90,
+                          width: screensize.width,
+                          height: 64,
                           child: Row(
                             children: [
                               Expanded(
@@ -449,14 +501,20 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                   padding: EdgeInsets.only(left: 12),
                                   child: Row(
                                     children: [
-                                      CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage: NetworkImage(friend.profileImage!),
+                                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              friend.profileImage!),
+                                        ),
                                       ),
                                       SizedBox(width: 12),
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             friend.username!,
@@ -494,7 +552,9 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                 }
               },
             ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             InkWell(
               onTap: () {
                 showDialog(
@@ -530,7 +590,9 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(height: 16,),
+                              SizedBox(
+                                height: 16,
+                              ),
                               SizedBox(
                                 width: 294,
                                 height: 40,
@@ -547,9 +609,11 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                   child: Center(
                                     child: TextFormField(
                                       enabled: false,
-                                      initialValue: widget.inviteCode, // Sets the initial value to inviteCode
+                                      initialValue: widget
+                                          .inviteCode, // Sets the initial value to inviteCode
                                       keyboardType: TextInputType.text,
-                                      maxLength: 8, // Still enforces the maxLength limit
+                                      maxLength:
+                                          8, // Still enforces the maxLength limit
                                       style: TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 25,
@@ -561,20 +625,27 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                       textAlign: TextAlign.center,
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintStyle: TextStyle(color: AppColors.buttonColor),
-                                        counterText: '', // Hide the maxLength indicator
+                                        hintStyle: TextStyle(
+                                            color: AppColors.buttonColor),
+                                        counterText:
+                                            '', // Hide the maxLength indicator
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10,),
-                              SizedBox(height: 20,),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               InkWell(
                                 onTap: () async {
                                   await FlutterShare.share(
                                     title: 'Join My Party',
-                                    text: 'Join my party using this invite code: ${widget.inviteCode}',
+                                    text:
+                                        'Join my party using this invite code: ${widget.inviteCode}',
                                   );
                                 },
                                 child: SizedBox(
@@ -585,9 +656,11 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                       borderRadius: BorderRadius.circular(12),
                                       color: AppColors.buttonColor,
                                     ),
-                                    padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                                    padding:
+                                        EdgeInsets.fromLTRB(16, 12, 16, 12),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Share Link",
@@ -599,7 +672,9 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
-                                        SizedBox(width: 5.0,),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
                                         Padding(
                                           padding: EdgeInsets.only(right: 15.0),
                                           child: SvgPicture.asset(
@@ -613,13 +688,17 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(
+                                height: 10,
+                              ),
                               InkWell(
                                 onTap: () {
-                                  Clipboard.setData(ClipboardData(text: widget.inviteCode));
+                                  Clipboard.setData(
+                                      ClipboardData(text: widget.inviteCode));
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Invite code copied to clipboard!'))
-                                  );
+                                      SnackBar(
+                                          content: Text(
+                                              'Invite code copied to clipboard!')));
                                 },
                                 child: SizedBox(
                                   width: 306,
@@ -629,9 +708,11 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                       borderRadius: BorderRadius.circular(12),
                                       color: AppColors.buttonColor,
                                     ),
-                                    padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                                    padding:
+                                        EdgeInsets.fromLTRB(16, 12, 16, 12),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Copy Link",
@@ -644,7 +725,9 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
-                                        SizedBox(width: 5.0,),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
                                         Padding(
                                           padding: EdgeInsets.only(right: 15.0),
                                           child: SvgPicture.asset(
@@ -658,7 +741,9 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(
+                                height: 10,
+                              ),
                             ],
                           ),
                         ],
@@ -672,8 +757,7 @@ class _HostPartyfriendspageState extends State<HostPartyfriendspage> {
                 width: 173,
                 decoration: BoxDecoration(
                     color: AppColors.buttonColor,
-                    borderRadius: BorderRadius.circular(12)
-                ),
+                    borderRadius: BorderRadius.circular(12)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

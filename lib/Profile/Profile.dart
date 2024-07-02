@@ -79,8 +79,24 @@ class _UserProfileState extends State<UserProfile> {
                   Positioned(
                     top: 30,
                     child: Container(
+                      width:
+                          154, // 2 * radius of the CircleAvatar + some padding for the shadow
+                      height: 154, // Same as width to maintain the circle shape
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.red,
+                            Colors.orange,
+                            Colors.yellow,
+                            Colors.green,
+                            Colors.blue,
+                            Colors.indigo,
+                            Colors.purple,
+                          ],
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
@@ -92,9 +108,10 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                       child: CircleAvatar(
                         radius: 77,
-                        backgroundColor: Colors.yellow[300],
+                        backgroundColor: Colors
+                            .transparent, // Make it transparent to reveal the gradient background
                         child: CircleAvatar(
-                          radius: 75,
+                          radius: 72,
                           backgroundImage: _userData?.profileImage != null &&
                                   _userData!.profileImage!.startsWith('http')
                               ? NetworkImage(_userData!.profileImage!)

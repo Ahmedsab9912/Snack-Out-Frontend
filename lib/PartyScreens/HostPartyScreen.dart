@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -11,6 +10,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../API/api.dart';
 import '../Models/PartyMembersModel.dart';
+import '../Provider/ChatProvider.dart';
 import '../components/BottomSheet.dart';
 import 'AddFriendsScreen.dart';
 import 'HostPartyFriendsPage.dart';
@@ -28,6 +28,9 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
   late IO.Socket socket;
   String? accessToken;
 
+  final List<ChatMessage> _messages = [];
+  List<ChatMessage> get messages => _messages;
+
   @override
   void initState() {
     super.initState();
@@ -38,21 +41,21 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
 
   @override
   void dispose() {
+    print("Disposing screen...");
     socket.dispose();
     socket.disconnect();
     super.dispose();
   }
 
   Future<void> _initializeSocket() async {
+    print("initializing socket from hostpartyscrene");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString('accessToken');
 
     socket = IO.io(
       'wss://snack-mate-backend-production.up.railway.app',
-      IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .setExtraHeaders({'access_token': accessToken ?? ''})
-          .build(),
+      IO.OptionBuilder().setTransports(['websocket']).setExtraHeaders(
+          {'access_token': accessToken}).build(),
     );
 
     socket.onConnect((_) {
@@ -60,27 +63,15 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
       socket.emit('party/join', widget.inviteCode);
     });
 
-    socket.on("party/info", (data) => print(jsonEncode(data)));
-
     socket.onConnectError((data) {
       print('Connection Error: ${data.toString()}'); // Or use a logging package
-    });
-
-    socket.on("party/new-message", (data) {
-      Map<String, dynamic> messageData = jsonDecode(data);
-      String sender = messageData['sender'];
-      String content = messageData['content'];
-      // ... (Update your chat UI)
-    });
-
-
-    socket.onConnectError((data) {
-      print('Connection Error: $data');
     });
 
     socket.onDisconnect((_) {
       print('Disconnected');
     });
+
+    socket.on("party/info", (data) => print(jsonEncode(data)));
   }
 
   Future<void> _loadAccessToken() async {
@@ -177,7 +168,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               height: 5.0,
             ),
             Container(
-              height: 80,
+              height: size.height * 0.11,
               child: FutureBuilder<PartyMembersModel>(
                 future: fetchPartyMembers(),
                 builder: (context, snapshot) {
@@ -188,11 +179,10 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                   } else if (snapshot.hasData) {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount:
-                      snapshot.data!.data?.partyMembers?.length ?? 0,
+                      itemCount: snapshot.data!.data?.partyMembers?.length ?? 0,
                       itemBuilder: (context, index) {
                         final member =
-                        snapshot.data!.data!.partyMembers?[index];
+                            snapshot.data!.data!.partyMembers?[index];
                         return Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Column(
@@ -222,13 +212,13 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    'Host Controls',
-                    style: TextStyle(
+                  Text('Host Controls',
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primaryTextColor,) // Example color, adjust as needed
-                  ),
+                        color: AppColors.primaryTextColor,
+                      ) // Example color, adjust as needed
+                      ),
                 ],
               ),
             ),
@@ -242,8 +232,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                 children: [
                   Text(
                     'Party on the Host',
-                    style:
-                    TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                   Radio<String>(
                     value: 'on',
@@ -251,7 +240,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                     onChanged: (value) {
                       // Handle radio button selection
                     },
-                    activeColor: AppColors.primaryTextColor, // Example color, adjust as needed
+                    activeColor: AppColors
+                        .primaryTextColor, // Example color, adjust as needed
                   ),
                 ],
               ),
@@ -263,8 +253,7 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                 children: [
                   Text(
                     'Go Dutch',
-                    style:
-                    TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                   Radio<String>(
                     value: 'off',
@@ -272,7 +261,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                     onChanged: (value) {
                       // Handle radio button selection
                     },
-                    activeColor: Colors.black, // Example color, adjust as needed
+                    activeColor:
+                        Colors.black, // Example color, adjust as needed
                   ),
                 ],
               ),
@@ -281,10 +271,10 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               height: 16,
             ),
             Container(
-              child: Image.asset(
-                'assets/images/Group.png',
-                width: 250,
-                height: 250,
+              child: SvgPicture.asset(
+                'assets/svgIcons/partyGroup.svg',
+                width: size.width * 0.7,
+                height: size.height * 0.19,
               ),
             ),
             const SizedBox(
@@ -294,7 +284,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
               height: 48,
               width: 306,
               decoration: BoxDecoration(
-                  color: AppColors.buttonColor, // Example color, adjust as needed
+                  color:
+                      AppColors.buttonColor, // Example color, adjust as needed
                   borderRadius: BorderRadius.circular(10)),
               child: const Center(
                 child: Text('Make a Booking',
@@ -351,9 +342,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                         child: Container(
                           width: size.width * 0.15,
                           height: size.width * 0.15,
-                          child: Image.asset(
-                            'assets/images/Avatars.png',
-                            fit: BoxFit.cover,
+                          child: SvgPicture.asset(
+                            'assets/svgIcons/add.svg',
                           ),
                         ),
                       ),
@@ -373,7 +363,12 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
                   InkWell(
                     onTap: () {
                       showModalBottomSheet(
-                          context: context, builder: (context) => Bottomsheet());
+                          context: context,
+                          builder: (context) => Bottomsheet(
+                                myinviteCode: widget.inviteCode,
+                                socket: socket,
+                                messages: _messages,
+                              ));
                     },
                     child: Row(
                       children: [
@@ -403,7 +398,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
     );
   }
 
-  Widget _buildFriendAvatar(BuildContext context, String imagePath, String name) {
+  Widget _buildFriendAvatar(
+      BuildContext context, String imagePath, String name) {
     final size = MediaQuery.of(context).size;
 
     return Stack(
@@ -413,8 +409,8 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
           children: [
             ClipOval(
               child: Container(
-                width: size.width * 0.18,
-                height: size.width * 0.18,
+                width: size.width * 0.13,
+                height: size.width * 0.13,
                 child: Image.asset(
                   imagePath,
                   fit: BoxFit.cover,
@@ -435,10 +431,10 @@ class _HostPartyScreenState extends State<HostPartyScreen> {
           top: 0,
           right: 0,
           child: Container(
-            width: size.width * 0.06,
-            height: size.width * 0.06,
+            width: size.width * 0.05,
+            height: size.width * 0.05,
             decoration: const BoxDecoration(
-              color: Color(0xFF00B288),
+              color: AppColors.primaryTextColor,
               shape: BoxShape.circle,
             ),
             child: const Icon(

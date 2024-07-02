@@ -1,3 +1,4 @@
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +12,6 @@ import '../components/bottomNavigatorBar.dart';
 import 'EditProfileScreen/edit_email.dart';
 import 'EditProfileScreen/edit_phone.dart';
 import '../models/users_model.dart';
-
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -77,12 +77,21 @@ class _EditProfileState extends State<EditProfile> {
     final mediaQuery = MediaQuery.of(context);
     final containerHeight = mediaQuery.size.height * 0.065;
     final containerWidth = mediaQuery.size.width * 0.85;
-    final avatarSize = mediaQuery.size.width * 0.3;
+    final avatarSize = mediaQuery.size.width * 0.2;
     final paddingSize = mediaQuery.size.width * 0.03;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: Text(
+          "Edit Profile",
+          style: const TextStyle(
+            fontFamily: "Lato",
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff222222),
+          ),
+          textAlign: TextAlign.left,
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -95,6 +104,19 @@ class _EditProfileState extends State<EditProfile> {
                   width: avatarSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.red,
+                        Colors.orange,
+                        Colors.yellow,
+                        Colors.green,
+                        Colors.blue,
+                        Colors.indigo,
+                        Colors.purple,
+                      ],
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
@@ -106,9 +128,10 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   child: CircleAvatar(
                     radius: avatarSize / 2,
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Colors
+                        .transparent, // Use a transparent background to reveal the gradient
                     child: CircleAvatar(
-                      radius: avatarSize / 2 - 2,
+                      radius: avatarSize / 2.1 - 1,
                       backgroundImage: _imageFile != null
                           ? FileImage(_imageFile!)
                           : _userData?.profileImage != null &&
@@ -121,22 +144,22 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
             ),
-            SizedBox(height: paddingSize),
+            SizedBox(height: 1),
             TextButton(
               onPressed: () => _showEditPictureBottomSheet(context),
               child: Text(
                 'Edit Picture',
                 style: TextStyle(
-                  color: Colors.purple,
-                  fontSize: mediaQuery.size.width * 0.05,
+                  color: AppColors.primaryTextColor,
+                  fontSize: mediaQuery.size.width * 0.045,
                 ),
               ),
             ),
             SizedBox(height: paddingSize / 2),
             _buildProfileField("Username", _usernameController, containerWidth,
-                containerHeight, _nameFocusNode, false),
+                containerHeight, _nameFocusNode, true),
             _buildProfileField("Name", _nameController, containerWidth,
-                containerHeight, _emailFocusNode, false),
+                containerHeight, _emailFocusNode, true),
             _buildProfileField("Email", _emailController, containerWidth,
                 containerHeight, _phoneNumberFocusNode, true,
                 navigateTo: EditEmail()),
@@ -145,15 +168,15 @@ class _EditProfileState extends State<EditProfile> {
                 navigateTo: EditPhone()),
             SizedBox(height: 30),
             Container(
-              height: containerHeight,
-              width: containerWidth,
+              height: 49,
+              width: 326,
               child: ElevatedButton(
                 onPressed: () {
                   _uploadProfileImage();
                 },
                 style: ButtonStyle(
                   backgroundColor:
-                      WidgetStateProperty.all<Color>(Colors.purple),
+                      WidgetStateProperty.all<Color>(AppColors.buttonColor),
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -180,6 +203,7 @@ class _EditProfileState extends State<EditProfile> {
       FocusNode? nextFocusNode,
       bool isNavigable,
       {Widget? navigateTo}) {
+    bool isPhoneNumberField = label == "Phone Number";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -198,7 +222,7 @@ class _EditProfileState extends State<EditProfile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => navigateTo,
+                      builder: (context) => navigateTo!,
                     ),
                   );
                 }
@@ -214,19 +238,36 @@ class _EditProfileState extends State<EditProfile> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: TextFormField(
                 controller: controller,
                 style: TextStyle(color: Colors.grey),
                 decoration: InputDecoration(
                   border: InputBorder.none,
+                  prefixIcon: isPhoneNumberField
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                              right: 8,
+                              left: 8), // Adjust padding for visual centering
+                          child: Image.asset('assets/images/flag_icon.png',
+                              width: 24), // Use your flag icon
+                        )
+                      : null,
+                  prefixIconConstraints:
+                      BoxConstraints(minWidth: 30, minHeight: 0),
                   suffixIcon: isNavigable
                       ? Image.asset(
                           'assets/images/edit.png',
-                          width: 50,
-                          height: 70,
+                          width: 24,
+                          height: 24,
                         )
                       : null,
+                  // Adjust contentPadding to visually center the text next to the prefix icon
+                  contentPadding: EdgeInsets.fromLTRB(
+                      0,
+                      (containerHeight - 16.0) / 4,
+                      0,
+                      (containerHeight - 16.0) / 4),
                 ),
                 enabled: !isNavigable,
                 textInputAction: TextInputAction.next,

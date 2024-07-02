@@ -1,13 +1,19 @@
-
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../Provider/ChatProvider.dart';
 import '../app_theme/app_theme.dart';
 
 class Bottomsheet extends StatefulWidget {
-  const Bottomsheet({super.key});
+  final String myinviteCode;
+  final IO.Socket socket;
+  final List messages;
+
+  const Bottomsheet(
+      {required this.myinviteCode,
+      required this.socket,
+      required this.messages,
+      super.key});
 
   @override
   State<Bottomsheet> createState() => _BottomsheetState();
@@ -15,45 +21,77 @@ class Bottomsheet extends StatefulWidget {
 
 class _BottomsheetState extends State<Bottomsheet> {
   final _messageController = TextEditingController();
-  late ChatProvider _chatProvider;
-  late IO.Socket socket;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    loadImgage();
     super.initState();
-    _chatProvider = Provider.of<ChatProvider>(context, listen: false);
-    socket = _chatProvider.socket;
+    print(widget.socket);
+    //SOCKET FOR NEW MESSAGE
+    widget.socket.on("party/new-message", (data) {
+      print(data);
+      try {
+        if (data is Map<String, dynamic>) {
+          final String senderId =
+              data['senderId'].toString(); // Convert to String
+          final String content = data['content'] as String;
 
-    // Ensure socket connection when the bottomsheet is opened
-    if (!_chatProvider.socket.connected) {
-      _chatProvider.socket.connect();
-    }
-
-    // Socket.IO listener for incoming messages
-    socket.on("party/new-message", (data) {
-      _chatProvider.addMessage(ChatMessage.fromJson(jsonDecode(data)));
+          final newMessage = ChatMessage(senderId, content);
+          setState(() {
+            widget.messages.add(newMessage);
+            _scrollToBottom();
+          });
+        } else {
+          print("Error: Invalid message format received from server.");
+        }
+      } catch (e) {
+        print("Error parsing message: $e");
+      }
     });
   }
 
+  // SOCKET FOR SEND MESSAGE
   void _sendMessage() {
     String messageText = _messageController.text;
     if (messageText.isNotEmpty) {
-      // Create a message object with sender information
-      Map<String, dynamic> messageData = {
-        'sender': 'YourName',
-        'content': messageText,
-      };
-
-      print("Sending message: $messageData"); // Log the message object
-      socket.emit('party/send-message', messageData);
+      print("Sending message: $messageText"); // Log the message text
+      widget.socket.emit('party/send-message', [
+        widget.myinviteCode,
+        messageText
+      ]); // Send inviteCode and messageText
+      // Add the message to your local list with "You" as the sender
+      setState(() {
+        widget.messages.add(ChatMessage(
+            "You", messageText)); // Assuming "You" is the current user ID
+        _scrollToBottom();
+      });
       _messageController.clear();
     }
   }
 
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.minScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  String? image;
+  Future<void> loadImgage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      image = prefs.getString('profileImage');
+    });
+  }
 
   @override
   void dispose() {
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -61,12 +99,13 @@ class _BottomsheetState extends State<Bottomsheet> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return SafeArea( // Wrap with SafeArea
+    return SafeArea(
+      // Wrap with SafeArea
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 34.0),
-        color:  Color(0xff757575),
+        color: Color(0xff757575),
         child: Container(
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(20.0),
@@ -84,22 +123,18 @@ class _BottomsheetState extends State<Bottomsheet> {
                 const SizedBox(height: 17),
                 // Chat messages (Consumer wrapped ListView)
                 Expanded(
-                  child: Consumer<ChatProvider>(
-                    builder: (context, chatProvider, child) {
-                      return ListView.builder(
-                        reverse: true,
-                        controller: ScrollController(
-                          initialScrollOffset: 0.0,
-                          keepScrollOffset: true,
-                        ),
-                        itemCount: chatProvider.messages.length,
-                        itemBuilder: (context, index) {
-                          // Get messages in reverse order
-                          return YourChatMessageWidget(
-                              chatProvider.messages[
-                              chatProvider.messages.length - 1 -
-                                  index]);
-                        },
+                  child: ListView.builder(
+                    reverse: true,
+                    shrinkWrap: true, // Add this line
+                    controller: _scrollController,
+                    itemCount: widget.messages.length,
+                    itemBuilder: (context, index) {
+                      // Get messages in reverse order
+                      return YourChatMessageWidget(
+                        message:
+                            widget.messages[widget.messages.length - 1 - index],
+                        currentUserId:
+                            '2', // Replace with the actual current user ID
                       );
                     },
                   ),
@@ -120,8 +155,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                                   controller: _messageController,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                     hintText: "Type Message",
                                     hintStyle: const TextStyle(
@@ -151,7 +185,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                           child: const CircleAvatar(
                             radius: 30,
                             backgroundImage:
-                            AssetImage("assets/images/you.png"),
+                                AssetImage("assets/images/you.png"),
                           ),
                         ),
                       ),
@@ -167,341 +201,76 @@ class _BottomsheetState extends State<Bottomsheet> {
   }
 }
 
-
-
 // chat_message_widget.dart or within your Bottomsheet file
 
 class YourChatMessageWidget extends StatelessWidget {
   final ChatMessage message;
+  final String currentUserId;
 
-  const YourChatMessageWidget(this.message, {Key? key}) : super(key: key);
+  const YourChatMessageWidget({
+    required this.message,
+    required this.currentUserId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Implement your custom chat message UI here
-    // You'll likely use the message.sender and message.content properties
-    // to display the message content and sender appropriately
-    // Example:
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
-      decoration: BoxDecoration(
-        color: message.sender == "You" ? Colors.blue : Colors.grey[300],
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Text(
-        "${message.sender}: ${message.content}",
-        style: TextStyle(
-          color: message.sender == "You" ? Colors.white : Colors.black,
-        ),
+    bool isCurrentUser = message.sender == "You";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment:
+            isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          if (!isCurrentUser) // Add avatar for other users
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: CircleAvatar(
+                backgroundImage:
+                    const AssetImage("assets/images/happyemoji.png"),
+                radius: 22.0,
+              ),
+            ),
+          if (!isCurrentUser)
+            SizedBox(
+                width: 8.0), // Space between avatar and message for other users
+
+          // Message content
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.symmetric(vertical: 4.0),
+              decoration: BoxDecoration(
+                color: isCurrentUser ? Colors.grey : Color(0xFFEDD0FF),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                "${message.sender}: ${message.content}",
+                style: TextStyle(
+                  color: isCurrentUser ? Colors.white : Colors.black,
+                ),
+                textAlign: isCurrentUser
+                    ? TextAlign.left
+                    : TextAlign.right, // Align text within the container
+              ),
+            ),
+          ),
+
+          if (isCurrentUser)
+            SizedBox(
+                width:
+                    8.0), // Space between message and avatar for current user
+          if (isCurrentUser) // Add avatar for current user
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/you.png"),
+                radius: 22.0,
+              ),
+            ),
+        ],
       ),
     );
   }
 }
-
-
-//  SafeArea(
-//         child: SingleChildScrollView(
-//           child: Padding(
-//             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-//             child: Container(
-//               padding: EdgeInsets.symmetric(horizontal: 34.0), // Adjust margin as needed
-//               color: Color(0xff757575),
-//               child: Container(
-//                 decoration: BoxDecoration(
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.only(
-//                     topRight: Radius.circular(20.0),
-//                     topLeft: Radius.circular(20.0),
-//                   ),
-//                 ),
-//                 child: Padding(
-//                   padding: EdgeInsets.only(
-//                     bottom: MediaQuery.of(context).viewInsets.bottom,
-//                     left: 12.0, // Added horizontal margin
-//                     right: 12.0, // Added horizontal margin
-//                   ),
-//                   child: SingleChildScrollView(
-//                     child: Column(
-//                       children: [
-//                         SizedBox(height: 17,),
-//                         Row(
-//                           mainAxisAlignment: MainAxisAlignment.start,
-//                           children: [
-//                             Padding(
-//                               padding: EdgeInsets.only(bottom: 80),
-//                               child: Container(
-//                                 height: 51,
-//                                 width: 51,
-//                                 margin: EdgeInsets.only(left: 8.0), // Optional margin for spacing
-//                                 child: CircleAvatar(
-//                                   radius: 30,
-//                                   backgroundImage: AssetImage("assets/images/arthur.png"),
-//                                 ),
-//                               ),
-//                             ),
-//                             Padding(
-//                               padding: EdgeInsets.only(left: 5),
-//                               child: Column(
-//                                 children: [
-//                                   Padding(
-//                                     padding: EdgeInsets.only(right: 170, bottom: 8),
-//                                     child: Text(
-//                                       "Ali Jahangir",
-//                                       style: TextStyle(
-//                                         fontSize: 12,
-//                                         fontFamily: "Lato",
-//                                         fontWeight: FontWeight.w600,
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(right: 100),
-//                                     child: Container(
-//                                       decoration: BoxDecoration(
-//                                         borderRadius: BorderRadius.circular(6),
-//                                         color: Color.fromRGBO(237, 208, 255, 1),
-//                                       ),
-//                                       child: Column(
-//                                         children: <Widget>[
-//                                           Padding(
-//                                             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-//                                             child: Column(
-//                                               children: [
-//                                                 Padding(
-//                                                   padding: EdgeInsets.all(8.0),
-//                                                   child: Text(
-//                                                     "Hey everyone!",
-//                                                     style: TextStyle(fontFamily: "Lato"),
-//                                                   ),
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                         ],
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   SizedBox(height: 8,),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(right: 90),
-//                                     child: Container(
-//                                       decoration: BoxDecoration(
-//                                         borderRadius: BorderRadius.circular(6),
-//                                         color: Color.fromRGBO(237, 208, 255, 1),
-//                                       ),
-//                                       child: Column(
-//                                         children: <Widget>[
-//                                           Padding(
-//                                             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-//                                             child: Column(
-//                                               children: [
-//                                                 Padding(
-//                                                   padding: EdgeInsets.all(8.0),
-//                                                   child: Text("What’s the plan?"),
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                         ],
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                         SizedBox(height: 16,),
-//                         Row(
-//                           mainAxisAlignment: MainAxisAlignment.start,
-//                           children: [
-//                             Padding(
-//                               padding: EdgeInsets.only(bottom: 90),
-//                               child: Container(
-//                                 height: 51,
-//                                 width: 51,
-//                                 margin: EdgeInsets.only(left: 8.0), // Optional margin for spacing
-//                                 child: CircleAvatar(
-//                                   radius: 30,
-//                                   backgroundImage: AssetImage("assets/images/audrey.png"),
-//                                 ),
-//                               ),
-//                             ),
-//                             Padding(
-//                               padding: EdgeInsets.only(left: 5),
-//                               child: Column(
-//                                 children: [
-//                                   Padding(
-//                                     padding: EdgeInsets.only(right: 175, bottom: 8),
-//                                     child: Text(
-//                                       "Sarah",
-//                                       style: TextStyle(
-//                                         fontSize: 12,
-//                                         fontFamily: "Lato",
-//                                         fontWeight: FontWeight.w600,
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   Container(
-//                                     decoration: BoxDecoration(
-//                                       borderRadius: BorderRadius.circular(6),
-//                                       color: Color.fromRGBO(237, 208, 255, 1),
-//                                     ),
-//                                     child: Column(
-//                                       children: <Widget>[
-//                                         Padding(
-//                                           padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-//                                           child: Column(
-//                                             children: [
-//                                               Padding(
-//                                                 padding: EdgeInsets.all(8.0),
-//                                                 child: Text(
-//                                                   "Let’s go to a Burger Place",
-//                                                   style: TextStyle(fontFamily: "Lato"),
-//                                                 ),
-//                                               ),
-//                                             ],
-//                                           ),
-//                                         ),
-//                                       ],
-//                                     ),
-//                                   ),
-//                                   SizedBox(height: 8,),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(right: 70),
-//                                     child: Container(
-//                                       decoration: BoxDecoration(
-//                                         borderRadius: BorderRadius.circular(6),
-//                                         color: Color.fromRGBO(237, 208, 255, 1),
-//                                       ),
-//                                       child: Column(
-//                                         children: <Widget>[
-//                                           Padding(
-//                                             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-//                                             child: Column(
-//                                               children: [
-//                                                 Padding(
-//                                                   padding: EdgeInsets.all(8.0),
-//                                                   child: Text("Add Rachel too!"),
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                         ],
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                         SizedBox(height: 16,),
-//                         Row(
-//                           mainAxisAlignment: MainAxisAlignment.end,
-//                           children: [
-//                             Column(
-//                               children: [
-//                                 Padding(
-//                                   padding: EdgeInsets.only(left: 150),
-//                                   child: Text(
-//                                     "You",
-//                                     style: TextStyle(
-//                                       fontSize: 12,
-//                                       fontWeight: FontWeight.w600,
-//                                     ),
-//                                   ),
-//                                 ),
-//                                 SizedBox(height: 8,),
-//                                 Container(
-//                                   decoration: BoxDecoration(
-//                                     borderRadius: BorderRadius.circular(6),
-//                                     color: Colors.grey[300],
-//                                   ),
-//                                   child: Column(
-//                                     children: <Widget>[
-//                                       Padding(
-//                                         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-//                                         child: Column(
-//                                           children: [
-//                                             Padding(
-//                                               padding: EdgeInsets.all(8.0),
-//                                               child: Text("Burger Place uhhhh okay"),
-//                                             ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                     ],
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                             Padding(
-//                               padding: EdgeInsets.only(bottom: 15),
-//                               child: Container(
-//                                 height: 51,
-//                                 width: 51,
-//                                 margin: EdgeInsets.only(left: 8.0), // Optional margin for spacing
-//                                 child: CircleAvatar(
-//                                   radius: 30,
-//                                   backgroundImage: AssetImage("assets/images/you.png"),
-//                                 ),
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                         SizedBox(height: 15,),
-//                         Row(
-//                           children: [
-//                             Flexible(
-// //                               child: Container(
-// //                                 padding: EdgeInsets.only(left: 12.0),
-// //                                 height: size.height * 0.09, // Adjust height as needed
-// //                                 child: Column(
-// //                                   children: <Widget>[
-// //                                     Padding(
-// //                                       padding: EdgeInsets.only(top: 10),
-// //                                       child: TextFormField(
-// //                                         decoration: InputDecoration(
-// //                                           border: OutlineInputBorder(
-// //                                             borderRadius: BorderRadius.circular(8),
-// //                                           ),
-// //                                           hintText: "Type Message",
-// //                                           hintStyle: TextStyle(fontSize: 14, color: Colors.black),
-// //                                           suffixIcon: Icon(
-// //                                             Icons.send,
-// //                                             color: AppColors.primaryTextColor,
-// //                                           ),
-// //                                         ),
-// //                                         style: TextStyle(fontSize: 14), // Reduce font size if needed
-// //                                         maxLines: 1, // Ensure single line height
-// //                                       ),
-// //                                     ),
-// //                                   ],
-// //                                 ),
-// //                               ),
-// //                             ),
-// //                             Padding(
-// //                               padding: EdgeInsets.only(bottom: 15),
-// //                               child: Container(
-// //                                 height: 40,
-// //                                 width: 40,
-// //                                 margin: EdgeInsets.only(left: 8.0), // Optional margin for spacing
-// //                                 child: CircleAvatar(
-// //                                   radius: 30,
-// //                                   backgroundImage: AssetImage("assets/images/you.png"),
-// //                                 ),
-// //                               ),
-// //                             ),
-// //                           ],
-// //                         ),
-// //                       ],
-// //                     ),
-// //                   ),
-// //                 ),
-// //               ),
-// //             ),
-// //           ),
-// //         ),
-// //       ),

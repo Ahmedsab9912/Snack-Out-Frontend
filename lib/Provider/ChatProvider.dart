@@ -14,11 +14,10 @@ class ChatMessage {
 }
 
 class ChatProvider with ChangeNotifier {
-  late IO.Socket socket; // Add socket here
-  final List<ChatMessage> _messages = []; // Move _messages here
+  late IO.Socket socket;
+  final List<ChatMessage> _messages = [];
 
   ChatProvider() {
-    // Constructor to initialize the socket
     _initializeSocket();
   }
 
@@ -27,17 +26,40 @@ class ChatProvider with ChangeNotifier {
       'wss://snack-mate-backend-production.up.railway.app',
       IO.OptionBuilder()
           .setTransports(['websocket'])
-          .disableAutoConnect() // Disable auto-connect
+          .disableAutoConnect()
           .build(),
     );
+
+    socket.onConnect((_) {
+      print('Connected to websocket');
+    });
+
+    socket.onConnectError((data) => print('Connect Error: $data'));
+
+    // Socket.IO listener for incoming messages
+    // socket.on("party/new-message", (data) {
+    //   print(data);
+    //   try {
+    //     if (data is Map<String, dynamic>) {
+    //       final String senderId = data['senderId'].toString();
+    //       final String content = data['content'].toString();
+    //
+    //       final newMessage = ChatMessage(senderId, content);
+    //       addMessage(newMessage);
+    //     } else {
+    //       print("Error: Invalid message format received from server.");
+    //     }
+    //   } catch (e) {
+    //     print("Error parsing message: $e");
+    //   }
+    // });
   }
+
   // Getter for messages
-  List<ChatMessage> get messages =>
-      _messages;
+  List<ChatMessage> get messages => _messages;
 
   void addMessage(ChatMessage message) {
     _messages.add(message);
     notifyListeners();
   }
-
 }

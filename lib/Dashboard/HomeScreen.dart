@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../API/api.dart';
@@ -281,7 +282,8 @@ class _HomescreenState extends State<Homescreen> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25,
-                                              color: Colors.green),
+                                              color:
+                                                  AppColors.primaryTextColor),
                                         ),
                                         ToggleIcon(
                                           restaurant: restaurant,

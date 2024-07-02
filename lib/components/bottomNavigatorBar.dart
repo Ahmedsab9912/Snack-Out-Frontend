@@ -5,6 +5,7 @@ import 'package:eataly/NotificationScreen/NotificationPage.dart';
 import 'package:eataly/Profile/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:eataly/SavedScreen/savedscreen.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Login&SignupScreens/loginscreen.dart';
@@ -23,7 +24,6 @@ class BottomNavigationBarMenu extends StatefulWidget {
 }
 
 class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
-
   Future<void> _showLoadingDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -84,12 +84,13 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
     'Home',
     'Saved',
     'Party',
-    'Booking',
+    'Bookings',
     'Profile'
   ];
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -115,7 +116,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
           indicatorColor: AppColors.buttonColor,
           tabs: List.generate(
             5,
-                (index) {
+            (index) {
               return Tab(
                 icon: ImageIcon(
                   AssetImage(
@@ -123,17 +124,18 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                         ? _selectedIconPaths[index]
                         : _iconPaths[index],
                   ),
-                  color: _selectedIndex == index
-                      ? _selectedColor
-                      : Colors.black,
+                  color:
+                      _selectedIndex == index ? _selectedColor : Colors.black,
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(top: 8),
+                  padding: EdgeInsets.only(top: 8),
                   child: Text(
                     _tabTitles[index],
                     style: TextStyle(
-                      color: _selectedIndex == index ? _selectedColor : Colors.black,
-                      fontSize: 13,
+                      color: _selectedIndex == index
+                          ? _selectedColor
+                          : Colors.black,
+                      fontSize: size.height * 0.014,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w400,
                     ),
@@ -159,12 +161,12 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
         backgroundColor: Colors.white,
         actions: [
           Padding(
-            padding:  EdgeInsets.only(right: 200.0),
+            padding: EdgeInsets.only(right: 180.0),
             child: Text(
               name,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -246,109 +248,159 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
 
   Drawer _drawer() {
     return Drawer(
-      backgroundColor: AppColors.buttonColor,
-      child: Padding(
-        padding: EdgeInsets.only(left: 20),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 25),
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  // color: Colors.purple[300],
-                ),
-                child: Text(
-                  'Hello , $name',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+        backgroundColor: AppColors.buttonColor,
+        child: Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                      // color: Colors.purple[300],
+                      ),
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.transparent,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Add other items here
-            Expanded(
-              child: ListView(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // // Show loading dialog
-                      // _showLoadingDialog(context);
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.map, color: Colors.white,),
-                      title: Text('Addresses', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
-                    ),
-                  ),
-                  Divider(),
-                  InkWell(
-                    onTap: () {
-                      // // Show loading dialog
-                      // _showLoadingDialog(context);
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.shop, color: Colors.white,),
-                      title: Text('Orders', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
-                    ),
-                  ),
-                  Divider(),
-                  InkWell(
-                    onTap: () {
-                      // // Show loading dialog
-                      // _showLoadingDialog(context);
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.label, color: Colors.white,),
-                      title: Text('Offer & promo', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
-                    ),
-                  ),
-                  Divider(),
-                  InkWell(
-                    onTap: () {
-                      // // Show loading dialog
-                      // _showLoadingDialog(context);
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.edit_note_sharp, color: Colors.white,),
-                      title: Text('Privacy policy', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
-                    ),
-                  ),
-                  Divider(),
-                ],
-              ),
-            ),
-            Divider(),
-            InkWell(
-              onTap: () {
-                // // Show loading dialog
-                // _showLoadingDialog(context);
-              },
-              child: ListTile(
-
-                title: Row(
+              // Add other items here
+              Expanded(
+                child: ListView(
                   children: [
-                    Text('Logout', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),),
-                    SizedBox(width: 10.0,),
-                    Icon(Icons.logout, color: Colors.white,)
+                    InkWell(
+                      onTap: () {
+                        // // Show loading dialog
+                        // _showLoadingDialog(context);
+                      },
+                      child: ListTile(
+                        leading: SvgPicture.asset(
+                          'assets/svgIcons/location.svg',
+                          width: 30,
+                          height: 30,
+                        ),
+                        title: Text(
+                          'Addresses',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    InkWell(
+                      onTap: () {
+                        // // Show loading dialog
+                        // _showLoadingDialog(context);
+                      },
+                      child: ListTile(
+                        leading: SvgPicture.asset(
+                          'assets/svgIcons/order.svg',
+                          width: 30,
+                          height: 30,
+                        ),
+                        title: Text(
+                          'Orders',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    InkWell(
+                      onTap: () {
+                        // // Show loading dialog
+                        // _showLoadingDialog(context);
+                      },
+                      child: ListTile(
+                        leading: SvgPicture.asset(
+                          'assets/svgIcons/offer.svg',
+                          width: 30,
+                          height: 30,
+                        ),
+                        title: Text(
+                          'Offer & promo',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    InkWell(
+                      onTap: () {
+                        // // Show loading dialog
+                        // _showLoadingDialog(context);
+                      },
+                      child: ListTile(
+                        leading: SvgPicture.asset(
+                          'assets/svgIcons/policy.svg',
+                          width: 30,
+                          height: 30,
+                        ),
+                        title: Text(
+                          'Privacy policy',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                    Divider(),
                   ],
                 ),
-                onTap: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('isLoggedIn', false); // Log the user out
+              ),
+              Divider(),
+              InkWell(
+                onTap: () {
+                  // // Show loading dialog
+                  // _showLoadingDialog(context);
+                },
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        'Logout',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      SvgPicture.asset(
+                        'assets/svgIcons/logout.svg',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ],
+                  ),
+                  onTap: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool(
+                        'isLoggedIn', false); // Log the user out
 
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
                       (Route<dynamic> route) => false,
-                );
-              },
-            ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
-
-
 }

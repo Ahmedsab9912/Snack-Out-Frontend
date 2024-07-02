@@ -6,8 +6,6 @@ import 'package:eataly/RestaurantFeaturesScreens/featuredCardsPhotos.dart';
 import 'package:eataly/RestaurantFeaturesScreens/featuredCardsReviews.dart';
 import 'package:eataly/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:eataly/Models/AllRestaurantsAPI.dart';
-import 'package:eataly/RestaurantFeaturesScreens/featuredCardsMenu.dart';
 
 class TopNavigationBarManu extends StatelessWidget {
   final Data restaurant;
@@ -325,25 +323,30 @@ class TopNavigationBarManu extends StatelessWidget {
                 ),
               ),
             ),
-            TabBar(
-              isScrollable: false,
-              labelColor: AppColors.buttonColor, // Selected tab text color
-              unselectedLabelColor: Colors.grey, // Unselected tab text color
-              indicatorColor:
-              AppColors.buttonColor, // Underline color for selected tab
-              tabs: [
-                Tab(text: 'Details'),
-                Tab(text: 'Photos'),
-                Tab(text: 'Menu'),
-                Tab(text: 'Bookings'),
-                Tab(text: 'Reviews'),
-              ],
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TabBar(
+                isScrollable: true,
+                labelColor: AppColors.buttonColor, // Selected tab text color
+                unselectedLabelColor: Colors.grey, // Unselected tab text color
+                indicatorColor:
+                    AppColors.buttonColor, // Underline color for selected tab
+                tabs: [
+                  Tab(text: 'Details'),
+                  Tab(text: 'Photos'),
+                  Tab(text: 'Menu'),
+                  Tab(text: 'Bookings'),
+                  Tab(text: 'Reviews'),
+                ],
+              ),
             ),
             Expanded(
               // Content that changes based on the selected tab
               child: TabBarView(
                 children: [
-                  Details(restaurant: restaurant,),
+                  Details(
+                    restaurant: restaurant,
+                  ),
                   Photos(restaurant: restaurant),
                   MenuListWidget(restaurantId: restaurant.id!.toInt()),
                   Bookings(),
