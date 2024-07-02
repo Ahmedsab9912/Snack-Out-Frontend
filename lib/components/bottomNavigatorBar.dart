@@ -135,7 +135,7 @@ class _BottomNavigationBarMenuState extends State<BottomNavigationBarMenu> {
                       color: _selectedIndex == index
                           ? _selectedColor
                           : Colors.black,
-                      fontSize: size.height * 0.014,
+                      fontSize: size.height * 0.012,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w400,
                     ),
